@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script type="application/ld+json">
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -12,6 +12,7 @@
   ]
 }
 </script>
+
 <head>
     <!-- ✅ Character Encoding & Viewport -->
     <meta charset="UTF-8">
@@ -19,8 +20,10 @@
 
     <!-- ✅ Primary SEO Meta Tags -->
     <title>Zorario - Buy, Sell & Rent Properties in India</title>
-    <meta name="description" content="Zorario is a premium real estate platform to buy, sell and rent properties across India. Find verified listings, connect with trusted owners, and book instantly.">
-    <meta name="keywords" content="zorario, buy property India, sell property, rent house, real estate India, property rental marketplace, verified property listings">
+    <meta name="description"
+        content="Zorario is a premium real estate platform to buy, sell and rent properties across India. Find verified listings, connect with trusted owners, and book instantly.">
+    <meta name="keywords"
+        content="zorario, buy property India, sell property, rent house, real estate India, property rental marketplace, verified property listings">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Zorario">
 
@@ -30,7 +33,8 @@
     <!-- ✅ Open Graph (Facebook, WhatsApp, LinkedIn previews) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Zorario - Buy, Sell & Rent Properties in India">
-    <meta property="og:description" content="Zorario is a premium real estate platform to buy, sell and rent properties across India. Find verified listings and book instantly.">
+    <meta property="og:description"
+        content="Zorario is a premium real estate platform to buy, sell and rent properties across India. Find verified listings and book instantly.">
     <meta property="og:url" content="https://www.zorario.com/">
     <meta property="og:site_name" content="Zorario">
     <meta property="og:image" content="https://www.zorario.com/assets/images/og-image.jpg">
@@ -41,7 +45,8 @@
     <!-- ✅ Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Zorario - Buy, Sell & Rent Properties in India">
-    <meta name="twitter:description" content="Premium real estate marketplace to buy, sell and rent properties in India. Verified listings, instant booking.">
+    <meta name="twitter:description"
+        content="Premium real estate marketplace to buy, sell and rent properties in India. Verified listings, instant booking.">
     <meta name="twitter:image" content="https://www.zorario.com/assets/images/og-image.jpg">
 
     <!-- ✅ App / Mobile SEO -->
@@ -102,6 +107,7 @@
     <!-- ✅ Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="bg-gradient"></div>
 
@@ -119,13 +125,12 @@
             <div class="hero-content">
                 <!-- ✅ H1 is keyword-rich and unique -->
                 <h1>Buy, Sell & Rent Properties in India with <span>ZORARIO</span></h1>
-                <p>The premium real estate marketplace connecting verified owners with reliable tenants and buyers. Browse premium listings, secure your bookings, and manage your properties — all in one seamless experience.</p>
-                <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
-                   class="playstore-btn"
-                   id="download-btn"
-                   rel="noopener"
-                   target="_blank"
-                   aria-label="Download Zorario app on Google Play Store">
+                <p>The premium real estate marketplace connecting verified owners with reliable tenants and buyers.
+                    Browse premium listings, secure your bookings, and manage your properties — all in one seamless
+                    experience.</p>
+                <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="playstore-btn"
+                    id="download-btn" rel="noopener" target="_blank"
+                    aria-label="Download Zorario app on Google Play Store">
                     <i class="fab fa-google-play" aria-hidden="true"></i>
                     Get it on Google Play
                 </a>
@@ -134,9 +139,11 @@
                 <div class="glass-card">
                     <img src="assets/images/logo.gif" alt="Zorario App Icon" class="glass-logo" width="80" height="80">
                     <h2>ZORARIO</h2>
-                    <p>Your Next Home Awaits. Download the app to discover thousands of premium rental and sale properties across India.</p>
+                    <p>Your Next Home Awaits. Download the app to discover thousands of premium rental and sale
+                        properties across India.</p>
                     <div class="features">
-                        <span class="feature-pill"><i class="fas fa-check-circle" aria-hidden="true"></i> Verified Listings</span>
+                        <span class="feature-pill"><i class="fas fa-check-circle" aria-hidden="true"></i> Verified
+                            Listings</span>
                         <span class="feature-pill"><i class="fas fa-bolt" aria-hidden="true"></i> Instant Booking</span>
                     </div>
                 </div>
@@ -146,31 +153,42 @@
 
     <!-- ✅ Support / Contact Buttons -->
     <div class="support-container" role="complementary" aria-label="Contact Support">
-        <a href="https://wa.me/919334298441"
-           class="support-btn whatsapp"
-           title="Chat with Zorario on WhatsApp"
-           aria-label="Chat on WhatsApp"
-           target="_blank"
-           rel="noopener noreferrer">
+        <a href="https://wa.me/919334298441" class="support-btn whatsapp" title="Chat with Zorario on WhatsApp"
+            aria-label="Chat on WhatsApp" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-whatsapp" aria-hidden="true"></i>
         </a>
-        <a href="tel:+919334298441"
-           class="support-btn call"
-           title="Call Zorario Support"
-           aria-label="Call Zorario support">
+        <a href="tel:+919334298441" class="support-btn call" title="Call Zorario Support"
+            aria-label="Call Zorario support">
             <i class="fas fa-phone" aria-hidden="true"></i>
         </a>
     </div>
 
-    <!-- ✅ Auto-redirect script (query param: ?redirect=true) -->
+    <!-- ✅ Auto-redirect script (query param: ?redirect=true or ?id=PROPERTY_ID) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
+            const propertyId = urlParams.get('id');
+            const playStoreUrl = "https://play.google.com/store/apps/details?id=com.akash.prop8";
+
+            if (propertyId) {
+                // 1. Attempt to open the app via custom scheme
+                const appUrl = `zorario://property?id=${propertyId}`;
+                window.location.href = appUrl;
+
+                // 2. Fallback to Play Store after a delay if the app doesn't open
+                setTimeout(() => {
+                    if (!document.hidden) {
+                        window.location.href = playStoreUrl;
+                    }
+                }, 2500);
+            }
+
+            // Legacy redirect param
             if (urlParams.get('redirect') === 'true') {
-                const playStoreUrl = document.getElementById('download-btn').href;
                 window.location.href = playStoreUrl;
             }
         });
     </script>
 </body>
+
 </html>

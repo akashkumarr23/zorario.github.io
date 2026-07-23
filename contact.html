@@ -551,6 +551,9 @@
         </div>
     </footer>
 
+    <!-- Google Sheets handler -->
+    <script src="google-sheets-handler.js"></script>
+
     <script>
         // Nav scroll effect
         window.addEventListener('scroll', () => {
@@ -568,10 +571,11 @@
             });
         }
 
-        // Form submit (WhatsApp redirect)
+        // Form submit (Google Sheets submission)
         const form = document.getElementById('contact-form');
-        if (form) {
-            form.addEventListener('submit', (e) => {
+        const submitBtn = document.getElementById('contact-submit-btn');
+        if (form && submitBtn) {
+            form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const name = document.getElementById('contact-name').value.trim();
                 const phone = document.getElementById('contact-phone').value.trim();
@@ -584,12 +588,36 @@
                     return;
                 }
 
-                const waMsg = encodeURIComponent(
-                    `Hi Zorario! ðŸ‘‹\n\nName: ${name}\nPhone: ${phone}\nCity: ${city || 'Not specified'}\nIntent: ${intent || 'Not specified'}\nMessage: ${message || 'No message'}\n\n(Sent from zorario.com/contact)`
-                );
-                window.open(`https://wa.me/919334298441?text=${waMsg}`, '_blank');
-                form.style.display = 'none';
-                document.getElementById('form-success').style.display = 'block';
+                // Show premium loading state on button
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+                try {
+                    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+                    const rowData = [
+                        timestamp,
+                        name,
+                        phone,
+                        city || 'Not specified',
+                        intent || 'Not specified',
+                        message || 'No message',
+                        'Contact Form'
+                    ];
+
+                    await appendRowToGoogleSheet(rowData);
+
+                    // Show success state
+                    form.style.display = 'none';
+                    document.getElementById('form-success').style.display = 'block';
+                } catch (error) {
+                    alert('Submission failed: ' + error.message + '\nPlease check your internet connection and try again.');
+                    // Restore button state
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.innerHTML = originalBtnText;
+                }
             });
         }
     </script>

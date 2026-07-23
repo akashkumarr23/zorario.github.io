@@ -111,6 +111,20 @@
         .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #4A90A4, #6BB5CB); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 8px 24px rgba(74,144,164,0.3); }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(74,144,164,0.4); }
 
+        /* Form Success State styling */
+        .form-success {
+            display: none; text-align: center; padding: 40px 20px;
+        }
+        .form-success .success-icon {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: rgba(16,185,129,0.1); color: #10B981;
+            font-size: 28px; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 20px;
+        }
+        .form-success h3 { font-size: 22px; font-weight: 700; color: #1B3A57; margin-bottom: 8px; }
+        .form-success p { font-size: 14px; color: #6B7280; }
+
+
         footer { background: linear-gradient(135deg, #0F2237 0%, #1B3A57 100%); padding: 60px 5% 30px; }
         .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
         .footer-brand a { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; } .footer-brand p { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.5); } .footer-brand .nav-logo-text { color: #fff; }
@@ -212,6 +226,12 @@
                     <div class="form-group"><label for="p-message">Why do you want to partner with Zorario?</label><textarea id="p-message" name="message" placeholder="Tell us a little about yourself and how you plan to refer clients..."></textarea></div>
                     <button type="submit" class="submit-btn" id="partner-submit-btn"><i class="fas fa-handshake"></i> Submit Partner Application</button>
                 </form>
+
+                <div class="form-success" id="form-success" aria-live="polite">
+                    <div class="success-icon"><i class="fas fa-check"></i></div>
+                    <h3>Application Submitted!</h3>
+                    <p>Thank you for applying to become an Associate Partner. Our partnership team will review your details and contact you within 24 hours.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -225,22 +245,63 @@
         </div>
         <div class="footer-bottom"><p class="footer-copy">&copy; 2025 Zorario. All rights reserved.</p><p class="footer-tagline">Built with <span>♥</span> for Bihar</p></div>
     </footer>
+
+    <!-- Google Sheets handler -->
+    <script src="google-sheets-handler.js"></script>
+
     <script>
         window.addEventListener('scroll', () => { document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
         const h = document.getElementById('nav-hamburger'), nl = document.querySelector('.nav-links');
         if (h) h.addEventListener('click', () => { const e = h.getAttribute('aria-expanded') === 'true'; h.setAttribute('aria-expanded', !e); nl.classList.toggle('open'); });
+        
         const pf = document.getElementById('partner-form');
-        if (pf) pf.addEventListener('submit', e => {
-            e.preventDefault();
-            const name = document.getElementById('p-name').value.trim();
-            const phone = document.getElementById('p-phone').value.trim();
-            if (!name || !phone) { alert('Please fill in your name and phone number.'); return; }
-            const city = document.getElementById('p-city').value;
-            const exp = document.getElementById('p-experience').value;
-            const msg = document.getElementById('p-message').value.trim();
-            const waMsg = encodeURIComponent(`Hi Zorario! ðŸ¤ I want to become an Associate Partner.\n\nName: ${name}\nPhone: ${phone}\nCity: ${city}\nBackground: ${exp}\nMessage: ${msg}\n\n(from zorario.com/associate-partner)`);
-            window.open(`https://wa.me/919334298441?text=${waMsg}`, '_blank');
-        });
+        const submitBtn = document.getElementById('partner-submit-btn');
+        if (pf && submitBtn) {
+            pf.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('p-name').value.trim();
+                const phone = document.getElementById('p-phone').value.trim();
+                const city = document.getElementById('p-city').value;
+                const exp = document.getElementById('p-experience').value;
+                const msg = document.getElementById('p-message').value.trim();
+
+                if (!name || !phone || !city) { 
+                    alert('Please fill in your name, phone number, and city.'); 
+                    return; 
+                }
+
+                // Show premium loading state on button
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+                try {
+                    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+                    const rowData = [
+                        timestamp,
+                        name,
+                        phone,
+                        city,
+                        exp || 'Not specified',
+                        msg || 'No message',
+                        'Associate Partner Form'
+                    ];
+
+                    await appendRowToGoogleSheet(rowData);
+
+                    // Show success feedback
+                    pf.style.display = 'none';
+                    document.getElementById('form-success').style.display = 'block';
+                } catch (error) {
+                    alert('Submission failed: ' + error.message + '\nPlease check your internet connection and try again.');
+                    // Restore button state
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.innerHTML = originalBtnText;
+                }
+            });
+        }
     </script>
 </body>
 </html>

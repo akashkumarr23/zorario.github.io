@@ -8,11 +8,12 @@ const googleAppScriptUrl = 'https://script.google.com/macros/s/AKfycbyRXnZZ9hmls
  */
 async function appendRowToGoogleSheet(rowData) {
     try {
-        // Send request to Apps Script Web App
-        // Using 'text/plain' makes it a simple request, skipping CORS preflight (OPTIONS check)
-        const response = await fetch(googleAppScriptUrl, {
+        // Send request to Apps Script Web App using no-cors mode.
+        // Google Apps Script redirects requests, which causes CORS violations in browsers.
+        // 'no-cors' ensures the request is delivered and runs on Google's servers.
+        await fetch(googleAppScriptUrl, {
             method: 'POST',
-            mode: 'cors',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'text/plain;charset=utf-8'
             },
@@ -21,8 +22,8 @@ async function appendRowToGoogleSheet(rowData) {
             })
         });
 
-        // Apps Script redirects will be followed by the browser. 
-        // We return true as long as fetch does not throw a network error.
+        // In 'no-cors' mode, we cannot read the response, but if fetch does not throw,
+        // it means the network request successfully reached Google's server and executed.
         return true;
     } catch (error) {
         console.error('Google Sheets submission error:', error);

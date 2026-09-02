@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Zorario - Aurangabad Township | Interactive Master Layout Viewer</title>
     
     <meta name="description" content="Explore verified residential and commercial plots in Aurangabad Township, Bihar. Interactive master layout plan with real-time plot availability, dimensions, facing, and pricing.">
@@ -263,6 +263,10 @@
             overflow: hidden;
             cursor: grab;
             background: radial-gradient(ellipse at 50% 40%, rgba(27,58,87,0.3) 0%, #0D1B2A 70%);
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+            overscroll-behavior: none;
         }
 
         .layout-canvas-area.is-dragging {
@@ -278,6 +282,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: none;
         }
 
         .svg-container {
@@ -288,11 +293,13 @@
             justify-content: center;
             position: absolute;
             inset: 0;
+            touch-action: none;
         }
 
         .svg-container svg {
             width: 100%;
             height: 100%;
+            touch-action: none;
             display: block;
             shape-rendering: geometricPrecision;
             text-rendering: geometricPrecision;
@@ -1446,6 +1453,7 @@
                 lastX = e.touches[0].clientX;
                 lastY = e.touches[0].clientY;
             } else if (e.touches.length === 2) {
+                e.preventDefault(); // Stop mobile browser native zoom!
                 isDragging = false;
                 const dx = e.touches[0].clientX - e.touches[1].clientX;
                 const dy = e.touches[0].clientY - e.touches[1].clientY;
@@ -1455,11 +1463,12 @@
                 const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
                 pinchCenterPt = clientToSvgPoint(midX, midY);
             }
-        }, { passive: true });
+        }, { passive: false });
 
         canvasArea.addEventListener('touchmove', (e) => {
             if (!masterSvg) return;
             if (e.touches.length === 1 && isDragging) {
+                e.preventDefault(); // Stop browser page scroll bubbling
                 const ctm = masterSvg.getScreenCTM();
                 if (!ctm || ctm.a === 0 || ctm.d === 0) return;
                 const dx = e.touches[0].clientX - lastX;
@@ -1472,6 +1481,7 @@
                 lastX = e.touches[0].clientX;
                 lastY = e.touches[0].clientY;
             } else if (e.touches.length === 2 && pinchStartDist > 0 && pinchCenterPt) {
+                e.preventDefault(); // CRITICAL: Stop mobile phone browser from zooming the entire page/header!
                 const dx = e.touches[0].clientX - e.touches[1].clientX;
                 const dy = e.touches[0].clientY - e.touches[1].clientY;
                 const dist = Math.hypot(dx, dy);
@@ -1492,13 +1502,26 @@
                     applyViewBox();
                 }
             }
-        }, { passive: true });
+        }, { passive: false });
 
-        canvasArea.addEventListener('touchend', () => {
-            isDragging = false;
-            pinchStartDist = 0;
-            pinchCenterPt = null;
+        canvasArea.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                pinchStartDist = 0;
+                pinchCenterPt = null;
+            }
+            if (e.touches.length === 1) {
+                isDragging = true;
+                lastX = e.touches[0].clientX;
+                lastY = e.touches[0].clientY;
+            } else if (e.touches.length === 0) {
+                isDragging = false;
+            }
         });
+
+        // Block Safari/iOS native page pinch gesture
+        document.addEventListener('gesturestart', (e) => e.preventDefault());
+        document.addEventListener('gesturechange', (e) => e.preventDefault());
+        document.addEventListener('gestureend', (e) => e.preventDefault());
 
         // Zoom button click handlers
         document.getElementById('btnZoomIn').addEventListener('click', () => zoomByCenter(0.72));

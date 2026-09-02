@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Zorario - Aurangabad Township | Interactive Master Layout Viewer</title>
+    
+    <meta name="description" content="Explore verified residential and commercial plots in Aurangabad Township, Bihar. Interactive master layout plan with real-time plot availability, dimensions, facing, and pricing.">
+    <meta name="theme-color" content="#0F2237">
+    
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Base Zorario Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ── Master Layout Specific Overrides & Engine ───────────── */
+        :root {
+            --layout-navy-deep: #0F2237;
+            --layout-navy-mid:  #1B3A57;
+            --layout-navy-card: rgba(15, 34, 55, 0.94);
+            --layout-teal:      #4A90A4;
+            --layout-teal-light:#6BB5CB;
+            --layout-teal-glow: rgba(74, 144, 164, 0.35);
+            --layout-green:     #10B981;
+            --layout-red:       #EF4444;
+            --layout-yellow:    #FFB800;
+        }
+
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            background: #0D1B2A;
+            font-family: 'Inter', sans-serif;
+            color: #F5F7FA;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* ── Fullscreen App Shell ────────────────────────────────── */
+        .layout-app-shell {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+            background: linear-gradient(160deg, #0F2237 0%, #0D1B2A 40%, #0a1520 100%);
+            overflow: hidden;
+        }
+
+        /* ── Header Bar ─────────────────────────────────────────── */
+        .layout-header {
+            height: 70px;
+            background: rgba(15, 34, 55, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(74, 144, 164, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 60;
+            gap: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .layout-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--layout-teal), var(--layout-teal-light), var(--layout-teal));
+            background-size: 200% 100%;
+            animation: shimmerTopBar 3s linear infinite;
+        }
+
+        @keyframes shimmerTopBar {
+            from { background-position: 200% 0; }
+            to   { background-position: -200% 0; }
+        }
+
+        .header-top-row {
+            display: contents;
+        }
+
+        .header-brand-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-nav-logo img {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            object-fit: contain;
+            background: #ffffff;
+            padding: 3px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+        }
+
+        .brand-nav-text {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-divider {
+            width: 1px;
+            height: 26px;
+            background: rgba(74, 144, 164, 0.3);
+            margin: 0 4px;
+        }
+
+        .header-project-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .header-project-title {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            margin: 0;
+        }
+
+        .header-project-subtitle {
+            font-size: 11px;
+            color: var(--layout-teal-light);
+            opacity: 0.85;
+        }
+
+        /* ── Legend & Filter Strip ──────────────────────────────── */
+        .legend-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .filter-pill {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: #9CA3AF;
+            padding: 6px 13px;
+            border-radius: 100px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .filter-pill:hover {
+            background: rgba(74, 144, 164, 0.12);
+            color: var(--layout-teal-light);
+        }
+
+        .filter-pill.active {
+            background: rgba(74, 144, 164, 0.22);
+            color: #ffffff;
+            border-color: rgba(74, 144, 164, 0.45);
+            box-shadow: 0 2px 10px rgba(74, 144, 164, 0.25);
+        }
+
+        .pill-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .dot-available { background: var(--layout-green); box-shadow: 0 0 8px rgba(16,185,129,0.7); }
+        .dot-sold      { background: var(--layout-red);   box-shadow: 0 0 8px rgba(239,68,68,0.7); }
+        .dot-hold      { background: var(--layout-yellow);box-shadow: 0 0 8px rgba(255,184,0,0.7); }
+
+        /* ── Header Right: Search ───────────────────────────────── */
+        .header-search-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--layout-teal);
+            pointer-events: none;
+            font-size: 13px;
+        }
+
+        .search-plot-input {
+            background: rgba(74, 144, 164, 0.08);
+            border: 1px solid rgba(74, 144, 164, 0.25);
+            padding: 8px 14px 8px 34px;
+            border-radius: 100px;
+            color: #ffffff;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            width: 190px;
+            transition: all 0.2s ease;
+        }
+
+        .search-plot-input::placeholder {
+            color: #6B7280;
+        }
+
+        .search-plot-input:focus {
+            border-color: var(--layout-teal);
+            background: rgba(74, 144, 164, 0.15);
+            box-shadow: 0 0 14px rgba(74, 144, 164, 0.3);
+            width: 210px;
+        }
+
+        /* ── Canvas Viewport ────────────────────────────────────── */
+        .layout-canvas-area {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 70px);
+            height: calc(100dvh - 70px);
+            overflow: hidden;
+            cursor: grab;
+            background: radial-gradient(ellipse at 50% 40%, rgba(27,58,87,0.3) 0%, #0D1B2A 70%);
+        }
+
+        .layout-canvas-area.is-dragging {
+            cursor: grabbing;
+        }
+
+        .panzoom-viewport {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .svg-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            inset: 0;
+        }
+
+        .svg-container svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            shape-rendering: geometricPrecision;
+            text-rendering: geometricPrecision;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        /* Hover & click pointer on interactive plots */
+        .svg-container [id^="Plot_"],
+        .svg-container [id^="plot_"] {
+            cursor: pointer;
+            transition: opacity 0.25s ease, filter 0.25s ease;
+        }
+
+        /* ── Floating Zoom & Reset Controls ─────────────────────── */
+        .floating-zoom-controls {
+            position: absolute;
+            bottom: 24px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 45;
+        }
+
+        .zoom-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(15, 34, 55, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(74, 144, 164, 0.35);
+            color: var(--layout-teal-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(74, 144, 164, 0.25);
+            border-color: var(--layout-teal);
+            color: #ffffff;
+            transform: scale(1.06);
+        }
+
+        .zoom-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* ── Plot Details Panel (Desktop Sidebar) ────────────────── */
+        /* ── Plot Details Panel (Compact & Sleek Sidebar) ────────── */
+        .plot-details-panel {
+            position: absolute;
+            top: 84px;
+            right: 16px;
+            bottom: auto;
+            width: 330px;
+            max-height: calc(100vh - 104px);
+            background: rgba(13, 27, 42, 0.96);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(74, 144, 164, 0.32);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            z-index: 55;
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+
+        .plot-details-panel.hidden {
+            transform: translateX(110%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .panel-sheet-handle {
+            display: none;
+        }
+
+        .panel-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(74, 144, 164, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(74, 144, 164, 0.12) 0%, transparent 100%);
+        }
+
+        .panel-title-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .panel-eyebrow {
+            font-size: 9.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--layout-teal-light);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .panel-plot-num {
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .panel-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-copy-header,
+        .panel-close-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #9CA3AF;
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .btn-copy-header:hover {
+            background: rgba(74, 144, 164, 0.2);
+            color: var(--layout-teal-light);
+            border-color: rgba(74, 144, 164, 0.4);
+        }
+
+        .panel-close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--layout-red);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .panel-status-bar {
+            margin: 8px 14px 0;
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-left-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .panel-body-content {
+            padding: 10px 14px;
+            flex: initial;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* ── Compact Price Card ─────────────────────────────────── */
+        .price-card {
+            background: linear-gradient(135deg, rgba(74, 144, 164, 0.22) 0%, rgba(15, 34, 55, 0.9) 100%);
+            border: 1px solid rgba(74, 144, 164, 0.35);
+            border-radius: 12px;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .price-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--layout-teal-light), transparent);
+        }
+
+        .price-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .price-card-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--layout-teal-light);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .price-rate-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #ffffff;
+            background: rgba(74, 144, 164, 0.28);
+            border: 1px solid rgba(74, 144, 164, 0.45);
+            padding: 2px 7px;
+            border-radius: 100px;
+            white-space: nowrap;
+        }
+
+        .price-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 3px;
+            margin: 1px 0 2px;
+            line-height: 1.1;
+        }
+
+        .price-currency {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--layout-teal-light);
+        }
+
+        .price-number {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(74, 144, 164, 0.35);
+        }
+
+        .price-card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(74, 144, 164, 0.16);
+            padding-top: 4px;
+            margin-top: 2px;
+        }
+
+        .price-unit-detail {
+            font-size: 10px;
+            color: #9CA3AF;
+            font-weight: 500;
+        }
+
+        .price-tag-sub {
+            font-size: 10px;
+            color: var(--layout-green);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        /* ── Compact Specifications Grid ────────────────────────── */
+        .specs-section-title {
+            font-size: 9.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--layout-teal);
+            margin: 0 0 6px 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .spec-item-card {
+            background: rgba(27, 58, 87, 0.4);
+            border: 1px solid rgba(74, 144, 164, 0.18);
+            border-radius: 10px;
+            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .spec-item-card:hover {
+            background: rgba(27, 58, 87, 0.6);
+            border-color: rgba(74, 144, 164, 0.35);
+        }
+
+        .spec-icon-box {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: rgba(74, 144, 164, 0.15);
+            border: 1px solid rgba(74, 144, 164, 0.22);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--layout-teal-light);
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .spec-info-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-label {
+            font-size: 8.5px;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spec-val {
+            font-weight: 700;
+            font-size: 11.5px;
+            color: #ffffff;
+        }
+
+        .spec-val small {
+            font-size: 8.5px;
+            font-weight: 400;
+            color: #9CA3AF;
+        }
+
+        /* ── Compact Footer Actions ─────────────────────────────── */
+        .panel-footer-bar {
+            padding: 8px 14px 10px;
+            border-top: 1px solid rgba(74, 144, 164, 0.18);
+            display: flex;
+            gap: 6px;
+            background: rgba(10, 22, 38, 0.95);
+        }
+
+        .btn-wa-inquire {
+            flex: 1.4;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #ffffff;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 9px;
+            font-size: 11.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-wa-inquire:hover {
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-call-sales {
+            flex: 0.9;
+            background: rgba(74, 144, 164, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(74, 144, 164, 0.32);
+            padding: 8px 10px;
+            border-radius: 9px;
+            font-size: 11.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-call-sales:hover {
+            background: rgba(74, 144, 164, 0.25);
+            border-color: var(--layout-teal);
+            transform: translateY(-1px);
+        }
+
+        /* ── Floating Mobile Map Hint ────────────────────────────── */
+        .mobile-map-hint {
+            display: none;
+        }
+
+        .mobile-backdrop {
+            display: none;
+        }
+
+        /* ============================================================
+           MOBILE & TABLET RESPONSIVENESS (<= 768px)
+           ============================================================ */
+        @media (max-width: 768px) {
+            .layout-header {
+                height: auto;
+                flex-direction: column;
+                padding: 10px 14px 8px;
+                gap: 8px;
+                align-items: stretch;
+            }
+
+            .header-top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .brand-nav-logo img {
+                width: 32px;
+                height: 32px;
+                border-radius: 7px;
+            }
+
+            .brand-nav-text {
+                font-size: 19px;
+            }
+
+            .brand-divider {
+                height: 20px;
+                margin: 0 2px;
+            }
+
+            .header-project-title {
+                font-size: 12px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .header-project-subtitle {
+                display: none;
+            }
+
+            .search-plot-input {
+                width: 130px;
+                font-size: 12px;
+                padding: 6px 10px 6px 28px;
+            }
+
+            .search-plot-input:focus {
+                width: 155px;
+            }
+
+            .search-icon {
+                left: 9px;
+                font-size: 11px;
+            }
+
+            /* Scrollable filter bar */
+            .legend-filter-bar {
+                width: 100%;
+                display: flex;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                gap: 6px;
+                padding: 3px;
+            }
+
+            .legend-filter-bar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-pill {
+                padding: 5px 10px;
+                font-size: 11.5px;
+                flex-shrink: 0;
+                min-height: 32px;
+            }
+
+            .layout-canvas-area {
+                height: calc(100vh - 96px);
+                height: calc(100dvh - 96px);
+            }
+
+            .floating-zoom-controls {
+                bottom: 18px;
+                left: 14px;
+                gap: 6px;
+            }
+
+            .zoom-btn {
+                width: 38px;
+                height: 38px;
+            }
+
+            /* Mobile Hint when no plot selected */
+            .mobile-map-hint {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(15, 34, 55, 0.94);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border: 1px solid rgba(74, 144, 164, 0.35);
+                border-radius: 100px;
+                padding: 8px 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--layout-teal-light);
+                font-size: 12px;
+                font-weight: 600;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);
+                pointer-events: none;
+                z-index: 30;
+                white-space: nowrap;
+                animation: hintPulse 2.2s ease-in-out infinite;
+            }
+
+            @keyframes hintPulse {
+                0%, 100% { opacity: 0.95; transform: translateX(-50%) scale(1); }
+                50%      { opacity: 1;    transform: translateX(-50%) scale(1.02); }
+            }
+
+            /* Mobile Bottom Sheet */
+            .mobile-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.55);
+                backdrop-filter: blur(3px);
+                -webkit-backdrop-filter: blur(3px);
+                z-index: 90;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s ease;
+            }
+
+            .mobile-backdrop.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .panel-sheet-handle {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 8px 0 2px;
+                width: 100%;
+                cursor: pointer;
+            }
+
+            .handle-pill {
+                width: 40px;
+                height: 4px;
+                border-radius: 2px;
+                background: rgba(255, 255, 255, 0.25);
+            }
+
+            .plot-details-panel {
+                position: fixed !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                top: auto !important;
+                width: 100% !important;
+                max-height: 75vh !important;
+                max-height: 75dvh !important;
+                border-radius: 22px 22px 0 0 !important;
+                border-bottom: none !important;
+                border-left: none !important;
+                border-right: none !important;
+                border-top: 1px solid rgba(74, 144, 164, 0.35) !important;
+                box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.65) !important;
+                z-index: 95 !important;
+                transform: translateY(100%);
+                opacity: 1;
+            }
+
+            .plot-details-panel.active {
+                transform: translateY(0) !important;
+                pointer-events: auto;
+            }
+
+            .panel-header {
+                padding: 10px 16px 12px;
+            }
+
+            .panel-plot-num {
+                font-size: 20px;
+            }
+
+            .panel-status-bar {
+                margin: 8px 16px 0;
+                padding: 8px 12px;
+            }
+
+            .panel-body-content {
+                max-height: calc(75vh - 165px);
+                max-height: calc(75dvh - 165px);
+                padding: 12px 16px;
+                gap: 12px;
+            }
+
+            .price-card {
+                padding: 8px 12px;
+            }
+
+            .price-number {
+                font-size: 21px;
+            }
+
+            .price-currency {
+                font-size: 15px;
+            }
+
+            .specs-grid {
+                gap: 8px;
+            }
+
+            .spec-item-card {
+                padding: 8px 10px;
+            }
+
+            .panel-footer-bar {
+                padding: 10px 16px;
+            }
+
+            .btn-inquire {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+
+        /* ── Small Devices (< 400px) ────────────────────────────── */
+        @media (max-width: 400px) {
+            .brand-nav-text { font-size: 17px; }
+            .brand-divider { display: none; }
+            .header-project-title { font-size: 11px; }
+            .search-plot-input { width: 110px; }
+            .search-plot-input:focus { width: 130px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout-app-shell">
+        <!-- HEADER -->
+        <header class="layout-header">
+            <div class="header-top-row">
+                <div class="header-brand-group">
+                    <a href="index.html" class="brand-nav-logo" title="Zorario Home">
+                        <img src="assets/images/logo.png" alt="Zorario Logo">
+                        <span class="brand-nav-text">ZORARIO</span>
+                    </a>
+                    <div class="brand-divider"></div>
+                    <div class="header-project-info">
+                        <h1 class="header-project-title">AURANGABAD TOWNSHIP</h1>
+                        <span class="header-project-subtitle">Interactive Master Layout</span>
+                    </div>
+                </div>
+
+                <div class="header-search-wrap">
+                    <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                    <input type="text" id="plotSearchInput" class="search-plot-input" placeholder="Search Plot (1-123)..." autocomplete="off">
+                </div>
+            </div>
+
+            <!-- Filter Strip -->
+            <div class="legend-filter-bar" id="filterStrip">
+                <button class="filter-pill active" data-filter="All">
+                    <span class="pill-badge" id="countAll">123</span>
+                    <span>All Plots</span>
+                </button>
+                <button class="filter-pill" data-filter="Available">
+                    <span class="status-dot dot-available"></span>
+                    <span>Available</span>
+                    <span class="pill-badge" id="countAvailable">86</span>
+                </button>
+                <button class="filter-pill" data-filter="Sold">
+                    <span class="status-dot dot-sold"></span>
+                    <span>Sold</span>
+                    <span class="pill-badge" id="countSold">27</span>
+                </button>
+                <button class="filter-pill" data-filter="Builder Hold">
+                    <span class="status-dot dot-hold"></span>
+                    <span>Builder Hold</span>
+                    <span class="pill-badge" id="countHold">10</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN CANVAS VIEWPORT -->
+        <main class="layout-canvas-area" id="canvasArea" aria-label="Interactive Plot Layout Map">
+            <div class="panzoom-viewport" id="viewport">
+                <div class="svg-container" id="svgContainer">
+                    <!-- SVG is inlined dynamically for direct DOM access -->
+                    <div id="svgLoadingState" style="color:var(--layout-teal-light);font-size:14px;display:flex;align-items:center;gap:10px;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading Aurangabad Master Layout...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Zoom & Reset Buttons -->
+            <div class="floating-zoom-controls" aria-label="Zoom Controls">
+                <button type="button" class="zoom-btn" id="btnZoomIn" title="Zoom In" aria-label="Zoom In">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button type="button" class="zoom-btn" id="btnZoomOut" title="Zoom Out" aria-label="Zoom Out">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="zoom-btn" id="btnResetZoom" title="Fit to Screen" aria-label="Fit to Screen">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Hint (when no plot selected) -->
+            <div class="mobile-map-hint" id="mobileMapHint">
+                <i class="fas fa-map-marker-alt" style="color:var(--layout-teal);"></i>
+                <span>Tap any plot on layout to view details</span>
+            </div>
+        </main>
+
+        <!-- Mobile Sheet Backdrop -->
+        <div class="mobile-backdrop" id="mobileBackdrop" aria-hidden="true"></div>
+
+        <!-- RIGHT-SIDE DETAILS PANEL / MOBILE BOTTOM SHEET -->
+        <aside class="plot-details-panel hidden" id="plotDetailsPanel" aria-label="Plot Details">
+            <div class="panel-sheet-handle" id="sheetHandle">
+                <span class="handle-pill"></span>
+            </div>
+
+            <!-- Panel Header with Phase badge & actions -->
+            <div class="panel-header">
+                <div class="panel-title-wrap">
+                    <span class="panel-eyebrow"><i class="fas fa-map-marker-alt"></i> Aurangabad Township · Phase 1</span>
+                    <h2 class="panel-plot-num" id="panelPlotTitle">Plot No : 1</h2>
+                </div>
+                <div class="panel-header-actions">
+                    <button type="button" class="btn-copy-header" id="btnCopyDetails" title="Copy Plot Specifications" aria-label="Copy Specifications">
+                        <i class="far fa-copy" id="copyIcon"></i>
+                    </button>
+                    <button type="button" class="panel-close-btn" id="panelCloseBtn" title="Close Panel" aria-label="Close Panel">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status Banner -->
+            <div class="panel-status-bar" id="panelStatusBar">
+                <div class="status-left-group" id="panelStatusLeft">
+                    <span class="status-dot dot-available" id="panelStatusDot"></span>
+                    <span id="panelStatusText">Available for Registry</span>
+                </div>
+                <span class="pill-badge" id="panelPlotIdTag">Plot_1</span>
+            </div>
+
+            <div class="panel-body-content">
+                <!-- Enhanced Price Card -->
+                <div class="price-card">
+                    <div class="price-card-top">
+                        <span class="price-card-label"><i class="fas fa-tag"></i> TOTAL ESTIMATED PRICE</span>
+                        <span class="price-rate-badge" id="panelRateBadge">₹12,500 / Sq yd</span>
+                    </div>
+                    <div class="price-value-row">
+                        <span class="price-currency">₹</span>
+                        <span class="price-number" id="panelPriceNum">12,50,000</span>
+                    </div>
+                    <div class="price-card-bottom">
+                        <span class="price-unit-detail" id="panelSqMeterRate">Rate approx. ₹14,950 / Sq m</span>
+                        <span class="price-tag-sub"><i class="fas fa-check-circle"></i> Clear Title</span>
+                    </div>
+                </div>
+
+                <!-- Plot Specifications -->
+                <div>
+                    <h3 class="specs-section-title">
+                        <span>Plot Specifications</span>
+                        <span style="font-size:9.5px;color:#9CA3AF;font-weight:500;">Verified Measurements</span>
+                    </h3>
+                    <div class="specs-grid">
+                        <div class="spec-item-card">
+                            <div class="spec-icon-box"><i class="fas fa-expand-arrows-alt"></i></div>
+                            <div class="spec-info-text">
+                                <span class="spec-label">Area (Sq yd)</span>
+                                <span class="spec-val" id="specAreaYd">100.46 <small>Sq yd</small></span>
+                            </div>
+                        </div>
+                        <div class="spec-item-card">
+                            <div class="spec-icon-box"><i class="fas fa-ruler-combined"></i></div>
+                            <div class="spec-info-text">
+                                <span class="spec-label">Area (Sq m)</span>
+                                <span class="spec-val" id="specAreaM">84.00 <small>Sq m</small></span>
+                            </div>
+                        </div>
+                        <div class="spec-item-card">
+                            <div class="spec-icon-box"><i class="fas fa-vector-square"></i></div>
+                            <div class="spec-info-text">
+                                <span class="spec-label">Dimensions</span>
+                                <span class="spec-val" id="specDimensions">16m × 5.25m</span>
+                            </div>
+                        </div>
+                        <div class="spec-item-card">
+                            <div class="spec-icon-box"><i class="fas fa-compass"></i></div>
+                            <div class="spec-info-text">
+                                <span class="spec-label">Facing</span>
+                                <span class="spec-val" id="specFacing">East</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Inquiry CTA (Dual Action: WhatsApp & Phone) -->
+            <div class="panel-footer-bar">
+                <a href="#" class="btn-wa-inquire" id="btnInquirePlot" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp" style="font-size:15px;"></i>
+                    <span>Inquire on WhatsApp</span>
+                </a>
+                <a href="tel:+919334298441" class="btn-call-sales" title="Call Zorario Sales Advisor">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Call</span>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <!-- ============================================================
+         VANILLA JAVASCRIPT: PAN/ZOOM + SVG INJECTION + DATA ENGINE
+         ============================================================ -->
+    <script>
+        // ── Brand Status Colors ─────────────────────────────────────
+        const STATUS_COLORS = {
+            'Available':    '#10B981', // 🟢 Zorario Green
+            'Sold':         '#EF4444', // 🔴 Zorario Red
+            'Builder Hold': '#FFB800', // 🟡 Zorario Yellow
+            'Selected':     '#4A90A4'  // 🩵 Zorario Teal
+        };
+
+        const STATUS_STYLES = {
+            'Available': {
+                bg: 'rgba(16, 185, 129, 0.12)',
+                border: 'rgba(16, 185, 129, 0.35)',
+                color: '#10B981',
+                dotClass: 'dot-available'
+            },
+            'Sold': {
+                bg: 'rgba(239, 68, 68, 0.12)',
+                border: 'rgba(239, 68, 68, 0.35)',
+                color: '#EF4444',
+                dotClass: 'dot-sold'
+            },
+            'Builder Hold': {
+                bg: 'rgba(255, 184, 0, 0.12)',
+                border: 'rgba(255, 184, 0, 0.35)',
+                color: '#FFB800',
+                dotClass: 'dot-hold'
+            }
+        };
+
+        const FACINGS = ["East", "West", "North", "South", "North-East", "North-West"];
+
+        // ── Initial Dataset Generation (Plots 1 to 123) ─────────────
+        function generateInitialPlots() {
+            const map = new Map();
+            const customs = {
+                1:   { areaSqYd: 110.5, dimensions: "16.5m × 6.0m", facing: "East", status: "Available", price: 1381250 },
+                14:  { areaSqYd: 125.0, dimensions: "18m × 6.25m",  facing: "North-East", status: "Available", price: 1562500 },
+                15:  { areaSqYd: 150.0, dimensions: "20m × 7.50m",  facing: "East", status: "Builder Hold", price: 1875000 },
+                46:  { areaSqYd: 100.46, dimensions: "16m × 5.25m", facing: "East", status: "Sold", price: 1250000 },
+                62:  { areaSqYd: 100.46, dimensions: "16m × 5.25m", facing: "East", status: "Available", price: 1250000 },
+                83:  { areaSqYd: 120.0, dimensions: "18m × 6.00m",  facing: "North", status: "Sold", price: 1500000 },
+                100: { areaSqYd: 135.0, dimensions: "18m × 6.75m",  facing: "North", status: "Available", price: 1687500 },
+                123: { areaSqYd: 140.0, dimensions: "19m × 6.8m",   facing: "South-East", status: "Builder Hold", price: 1750000 }
+            };
+
+            for (let i = 1; i <= 123; i++) {
+                const id = `Plot_${i}`;
+                if (customs[i]) {
+                    const c = customs[i];
+                    map.set(id, {
+                        id,
+                        plotNumber: i,
+                        areaSqYd: c.areaSqYd,
+                        areaSqM: parseFloat((c.areaSqYd * 0.836127).toFixed(2)),
+                        dimensions: c.dimensions,
+                        facing: c.facing,
+                        status: c.status,
+                        price: c.price
+                    });
+                    continue;
+                }
+
+                let status = "Available";
+                if (i % 7 === 0 || i % 13 === 0) status = "Sold";
+                else if (i % 11 === 0) status = "Builder Hold";
+
+                const baseAreaYd = i > 100 ? 115.0 : i > 50 ? 100.46 : 108.2;
+                const facing = FACINGS[i % FACINGS.length];
+                const areaSqM = parseFloat((baseAreaYd * 0.836127).toFixed(2));
+                const price = Math.round(baseAreaYd * 12500);
+
+                map.set(id, {
+                    id,
+                    plotNumber: i,
+                    areaSqYd: baseAreaYd,
+                    areaSqM,
+                    dimensions: "16m × 5.25m",
+                    facing,
+                    status,
+                    price
+                });
+            }
+            return map;
+        }
+
+        // ── Canonical Key Parser ───────────────────────────────────
+        // Maps "Plot_01" -> "Plot_1", "Plot_47" -> "Plot_47"
+        function toPlotKey(idStr) {
+            if (!idStr) return null;
+            const m = idStr.match(/^Plot_0*(\d+)$/i);
+            if (!m) return null;
+            const n = parseInt(m[1], 10);
+            if (isNaN(n) || n < 1 || n > 123) return null;
+            return `Plot_${n}`;
+        }
+
+        // ── App State ──────────────────────────────────────────────
+        const plotsMap = generateInitialPlots();
+        let selectedPlotKey = null;
+        let activeFilter = 'All';
+        const plotElementsRegistry = new Map();
+
+        // ── Pan & Zoom Engine State ────────────────────────────────
+        const canvasArea = document.getElementById('canvasArea');
+        const viewport = document.getElementById('viewport');
+        const svgContainer = document.getElementById('svgContainer');
+
+        // ── Pure Vector ViewBox Pan & Zoom Engine ──────────────────
+        const BASE_W = 996;
+        const BASE_H = 1650;
+        let vb = { x: 0, y: 0, w: BASE_W, h: BASE_H };
+        let masterSvg = null;
+        let animId = null;
+
+        function applyViewBox() {
+            if (!masterSvg) return;
+            masterSvg.setAttribute('viewBox', `${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);
+        }
+
+        function clientToSvgPoint(clientX, clientY) {
+            if (!masterSvg) return { x: BASE_W / 2, y: BASE_H / 2 };
+            const pt = masterSvg.createSVGPoint();
+            pt.x = clientX;
+            pt.y = clientY;
+            try {
+                const ctm = masterSvg.getScreenCTM();
+                if (ctm) return pt.matrixTransform(ctm.inverse());
+            } catch (e) {}
+            return { x: BASE_W / 2, y: BASE_H / 2 };
+        }
+
+        function animateViewBox(target, duration = 450) {
+            if (animId) cancelAnimationFrame(animId);
+            const start = { ...vb };
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(1, elapsed / duration);
+                const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+
+                vb.x = start.x + (target.x - start.x) * ease;
+                vb.y = start.y + (target.y - start.y) * ease;
+                vb.w = start.w + (target.w - start.w) * ease;
+                vb.h = start.h + (target.h - start.h) * ease;
+                applyViewBox();
+
+                if (progress < 1) {
+                    animId = requestAnimationFrame(step);
+                } else {
+                    animId = null;
+                }
+            }
+            animId = requestAnimationFrame(step);
+        }
+
+        function resetToCenter(duration = 450) {
+            if (animId) cancelAnimationFrame(animId);
+            const target = { x: 0, y: 0, w: BASE_W, h: BASE_H };
+            if (duration > 0) {
+                animateViewBox(target, duration);
+            } else {
+                vb = { ...target };
+                applyViewBox();
+            }
+        }
+
+        function zoomByCenter(factor) {
+            if (animId) cancelAnimationFrame(animId);
+            const pt = clientToSvgPoint(canvasArea.clientWidth / 2, canvasArea.clientHeight / 2);
+            const minW = 80;    // Max zoom in
+            const maxW = 3200;  // Max zoom out
+            const newW = Math.max(minW, Math.min(maxW, vb.w * factor));
+            const newH = newW * (BASE_H / BASE_W);
+
+            const fx = (pt.x - vb.x) / vb.w;
+            const fy = (pt.y - vb.y) / vb.h;
+
+            animateViewBox({
+                x: pt.x - fx * newW,
+                y: pt.y - fy * newH,
+                w: newW,
+                h: newH
+            }, 250);
+        }
+
+        // ── Auto-Zoom to Plot on Selection ─────────────────────────
+        function autoZoomToPlot(el) {
+            if (!el || !masterSvg) return;
+            try {
+                const bbox = el.getBBox();
+                const plotCenterX = bbox.x + bbox.width / 2;
+                const plotCenterY = bbox.y + bbox.height / 2;
+
+                const isMobile = window.innerWidth <= 768;
+                // Target width for comfortably magnified plot view
+                const targetW = isMobile ? 320 : 380;
+                const targetH = targetW * (BASE_H / BASE_W);
+
+                // Center in visible area (accounting for side panel / bottom sheet)
+                let fx = 0.5;
+                let fy = 0.5;
+
+                if (isMobile) {
+                    fy = 0.28; // Keep in top 55% above mobile bottom sheet
+                } else {
+                    const panelWidth = 360;
+                    const visibleWidth = window.innerWidth - panelWidth;
+                    fx = (visibleWidth / 2) / window.innerWidth;
+                }
+
+                const targetX = plotCenterX - (fx * targetW);
+                const targetY = plotCenterY - (fy * targetH);
+
+                animateViewBox({
+                    x: targetX,
+                    y: targetY,
+                    w: targetW,
+                    h: targetH
+                }, 480);
+            } catch (err) {
+                console.warn('autoZoomToPlot error:', err);
+            }
+        }
+
+        // ── Mouse Dragging & Smooth Wheel ──────────────────────────
+        let isDragging = false;
+        let lastX = 0, lastY = 0;
+
+        canvasArea.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.floating-zoom-controls') || e.target.closest('#plotDetailsPanel')) return;
+            isDragging = true;
+            canvasArea.classList.add('is-dragging');
+            lastX = e.clientX;
+            lastY = e.clientY;
+            if (animId) cancelAnimationFrame(animId);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging || !masterSvg) return;
+            const ctm = masterSvg.getScreenCTM();
+            if (!ctm || ctm.a === 0 || ctm.d === 0) return;
+            const dx = e.clientX - lastX;
+            const dy = e.clientY - lastY;
+
+            vb.x -= (dx / ctm.a);
+            vb.y -= (dy / ctm.d);
+            applyViewBox();
+
+            lastX = e.clientX;
+            lastY = e.clientY;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            canvasArea.classList.remove('is-dragging');
+        });
+
+        canvasArea.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (animId) cancelAnimationFrame(animId);
+
+            const pt = clientToSvgPoint(e.clientX, e.clientY);
+            const factor = e.deltaY < 0 ? 0.85 : 1.18;
+
+            const minW = 80;
+            const maxW = 3200;
+            const newW = Math.max(minW, Math.min(maxW, vb.w * factor));
+            const newH = newW * (BASE_H / BASE_W);
+
+            const fx = (pt.x - vb.x) / vb.w;
+            const fy = (pt.y - vb.y) / vb.h;
+
+            vb.x = pt.x - fx * newW;
+            vb.y = pt.y - fy * newH;
+            vb.w = newW;
+            vb.h = newH;
+            applyViewBox();
+        }, { passive: false });
+
+        // Double click to zoom in
+        canvasArea.addEventListener('dblclick', (e) => {
+            if (e.target.closest('.floating-zoom-controls') || e.target.closest('#plotDetailsPanel')) return;
+            zoomByCenter(0.7);
+        });
+
+        // ── Touch Gestures (Pan & Pinch) ───────────────────────────
+        let pinchStartDist = 0;
+        let pinchStartW = 0;
+        let pinchCenterPt = null;
+
+        canvasArea.addEventListener('touchstart', (e) => {
+            if (e.target.closest('.floating-zoom-controls') || e.target.closest('#plotDetailsPanel')) return;
+            if (animId) cancelAnimationFrame(animId);
+
+            if (e.touches.length === 1) {
+                isDragging = true;
+                lastX = e.touches[0].clientX;
+                lastY = e.touches[0].clientY;
+            } else if (e.touches.length === 2) {
+                isDragging = false;
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                pinchStartDist = Math.hypot(dx, dy);
+                pinchStartW = vb.w;
+                const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+                pinchCenterPt = clientToSvgPoint(midX, midY);
+            }
+        }, { passive: true });
+
+        canvasArea.addEventListener('touchmove', (e) => {
+            if (!masterSvg) return;
+            if (e.touches.length === 1 && isDragging) {
+                const ctm = masterSvg.getScreenCTM();
+                if (!ctm || ctm.a === 0 || ctm.d === 0) return;
+                const dx = e.touches[0].clientX - lastX;
+                const dy = e.touches[0].clientY - lastY;
+
+                vb.x -= (dx / ctm.a);
+                vb.y -= (dy / ctm.d);
+                applyViewBox();
+
+                lastX = e.touches[0].clientX;
+                lastY = e.touches[0].clientY;
+            } else if (e.touches.length === 2 && pinchStartDist > 0 && pinchCenterPt) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const dist = Math.hypot(dx, dy);
+                if (dist > 5) {
+                    const factor = pinchStartDist / dist;
+                    const minW = 80;
+                    const maxW = 3200;
+                    const newW = Math.max(minW, Math.min(maxW, pinchStartW * factor));
+                    const newH = newW * (BASE_H / BASE_W);
+
+                    const fx = (pinchCenterPt.x - vb.x) / vb.w;
+                    const fy = (pinchCenterPt.y - vb.y) / vb.h;
+
+                    vb.x = pinchCenterPt.x - fx * newW;
+                    vb.y = pinchCenterPt.y - fy * newH;
+                    vb.w = newW;
+                    vb.h = newH;
+                    applyViewBox();
+                }
+            }
+        }, { passive: true });
+
+        canvasArea.addEventListener('touchend', () => {
+            isDragging = false;
+            pinchStartDist = 0;
+            pinchCenterPt = null;
+        });
+
+        // Zoom button click handlers
+        document.getElementById('btnZoomIn').addEventListener('click', () => zoomByCenter(0.72));
+        document.getElementById('btnZoomOut').addEventListener('click', () => zoomByCenter(1.38));
+        document.getElementById('btnResetZoom').addEventListener('click', () => resetToCenter(400));
+
+        // ── Plot Styling Logic ─────────────────────────────────────
+        function stylePlot(key, el) {
+            const data = plotsMap.get(key);
+            if (!data) return;
+
+            const isSelected = (selectedPlotKey === key);
+            const applyColor = (activeFilter !== 'All') || isSelected;
+            const color = isSelected ? STATUS_COLORS.Selected : STATUS_COLORS[data.status];
+
+            // Collect all child shapes (or element itself if rect/path)
+            const shapes = [];
+            if (el.tagName.toLowerCase() === 'g') {
+                el.querySelectorAll('rect,path,polygon,circle').forEach(s => shapes.push(s));
+            } else {
+                shapes.push(el);
+            }
+
+            shapes.forEach(s => {
+                if (!s.dataset.origFill) {
+                    s.dataset.origFill = s.getAttribute('fill') || '#CFC4AB';
+                }
+                if (!s.dataset.origStroke) {
+                    s.dataset.origStroke = s.getAttribute('stroke') || 'black';
+                    s.dataset.origStrokeWidth = s.getAttribute('stroke-width') || '0.5';
+                }
+
+                if (applyColor) {
+                    s.setAttribute('fill', color);
+                    s.style.fill = color;
+                    s.removeAttribute('fill-opacity');
+                } else {
+                    const origFill = s.dataset.origFill || '#CFC4AB';
+                    s.setAttribute('fill', origFill);
+                    s.style.fill = origFill;
+                }
+
+                if (isSelected) {
+                    s.setAttribute('stroke', '#ffffff');
+                    s.setAttribute('stroke-width', '2.5');
+                } else {
+                    s.setAttribute('stroke', s.dataset.origStroke || 'black');
+                    s.setAttribute('stroke-width', s.dataset.origStrokeWidth || '0.5');
+                }
+            });
+
+            // Dim non-matching plots when filter is active
+            if (activeFilter !== 'All' && !isSelected) {
+                const dim = (data.status !== activeFilter);
+                el.style.opacity = dim ? '0.15' : '1';
+                el.style.filter = dim ? 'grayscale(80%)' : 'none';
+            } else {
+                el.style.opacity = '1';
+                el.style.filter = isSelected ? 'drop-shadow(0 0 10px #4A90A4)' : 'none';
+            }
+        }
+
+        function refreshAllPlots() {
+            plotElementsRegistry.forEach((el, key) => {
+                stylePlot(key, el);
+            });
+            updateLegendCounts();
+        }
+
+        function updateLegendCounts() {
+            let avail = 0, sold = 0, hold = 0;
+            plotsMap.forEach(p => {
+                if (p.status === 'Available') avail++;
+                else if (p.status === 'Sold') sold++;
+                else if (p.status === 'Builder Hold') hold++;
+            });
+            document.getElementById('countAll').textContent = plotsMap.size;
+            document.getElementById('countAvailable').textContent = avail;
+            document.getElementById('countSold').textContent = sold;
+            document.getElementById('countHold').textContent = hold;
+        }
+
+        // ── Details Panel Update ───────────────────────────────────
+        const panel = document.getElementById('plotDetailsPanel');
+        const backdrop = document.getElementById('mobileBackdrop');
+
+        function openPlotDetails(key) {
+            const data = plotsMap.get(key);
+            if (!data) return;
+
+            selectedPlotKey = key;
+            refreshAllPlots();
+
+            // Populate Panel
+            document.getElementById('panelPlotTitle').textContent = `Plot No : ${data.plotNumber}`;
+            document.getElementById('panelPlotIdTag').textContent = data.id;
+
+            const st = STATUS_STYLES[data.status] || STATUS_STYLES['Available'];
+            const statusBar = document.getElementById('panelStatusBar');
+            statusBar.style.background = st.bg;
+            statusBar.style.borderColor = st.border;
+
+            const statusDot = document.getElementById('panelStatusDot');
+            statusDot.className = `status-dot ${st.dotClass}`;
+
+            const statusText = document.getElementById('panelStatusText');
+            statusText.style.color = st.color;
+            if (data.status === 'Available') {
+                statusText.innerHTML = '<i class="fas fa-check-circle" style="font-size:12px;margin-right:2px;"></i> Available for Registry';
+            } else if (data.status === 'Sold') {
+                statusText.innerHTML = '<i class="fas fa-times-circle" style="font-size:12px;margin-right:2px;"></i> Sold Out';
+            } else {
+                statusText.innerHTML = '<i class="fas fa-clock" style="font-size:12px;margin-right:2px;"></i> Under Builder Hold';
+            }
+
+            // Price Card values
+            const rateSqYd = Math.round(data.price / data.areaSqYd).toLocaleString('en-IN');
+            const rateSqM = Math.round(data.price / data.areaSqM).toLocaleString('en-IN');
+            const priceFormatted = Number(data.price).toLocaleString('en-IN');
+
+            document.getElementById('panelRateBadge').textContent = `₹${rateSqYd} / Sq yd`;
+            document.getElementById('panelPriceNum').textContent = priceFormatted;
+            document.getElementById('panelSqMeterRate').textContent = `Rate approx. ₹${rateSqM} / Sq m`;
+
+            // Specs
+            document.getElementById('specAreaYd').innerHTML = `${data.areaSqYd} <small>Sq yd</small>`;
+            document.getElementById('specAreaM').innerHTML = `${data.areaSqM} <small>Sq m</small>`;
+            document.getElementById('specDimensions').textContent = data.dimensions;
+            document.getElementById('specFacing').textContent = data.facing;
+
+            // Inquiry CTA WhatsApp link
+            const waMsg = encodeURIComponent(`Hello Zorario! I am inquiring about Plot No. ${data.plotNumber} in Aurangabad Township (Area: ${data.areaSqYd} Sq yd, Status: ${data.status}, Price: ₹${priceFormatted}). Please share details.`);
+            document.getElementById('btnInquirePlot').href = `https://wa.me/919334298441?text=${waMsg}`;
+
+            // Auto-zoom to selected plot with smooth centering
+            const el = plotElementsRegistry.get(key);
+            if (el) {
+                autoZoomToPlot(el);
+            }
+
+            // Show Panel & Mobile Backdrop
+            panel.classList.remove('hidden');
+            panel.classList.add('active');
+            backdrop.classList.add('active');
+        }
+
+        function closePlotDetails() {
+            selectedPlotKey = null;
+            refreshAllPlots();
+            panel.classList.remove('active');
+            panel.classList.add('hidden');
+            backdrop.classList.remove('active');
+        }
+
+        document.getElementById('panelCloseBtn').addEventListener('click', closePlotDetails);
+        document.getElementById('sheetHandle').addEventListener('click', closePlotDetails);
+        backdrop.addEventListener('click', closePlotDetails);
+
+        // Copy specs handler
+        document.getElementById('btnCopyDetails').addEventListener('click', () => {
+            if (!selectedPlotKey) return;
+            const data = plotsMap.get(selectedPlotKey);
+            if (!data) return;
+            const text = `Zorario Aurangabad Township - Plot No: ${data.plotNumber}\nArea: ${data.areaSqYd} Sq yd (${data.areaSqM} Sq m)\nFacing: ${data.facing}\nPrice: ₹${Number(data.price).toLocaleString('en-IN')}\nStatus: ${data.status}`;
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = document.getElementById('copyIcon');
+                icon.className = 'fas fa-check text-green';
+                setTimeout(() => { icon.className = 'far fa-copy'; }, 2000);
+            });
+        });
+
+        // ── Filter Strip Buttons ───────────────────────────────────
+        document.querySelectorAll('#filterStrip .filter-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#filterStrip .filter-pill').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                refreshAllPlots();
+            });
+        });
+
+        // ── Plot Search ───────────────────────────────────────────
+        const searchInput = document.getElementById('plotSearchInput');
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const num = parseInt(searchInput.value.replace(/\D/g, ''), 10);
+                if (!isNaN(num) && num >= 1 && num <= 123) {
+                    const key = `Plot_${num}`;
+                    if (plotsMap.has(key)) {
+                        openPlotDetails(key);
+                    }
+                }
+            }
+        });
+
+        // ── Load SVG & Wire Events ────────────────────────────────
+        fetch('assets/svg/AurangabadLayoutnew.svg')
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+                return res.text();
+            })
+            .then(svgText => {
+                svgContainer.innerHTML = svgText;
+                const svg = svgContainer.querySelector('svg');
+                if (!svg) return;
+
+                masterSvg = svg;
+                svg.setAttribute('id', 'masterLayoutSvg');
+                svg.setAttribute('width', '100%');
+                svg.setAttribute('height', '100%');
+                svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                svg.setAttribute('viewBox', '0 0 996 1650');
+                svg.style.width = '100%';
+                svg.style.height = '100%';
+
+                // Register all Plot elements
+                plotElementsRegistry.clear();
+                svg.querySelectorAll('[id]').forEach(el => {
+                    const key = toPlotKey(el.getAttribute('id'));
+                    if (key && !plotElementsRegistry.has(key)) {
+                        plotElementsRegistry.set(key, el);
+                    }
+                });
+
+                console.log(`Registered ${plotElementsRegistry.size} interactive plots!`);
+
+                // Insert centered numeric labels & apply initial styling
+                plotElementsRegistry.forEach((el, key) => {
+                    el.style.cursor = 'pointer';
+
+                    try {
+                        const bbox = el.getBBox();
+                        if (bbox.width > 0 && bbox.height > 0) {
+                            const num = key.replace('Plot_', '');
+                            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                            txt.setAttribute('x', String(bbox.x + bbox.width / 2));
+                            txt.setAttribute('y', String(bbox.y + bbox.height / 2));
+                            txt.setAttribute('text-anchor', 'middle');
+                            txt.setAttribute('dominant-baseline', 'central');
+                            txt.setAttribute('fill', '#111827');
+                            txt.setAttribute('font-size', bbox.width < 28 || bbox.height < 20 ? '8.5' : bbox.width < 40 ? '10' : '12');
+                            txt.setAttribute('font-weight', '800');
+                            txt.setAttribute('font-family', "'Inter', -apple-system, system-ui, sans-serif");
+                            txt.setAttribute('letter-spacing', '-0.2px');
+                            txt.setAttribute('pointer-events', 'none');
+                            txt.textContent = num;
+                            el.insertAdjacentElement('afterend', txt);
+                        }
+                    } catch (e) { /* getBBox ignore */ }
+
+                    stylePlot(key, el);
+                });
+
+                // Single delegated click on SVG root
+                svg.addEventListener('click', (e) => {
+                    let node = e.target;
+                    while (node && node !== svg) {
+                        const key = toPlotKey(node.getAttribute ? node.getAttribute('id') : null);
+                        if (key && plotElementsRegistry.has(key)) {
+                            if (selectedPlotKey === key) {
+                                closePlotDetails();
+                            } else {
+                                openPlotDetails(key);
+                            }
+                            return;
+                        }
+                        node = node.parentElement;
+                    }
+                    // Clicking on background (outside any plot) deselects
+                    if (selectedPlotKey) {
+                        closePlotDetails();
+                    }
+                });
+
+                resetToCenter();
+                updateLegendCounts();
+            })
+            .catch(err => {
+                console.error('Failed to load SVG:', err);
+                document.getElementById('svgLoadingState').innerHTML = `<span style="color:var(--layout-red);">Failed to load layout SVG. Please ensure file exists.</span>`;
+            });
+
+        // ── Auto Background Sync from Google Sheet ─────────────────
+        const GOOGLE_SHEET_CSV = 'https://docs.google.com/spreadsheets/d/1nDhquQanD89ZA9Q6DbCazCS13WA2S9NBTK6heH5dSqA/gviz/tq?tqx=out:csv&sheet=aurangabad_plot_details';
+
+        fetch(GOOGLE_SHEET_CSV)
+            .then(r => { if (r.ok) return r.text(); throw new Error('Sheet fetch error'); })
+            .then(csv => {
+                const lines = csv.split('\n');
+                let count = 0;
+                lines.slice(1).forEach(line => {
+                    const cols = line.split(',').map(s => s.replace(/^["']|["']$/g, '').trim());
+                    if (cols.length < 2) return;
+                    const idKey = toPlotKey(cols[0]);
+                    if (!idKey || !plotsMap.has(idKey)) return;
+
+                    const plot = plotsMap.get(idKey);
+                    if (cols[1] && !isNaN(parseFloat(cols[1]))) plot.areaSqYd = parseFloat(cols[1]);
+                    if (cols[2]) plot.dimensions = cols[2];
+                    if (cols[3]) plot.facing = cols[3];
+                    if (cols[4]) {
+                        const st = cols[4].toLowerCase();
+                        if (st.includes('avail')) plot.status = 'Available';
+                        else if (st.includes('sold')) plot.status = 'Sold';
+                        else if (st.includes('hold')) plot.status = 'Builder Hold';
+                    }
+                    if (cols[5] && !isNaN(parseFloat(cols[5].replace(/\D/g, '')))) {
+                        plot.price = parseFloat(cols[5].replace(/\D/g, ''));
+                    }
+                    count++;
+                });
+                if (count > 0) {
+                    console.log(`Synced ${count} plots from Google Sheet!`);
+                    refreshAllPlots();
+                }
+            })
+            .catch(e => console.log('Using local dataset fallback.'));
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            applyViewBox();
+        });
+    </script>
+</body>
+</html>

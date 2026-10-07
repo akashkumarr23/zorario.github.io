@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Zorario - 3D Master Plotter &amp; Digital Twin | Interactive Land Layout</title>
+
+  <meta name="description"
+    content="Experience Bihar's No.1 interactive 3D digital twin platform for real estate. Turn flat blueprints and CAD files into interactive 3D models with plot boundaries, road widths, setbacks, and pricing.">
+
+  <meta name="keywords"
+    content="3D plotter Bihar, real estate digital twin, 3D township layout, land plot 3D model, Patna 3D layout, Gaya property plotter, Bihar real estate technology, Zorario 3D plotter">
+
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Zorario">
+  <meta name="theme-color" content="#0D1B2A">
+
+  <link rel="canonical" href="https://www.zorario.com/plotter">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Zorario 3D Master Plotter — Digital Twins for Real Estate">
+  <meta property="og:description"
+    content="Turn land layouts and blueprints into photorealistic interactive 3D digital twins. Inspect boundaries, roads, setbacks, and plot status in real time.">
+  <meta property="og:url" content="https://www.zorario.com/plotter">
+  <meta property="og:site_name" content="Zorario">
+  <meta property="og:image" content="assets/images/og-image.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/logo.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preload" href="assets/fonts/ITCBauhaus.otf" as="font" type="font/otf" crossorigin>
+
+  <!-- Zorario Base Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root {
+      --navy: #1B3A57;
+      --navy-deep: #0F2237;
+      --navy-mid: #2B5278;
+      --teal: #4A90A4;
+      --teal-light: #6BB5CB;
+      --teal-glow: rgba(74, 144, 164, 0.35);
+      --bg: #0D1B2A;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: #E6F1F5;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── PRELOADER ─────────────────────────────────────────── */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #0D1B2A;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    #preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .preloader-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      animation: preloaderPulse 1.4s ease-in-out infinite;
+      background: #fff;
+      padding: 4px;
+      box-shadow: 0 4px 24px rgba(74, 144, 164, 0.4);
+    }
+
+    .preloader-text {
+      font-family: 'ITCBauhaus', sans-serif;
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.95);
+      letter-spacing: 4px;
+    }
+
+    .preloader-bar-track {
+      width: 180px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .preloader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4A90A4, #6BB5CB);
+      animation: preloaderProgress 1.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    @keyframes preloaderPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(74, 144, 164, 0.4));
+      }
+
+      50% {
+        transform: scale(1.06);
+        filter: drop-shadow(0 0 24px rgba(107, 181, 203, 0.7));
+      }
+    }
+
+    @keyframes preloaderProgress {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    /* ── SCROLL PROGRESS BAR ───────────────────────────────── */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, #4A90A4, #6BB5CB);
+      z-index: 1001;
+      transition: width 0.1s linear;
+    }
+
+    /* ── MAIN NAV OVERRIDES ────────────────────────────────── */
+    #main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      z-index: 1000;
+      background: rgba(15, 34, 55, 0.96) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(74, 144, 164, 0.22);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+    }
+
+    /* ── 3D CANVASES ───────────────────────────────────────── */
+    #scene {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      z-index: 0;
+      pointer-events: auto;
+    }
+
+    #hero {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      display: block;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    /* ── CONTENT CONTAINER ─────────────────────────────────── */
+    #pages {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .sec {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── PANELS (Frosted Glass Cards) ───────────────────────── */
+    .panel {
+      position: absolute;
+      top: 50%;
+      width: min(390px, 32vw);
+      padding: 32px 30px;
+      border-radius: 20px;
+      background: rgba(15, 34, 55, 0.88);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(74, 144, 164, 0.35);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      opacity: 0;
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+
+    .left {
+      left: 5vw;
+      transform: translate(-30px, -50%);
+    }
+
+    .right {
+      right: 5vw;
+      transform: translate(30px, -50%);
+    }
+
+    .sec.on .panel {
+      opacity: 1;
+    }
+
+    .sec.on .left,
+    .sec.on .right {
+      transform: translate(0, -50%);
+    }
+
+    /* ── TYPOGRAPHY ────────────────────────────────────────── */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--teal-light);
+      margin: 0 0 14px;
+      padding: 5px 12px;
+      border-radius: 100px;
+      background: rgba(74, 144, 164, 0.15);
+      border: 1px solid rgba(74, 144, 164, 0.35);
+    }
+
+    .eyebrow i {
+      font-size: 10px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'ITCBauhaus', sans-serif;
+      font-weight: 700;
+      line-height: 1.15;
+      margin: 0 0 14px;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 4.2vw, 56px);
+    }
+
+    h2 {
+      font-size: clamp(24px, 2.5vw, 36px);
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #B7CDD7;
+    }
+
+    /* ── HERO SLIDE (Slide 0) ──────────────────────────────── */
+    .hero-text {
+      position: absolute;
+      inset: 0;
+      left: 8vw;
+      right: 6vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 40px;
+      pointer-events: auto;
+    }
+
+    h1.hero-h {
+      font-family: 'ITCBauhaus', sans-serif;
+      font-weight: 700;
+      font-size: max(40px, min(8.5vw, 16vh));
+      letter-spacing: -1.5px;
+      line-height: 1.04;
+      margin: 0 0 24px;
+      color: #FFFFFF;
+    }
+
+    .highlight-gradient {
+      background: linear-gradient(90deg, #4A90A4 0%, #6BB5CB 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .ln {
+      display: block;
+      overflow: hidden;
+      padding-bottom: 0.08em;
+    }
+
+    .ln>span {
+      display: block;
+      transform: translateY(110%);
+      animation: rise 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .ln:nth-child(2)>span {
+      animation-delay: 0.18s;
+    }
+
+    .hero-text .sub {
+      max-width: 520px;
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.72);
+      opacity: 0;
+      animation: fade 1s 0.8s forwards;
+      margin-bottom: 28px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade 1s 1s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 28px;
+      background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: 100px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(74, 144, 164, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 32px rgba(74, 144, 164, 0.55);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 26px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(107, 181, 203, 0.45);
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(107, 181, 203, 0.2);
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      align-self: flex-start;
+      margin: 0 0 20px;
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1px solid rgba(107, 181, 203, 0.45);
+      background: rgba(15, 34, 55, 0.65);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #BFE3EE;
+      opacity: 0;
+      animation: fade 0.9s 0.2s forwards;
+    }
+
+    .pulse-dot,
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: ping 1.8s infinite;
+    }
+
+    .live {
+      position: absolute;
+      right: 8vw;
+      bottom: 12vh;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      background: rgba(15, 34, 55, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(74, 144, 164, 0.4);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      animation: fade 1s 1.8s forwards, bob 5s ease-in-out 3s infinite;
+      pointer-events: auto;
+    }
+
+    .live b {
+      display: block;
+      font-size: 15px;
+      color: #fff;
+      font-family: 'ITCBauhaus', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .live span {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .cue {
+      position: absolute;
+      right: 8vw;
+      bottom: 3.5vh;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      animation: fade 1s 1.6s forwards;
+      pointer-events: auto;
+    }
+
+    .cue i {
+      width: 1.5px;
+      height: 36px;
+      background: linear-gradient(var(--teal-light), transparent);
+      animation: drip 1.8s infinite;
+    }
+
+    @keyframes rise {
+      to {
+        transform: none;
+      }
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes ping {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8);
+      }
+
+      70%,
+      100% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+    }
+
+    @keyframes bob {
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes drip {
+      0% {
+        transform: scaleY(0);
+        transform-origin: top;
+      }
+
+      50% {
+        transform: scaleY(1);
+        transform-origin: top;
+      }
+
+      51% {
+        transform: scaleY(1);
+        transform-origin: bottom;
+      }
+
+      100% {
+        transform: scaleY(0);
+        transform-origin: bottom;
+      }
+    }
+
+    /* ── 3D VIEWPORT TOOLS ──────────────────────────────────── */
+    .tools {
+      position: fixed;
+      right: 4vw;
+      bottom: 6vh;
+      z-index: 100;
+      display: flex;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(10px);
+    }
+
+    .tools.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tools.on button {
+      pointer-events: auto;
+    }
+
+    .tools button {
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(74, 144, 164, 0.45);
+      background: rgba(15, 34, 55, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
+    }
+
+    .tools button:hover {
+      background: rgba(27, 58, 87, 0.95);
+      border-color: var(--teal-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(74, 144, 164, 0.35);
+    }
+
+    .tools button.active {
+      background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* ── PLAIN PANELS (Slides 7-9) ─────────────────────────── */
+    .panel.plain {
+      background: none;
+      border: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      padding: 0;
+      left: 7vw;
+      width: min(540px, 42vw);
+    }
+
+    .panel.plain h2 {
+      font-size: clamp(32px, 3.8vw, 56px);
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .panel.plain p {
+      max-width: 460px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* ── PRICING SECTION (Slide 6) ─────────────────────────── */
+    .price {
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
+      pointer-events: auto;
+      padding: 14vh 6vw 12vh;
+      text-align: center;
+      border-top: 1px solid rgba(74, 144, 164, 0.25);
+      background: radial-gradient(900px 500px at 50% 14%, rgba(74, 144, 164, 0.16), transparent 70%), #0D1B2A;
+      position: relative;
+      z-index: 10;
+    }
+
+    .pw {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .price .rv {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      transition-delay: calc(var(--d, 0) * 90ms);
+    }
+
+    .price.in .rv {
+      opacity: 1;
+      transform: none;
+    }
+
+    .price h2 {
+      font-family: 'ITCBauhaus', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .price .lead {
+      max-width: 580px;
+      margin: 0 auto 36px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.7;
+    }
+
+    .pcard {
+      position: relative;
+      margin: 0 auto 70px;
+      padding: 44px 36px 36px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(27, 58, 87, 0.7), rgba(15, 34, 55, 0.9));
+      border: 1px solid rgba(107, 181, 203, 0.45);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .pcard::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(60% 55% at 50% 0, rgba(107, 181, 203, 0.3), transparent 70%);
+      animation: glow 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes glow {
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    .pcard>* {
+      position: relative;
+    }
+
+    .mini {
+      letter-spacing: 2px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #8AA3B0;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .amt {
+      font-family: 'ITCBauhaus', sans-serif;
+      font-size: clamp(60px, 9vw, 96px);
+      font-weight: 700;
+      letter-spacing: -2px;
+      color: var(--teal-light);
+      text-shadow: 0 0 40px rgba(107, 181, 203, 0.5);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+
+    .chips span {
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1px solid rgba(74, 144, 164, 0.35);
+      background: rgba(15, 34, 55, 0.6);
+      font-size: 12px;
+      font-weight: 600;
+      color: #C9DBE3;
+    }
+
+    .chips.ok span {
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #E6F1F5;
+    }
+
+    .chips.ok span::before {
+      content: '✓  ';
+      color: #10B981;
+      font-weight: 800;
+    }
+
+    .btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 26px 0 20px;
+    }
+
+    .fine {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .price h3 {
+      font-family: 'ITCBauhaus', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 0 0 10px;
+      color: #fff;
+    }
+
+    .addons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      text-align: left;
+      margin-top: 24px;
+    }
+
+    .ad {
+      padding: 24px;
+      border-radius: 18px;
+      border: 1px solid rgba(74, 144, 164, 0.35);
+      background: rgba(15, 34, 55, 0.65);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ad:hover {
+      transform: translateY(-4px);
+      border-color: rgba(107, 181, 203, 0.7);
+      background: rgba(27, 58, 87, 0.75);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .ad b {
+      font-size: 15px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .ad em {
+      font-style: normal;
+      font-size: 12px;
+      color: var(--teal-light);
+      font-weight: 700;
+      margin-left: 10px;
+    }
+
+    .ad p {
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #B7CDD7;
+    }
+
+    /* ── SITE FOOTER ───────────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 20;
+      background: linear-gradient(135deg, #0F2237 0%, #1B3A57 100%);
+      padding: 70px 5% 36px;
+      border-top: 1px solid rgba(74, 144, 164, 0.25);
+    }
+
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .footer-brand .nav-logo-text {
+      color: #fff;
+      font-family: 'ITCBauhaus', sans-serif;
+      font-size: 22px;
+    }
+
+    .footer-col h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col ul li a {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: #6BB5CB;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-copy,
+    .footer-tagline {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .footer-tagline span {
+      color: #ef4444;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      background: #4A90A4;
+      color: #fff;
+      border-color: #4A90A4;
+    }
+
+    /* ── FLOATING SUPPORT ──────────────────────────────────── */
+    .support-container {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 998;
+    }
+
+    .support-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+    }
+
+    .support-btn.whatsapp {
+      background: #25D366;
+    }
+
+    .support-btn.call {
+      background: #4A90A4;
+    }
+
+    .support-btn:hover {
+      transform: scale(1.1) translateY(-3px);
+      color: #fff;
+    }
+
+    /* ── BACK TO TOP ───────────────────────────────────────── */
+    #back-to-top {
+      position: fixed;
+      bottom: 150px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(15, 34, 55, 0.9);
+      border: 1px solid rgba(74, 144, 164, 0.4);
+      color: #6BB5CB;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 997;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      text-decoration: none;
+    }
+
+    #back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #back-to-top:hover {
+      background: #4A90A4;
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .addons {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .panel.plain {
+        width: 90vw;
+        left: 5vw;
+      }
+
+      .panel.plain h2 {
+        font-size: 30px;
+      }
+
+      .panel {
+        width: 90vw;
+        left: 5vw;
+        right: auto;
+        padding: 22px 20px;
+      }
+
+      .left {
+        top: 8vh;
+        transform: translate(0, -20px);
+      }
+
+      .right {
+        top: auto;
+        bottom: 8vh;
+        transform: translate(0, 20px);
+      }
+
+      .sec.on .left,
+      .sec.on .right {
+        transform: none;
+      }
+
+      .live {
+        display: none;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .tools {
+        right: 20px;
+        bottom: 24px;
+      }
+
+      .tools button {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .support-container {
+        bottom: 20px;
+        right: 20px;
+      }
+
+      #back-to-top {
+        bottom: 135px;
+        right: 22px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+  <!-- ── PRELOADER ─────────────────────────────────────────────── -->
+  <div id="preloader" role="status" aria-label="Loading Zorario 3D Plotter">
+    <img src="assets/images/logo.png" alt="Zorario" class="preloader-logo" width="72" height="72">
+    <div class="preloader-text">ZORARIO 3D</div>
+    <div class="preloader-bar-track">
+      <div class="preloader-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- ── SCROLL PROGRESS BAR ───────────────────────────────────── -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- ── 3D CANVASES ───────────────────────────────────────────── -->
+  <canvas id="scene" aria-label="Interactive 3D Real Estate Scene"></canvas>
+  <canvas id="hero" aria-hidden="true"></canvas>
+
+  <!-- ── FIXED TOP NAVIGATION ──────────────────────────────────── -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+      <img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40">
+      <span class="nav-logo-text">ZORARIO</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="index.html#features" id="nav-link-features">Features</a></li>
+      <li><a href="index.html#how-it-works" id="nav-link-how">How It Works</a></li>
+      <li><a href="projects.html" id="nav-link-projects">Projects</a></li>
+      <li><a href="plotter.html" id="nav-link-plotter" style="color:var(--teal-light);font-weight:700;"><i
+            class="fas fa-cube"></i> 3D Plotter</a></li>
+      <li><a href="blog.html" id="nav-link-blog">Blog</a></li>
+      <li><a href="about.html" id="nav-link-about">About</a></li>
+      <li><a href="contact.html" id="nav-link-contact">Contact</a></li>
+      <li>
+        <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="nav-cta" id="nav-download-btn"
+          rel="noopener" target="_blank" aria-label="Download Zorario app">
+          <i class="fab fa-google-play" aria-hidden="true"></i>
+          Download App
+        </a>
+      </li>
+    </ul>
+
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ── 3D TOOLBAR CONTROLS ───────────────────────────────────── -->
+  <div class="tools" id="tools" role="toolbar" aria-label="3D Viewport Controls">
+    <button id="zin" aria-label="Zoom In" title="Zoom In"><i class="fas fa-plus"></i></button>
+    <button id="zout" aria-label="Zoom Out" title="Zoom Out"><i class="fas fa-minus"></i></button>
+    <button id="pan" aria-label="Toggle Pan" title="Toggle Pan Mode"><i class="fas fa-arrows-alt"></i> <span
+        id="pan-label">Pan: Off</span></button>
+  </div>
+
+  <!-- ── SCROLL TIMELINE SECTIONS ──────────────────────────────── -->
+  <main id="pages">
+    <!-- Slide 0: Hero 2D Interactive Plot Twin -->
+    <section class="sec">
+      <div class="hero-text">
+        <div class="pill"><i class="pulse-dot"></i> 3D Digital Twin Platform</div>
+        <h1 class="hero-h">
+          <span class="ln"><span>Turn plots into</span></span>
+          <span class="ln"><span class="highlight-gradient">Interactive 3D.</span></span>
+        </h1>
+        <p class="sub">Skip flat PDFs and confusing blueprints. Zorario transforms master layouts into photorealistic 3D
+          digital twins — inspect boundaries, road widths, setbacks, sun angles, and villa massing in real time.</p>
+        <div class="hero-btns">
+          <a class="btn-primary" href="#price"><i class="fas fa-calculator"></i> View Pricing &amp; Quote</a>
+          <a class="btn-secondary" href="https://play.google.com/store/apps/details?id=com.akash.prop8" target="_blank"
+            rel="noopener"><i class="fab fa-google-play"></i> Get Mobile App</a>
+        </div>
+      </div>
+      <div class="live">
+        <i class="live-dot"></i>
+        <div>
+          <b>128 plots</b>
+          <span>42 acres · live digital twin</span>
+        </div>
+      </div>
+      <div class="cue">
+        <i></i>
+        <span>Scroll down</span>
+      </div>
+    </section>
+
+    <!-- Slide 1: Foundation & Explore Orbit -->
+    <section class="sec">
+      <div class="panel left">
+        <span class="eyebrow"><i class="fas fa-layer-group"></i> 01 · Foundation</span>
+        <h2>Stone-set.<br>Built to last.</h2>
+        <p>A rusticated stone base anchors the residence, engineered with a grand foyer entrance and an architectural
+          canopy.</p>
+      </div>
+      <div class="panel right">
+        <span class="eyebrow"><i class="fas fa-hand-pointer"></i> Explore</span>
+        <h2>Drag to rotate.</h2>
+        <p>Click and drag anywhere on the canvas to orbit the building in 3D and inspect its structure from any
+          perspective.</p>
+      </div>
+    </section>
+
+    <!-- Slide 2: Façade & Balconies -->
+    <section class="sec">
+      <div class="panel left">
+        <span class="eyebrow"><i class="fas fa-building"></i> 02 · Façade</span>
+        <h2>Brick, framed<br>in glass.</h2>
+        <p>Five brick storeys with deep-set architectural windows and high-spec glass panels that bathe every residence
+          in natural daylight.</p>
+      </div>
+      <div class="panel right">
+        <span class="eyebrow"><i class="fas fa-wind"></i> 03 · Balconies</span>
+        <h2>Open air on<br>every floor.</h2>
+        <p>Ten glass-railed cantilevered balconies project from the elevations, granting panoramic views of the entire
+          township.</p>
+      </div>
+    </section>
+
+    <!-- Slide 3: Rooftop & Fine Details -->
+    <section class="sec">
+      <div class="panel left">
+        <span class="eyebrow"><i class="fas fa-shield-alt"></i> 04 · Rooftop</span>
+        <h2>Planned,<br>down to the roof.</h2>
+        <p>Stairhead tower, overhead water reserves, and HVAC units are tucked discreetly behind a continuous
+          architectural parapet.</p>
+      </div>
+      <div class="panel right">
+        <span class="eyebrow"><i class="fas fa-search-plus"></i> Every angle</span>
+        <h2>Look closer.</h2>
+        <p>Tilt up, tilt down, and circle freely. Every dimensional setback and elevation detail is visible with
+          pinpoint accuracy.</p>
+      </div>
+    </section>
+
+    <!-- Slide 4: Land Elevation -->
+    <section class="sec">
+      <div class="panel left">
+        <span class="eyebrow"><i class="fas fa-mountain"></i> 05 · The land</span>
+        <h2>Rise above<br>the plot.</h2>
+        <p>Lift off from the signature building and watch the vast master township layout open up beneath it in full 3D
+          perspective.</p>
+      </div>
+    </section>
+
+    <!-- Slide 5: Master Township Layout & Pan -->
+    <section class="sec">
+      <div class="panel left">
+        <span class="eyebrow"><i class="fas fa-th-large"></i> 06 · The layout</span>
+        <h2>Every plot,<br>mapped.</h2>
+        <p>33' and 40' arterial roads, open spaces, and individual plot dimensions rebuilt in 3D. Orbit to rotate, or
+          switch on Pan to move freely across the township.</p>
+      </div>
+    </section>
+
+    <!-- Slide 6: Pricing Calculator -->
+    <section class="sec price" id="price">
+      <div class="pw">
+        <span class="eyebrow rv"><i class="fas fa-tag"></i> Transparent Pricing</span>
+        <h2 class="rv" style="--d:1">Priced to the size<br>of your venture.</h2>
+        <p class="lead rv" style="--d:2">No per-seat fees or artificial tiers. Every Zorario 3D twin gets the entire
+          suite of features, and you pay strictly proportional to the acreage covered.</p>
+
+        <div class="pcard rv" style="--d:3">
+          <p class="mini">Starts At</p>
+          <div class="amt">₹<span id="amt">0</span>/-</div>
+          <div class="chips">
+            <span>+ 0% GST</span>
+            <span>+ ₹1,500 / acre</span>
+          </div>
+          <div class="chips ok">
+            <span>Every feature included</span>
+            <span>Live in under 48 hours</span>
+            <span>Lifetime hosting &amp; management</span>
+            <span>Your own branded link</span>
+          </div>
+          <div class="btns">
+            <a class="btn-primary" href="contact.html"><i class="fas fa-paper-plane"></i> Get a Fixed Quote</a>
+            <a class="btn-secondary" href="tel:+919334298441"><i class="fas fa-phone"></i> Talk to Us First</a>
+          </div>
+          <p class="fine">Your quote is calibrated directly to acreage, plot count, and development phases. Send us your
+            CAD or survey plan and receive a locked quote within one working day.</p>
+        </div>
+
+        <h3 class="rv">Add-ons, only if you need them</h3>
+        <p class="lead rv" style="--d:1">Priced transparently and never bundled without request. Itemized clearly before
+          project commencement.</p>
+        <div class="addons">
+          <div class="ad rv" style="--d:2">
+            <b>Image to CAD conversion</b>
+            <em>From ₹10,000</em>
+            <p>Have only a brochure JPEG, printed layout board, or photo? Our engineering team redraws it into a
+              precise, dimensioned CAD layout before 3D compilation begins.</p>
+          </div>
+          <div class="ad rv" style="--d:3">
+            <b>3D villa &amp; amenity massing</b>
+            <em>From ₹25,000</em>
+            <p>Model clubhouses, parks, sports courts, and sample villa elevations so prospective buyers visualize a
+              vibrant finished community instead of empty plots.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 7: Global Delivered Ventures -->
+    <section class="sec">
+      <div class="panel left plain">
+        <span class="eyebrow"><i class="fas fa-globe"></i> Global Reach</span>
+        <h2>Ventures we have delivered.</h2>
+        <p>From flat CAD blueprints to high-performing digital twins — verified boundaries, mapped road networks, and
+          every individual parcel status-tracked in real time.</p>
+      </div>
+    </section>
+
+    <!-- Slide 8: India Flight -->
+    <section class="sec">
+      <div class="panel left plain">
+        <span class="eyebrow"><i class="fas fa-map-marked-alt"></i> India</span>
+        <h2>From the whole country…</h2>
+        <p>Scroll to fly in from global orbit. Rotate and inspect where key townships and infrastructure corridors
+          connect with prime urban growth centres.</p>
+      </div>
+    </section>
+
+    <!-- Slide 9: Bihar & Patna Regional Focus -->
+    <section class="sec">
+      <div class="panel left plain">
+        <span class="eyebrow"><i class="fas fa-map-pin"></i> Bihar · Patna</span>
+        <h2>…into the heart of Bihar.</h2>
+        <p>From the Ganga riverfront to Gaya and Patna, every plot is mapped, dimensioned, and status-tracked. Welcome
+          to the future of Bihar real estate.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── SITE FOOTER ───────────────────────────────────────────── -->
+  <footer role="contentinfo" aria-label="Site footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+            <img src="assets/images/logo.png" alt="Zorario Logo" width="36" height="36" loading="lazy">
+            <span class="nav-logo-text">ZORARIO</span>
+          </a>
+          <p>Bihar's No.1 real estate platform and digital twin provider. Bringing verified transparency to buying,
+            selling, and land development across all 38 districts.</p>
+          <div class="footer-socials" aria-label="Social media links">
+            <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="social-link"
+              aria-label="Zorario on Google Play" rel="noopener" target="_blank"><i class="fab fa-google-play"></i></a>
+            <a href="https://medium.com/@akashkumarr1406/zorario-new-real-estate-platform-in-india-336c77c7d2fd"
+              class="social-link" aria-label="Zorario on Medium" rel="noopener" target="_blank"><i
+                class="fab fa-medium"></i></a>
+            <a href="https://wa.me/919334298441" class="social-link" aria-label="Zorario on WhatsApp" rel="noopener"
+              target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Company -->
+        <nav class="footer-col" aria-label="Company links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="zorario-tech.html">Zorario Tech</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="associate-partner.html">Associate Partner</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          </ul>
+        </nav>
+
+        <!-- Properties -->
+        <nav class="footer-col" aria-label="Property links">
+          <h4>Properties</h4>
+          <ul>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="plotter.html" style="color:#6BB5CB;font-weight:700;">3D Master Plotter</a></li>
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+            <li><a href="index.html#testimonials">Reviews</a></li>
+          </ul>
+        </nav>
+
+        <!-- Contact -->
+        <nav class="footer-col" aria-label="Contact links">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="tel:+919334298441">+91 93342 98441</a></li>
+            <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Support</a></li>
+            <li><a href="download-app.html">Download App</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Zorario Real Estate. All rights reserved. Bihar's No.1 Real Estate Platform.
+        </p>
+        <p class="footer-tagline">Crafted with <span>♥</span> for Bihar</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── FLOATING SUPPORT BUTTONS ──────────────────────────────── -->
+  <div class="support-container" role="complementary" aria-label="Contact Support">
+    <a href="https://wa.me/919334298441" class="support-btn whatsapp" title="Chat on WhatsApp"
+      aria-label="Chat on WhatsApp" target="_blank" rel="noopener">
+      <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+    <a href="tel:+919334298441" class="support-btn call" title="Call Zorario Support" aria-label="Call Zorario Support">
+      <i class="fas fa-phone" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <!-- ── BACK TO TOP BUTTON ────────────────────────────────────── -->
+  <a href="#" id="back-to-top" aria-label="Back to top" title="Back to top">
+    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+  </a>
+
+  <!-- ╔═════════════════════════════════════════════════════════════╗
+         ║  THREE.JS & 3D DIGITAL TWIN ENGINE                          ║
+         ╚═════════════════════════════════════════════════════════════╝ -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    /* ---------- Preloader & Navigation Handlers ---------- */
+    const preloader = document.getElementById('preloader');
+    window.addEventListener('load', () => {
+      setTimeout(() => { if (preloader) preloader.classList.add('hidden'); }, 800);
+    });
+
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', !expanded);
+        navLinks.style.display = expanded ? 'none' : 'flex';
+        navLinks.style.flexDirection = expanded ? '' : 'column';
+        navLinks.style.position = expanded ? '' : 'absolute';
+        navLinks.style.top = expanded ? '' : '70px';
+        navLinks.style.left = expanded ? '' : '0';
+        navLinks.style.right = expanded ? '' : '0';
+        navLinks.style.background = expanded ? '' : 'rgba(15,34,55,0.98)';
+        navLinks.style.padding = expanded ? '' : '24px 5%';
+        navLinks.style.backdropFilter = expanded ? '' : 'blur(20px)';
+        navLinks.style.borderTop = expanded ? '' : '1px solid rgba(74,144,164,0.2)';
+      });
+    }
+
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      backToTop.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    const scrollProgressBar = document.getElementById('scroll-progress');
+
+    /* ---------- Procedural Random Helpers ---------- */
+    let seed = 7;
+    const rnd = () => {
+      seed |= 0;
+      seed = seed + 0x6D2B79F5 | 0;
+      let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const ss = t => { t = clamp(t); return t * t * (3 - 2 * t); };
+
+    /* ---------- Renderer, Scene, Camera ---------- */
+    const canvas = document.getElementById('scene');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x0D1B2A, 1);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0D1B2A);
+    scene.fog = new THREE.FogExp2(0x0D1B2A, 0.007);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 4000);
+
+    /* ---------- Lighting ---------- */
+    scene.add(new THREE.HemisphereLight(0x9fc7d6, 0x0D1B2A, 1.0));
+    const sun = new THREE.DirectionalLight(0xfff1dc, 2.4);
+    sun.position.set(35, 60, 30);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    Object.assign(sun.shadow.camera, { left: -55, right: 55, top: 55, bottom: -55, near: 1, far: 160 });
+    sun.shadow.bias = -0.0005;
+    scene.add(sun);
+
+    const fill = new THREE.DirectionalLight(0x4A90A4, 0.9);
+    fill.position.set(-40, 20, -30);
+    scene.add(fill);
+
+    /* ---------- Ground Platform ---------- */
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(500, 500),
+      new THREE.MeshStandardMaterial({ color: 0x0A1622, roughness: 1 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.05;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const gridGroup = new THREE.Group();
+    scene.add(gridGroup);
+
+    /* ---------- Plot Layout Grid ---------- */
+    const PL = 6, SP = 7, GN = 6;
+    const plotMats = [0x1B3A57, 0x163049, 0x214A69].map(c => new THREE.MeshStandardMaterial({ color: c, roughness: 0.9 }));
+    const availMat = new THREE.MeshStandardMaterial({ color: 0x4A90A4, emissive: 0x4A90A4, emissiveIntensity: 0.35, roughness: 0.6 });
+    const volMats = [0x2C5877, 0x3A6F8A, 0x4A90A4, 0x6BB5CB].map(c => new THREE.MeshStandardMaterial({ color: c, roughness: 0.7, metalness: 0.1 }));
+    const plotGeo = new THREE.PlaneGeometry(PL, PL).rotateX(-Math.PI / 2);
+    const volGeo = new THREE.BoxGeometry(1, 1, 1).translate(0, 0.5, 0);
+    const vols = [], lines = [];
+
+    for (let i = -GN; i <= GN; i++) {
+      for (let j = -GN; j <= GN; j++) {
+        if (Math.abs(i) <= 1 && Math.abs(j) <= 1) continue;
+        const x = i * SP, z = j * SP, r = rnd();
+        const avail = r > 0.88;
+        const plot = new THREE.Mesh(plotGeo, avail ? availMat : plotMats[Math.floor(rnd() * 3)]);
+        plot.position.set(x, 0.02, z);
+        plot.receiveShadow = true;
+        gridGroup.add(plot);
+        const h = PL / 2, y = 0.06;
+        lines.push(x - h, y, z - h, x + h, y, z - h, x + h, y, z - h, x + h, y, z + h, x + h, y, z + h, x - h, y, z + h, x - h, y, z + h, x - h, y, z - h);
+        if (!avail && rnd() < 0.55) {
+          const vh = 1 + rnd() * 5 * (1.3 - Math.hypot(i, j) / 9);
+          const m = new THREE.Mesh(volGeo, volMats[Math.floor(rnd() * 4)]);
+          m.position.set(x + (rnd() - 0.5) * 1.2, 0.02, z + (rnd() - 0.5) * 1.2);
+          m.userData = { w: PL * (0.4 + rnd() * 0.35), d: PL * (0.4 + rnd() * 0.35), h: Math.max(0.6, vh), delay: 0.3 + Math.hypot(i, j) * 0.09 + rnd() * 0.3 };
+          m.castShadow = m.receiveShadow = true;
+          m.scale.set(m.userData.w, 0.001, m.userData.d);
+          gridGroup.add(m);
+          vols.push(m);
+        }
+      }
+    }
+    const lg = new THREE.BufferGeometry();
+    lg.setAttribute('position', new THREE.Float32BufferAttribute(lines, 3));
+    const plotLines = new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: 0x6BB5CB, transparent: true, opacity: 0.5 }));
+    gridGroup.add(plotLines);
+
+    // Beacon on available plot
+    const beacon = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.07, 0.07, 16, 8).translate(0, 8, 0),
+      new THREE.MeshBasicMaterial({ color: 0x6BB5CB, transparent: true, opacity: 0.7 })
+    );
+    beacon.position.set(21, 0, -14);
+    scene.add(beacon);
+
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(3, 3.2, 48).rotateX(-Math.PI / 2),
+      new THREE.MeshBasicMaterial({ color: 0x6BB5CB, transparent: true, opacity: 0.8, side: THREE.DoubleSide })
+    );
+    ring.position.set(21, 0.1, -14);
+    scene.add(ring);
+
+    /* ---------- Procedural Textures ---------- */
+    function brickCanvas() {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 240;
+      const g = c.getContext('2d'); g.fillStyle = '#b3a591'; g.fillRect(0, 0, 256, 240);
+      for (let r = 0; r < 12; r++) for (let x = -64; x < 256; x += 64) {
+        const bx = x + (r % 2 ? 32 : 0);
+        g.fillStyle = `hsl(${8 + rnd() * 10},${42 + rnd() * 12}%,${30 + rnd() * 12}%)`;
+        g.fillRect(bx + 2, r * 20 + 2, 60, 16);
+      }
+      for (let k = 0; k < 2500; k++) { g.fillStyle = `rgba(0,0,0,${rnd() * 0.12})`; g.fillRect(rnd() * 256, rnd() * 240, 2, 2); }
+      return c;
+    }
+
+    function stoneCanvas() {
+      const c = document.createElement('canvas'); c.width = c.height = 256;
+      const g = c.getContext('2d'); g.fillStyle = '#5d6066'; g.fillRect(0, 0, 256, 256);
+      for (let r = 0; r < 4; r++) for (let x = -128; x < 256; x += 128) {
+        const v = 120 + rnd() * 40;
+        g.fillStyle = `rgb(${v},${v + 2},${v + 6})`; g.fillRect(x + (r % 2 ? 64 : 0) + 3, r * 64 + 3, 122, 58);
+      }
+      for (let k = 0; k < 3000; k++) { g.fillStyle = `rgba(0,0,0,${rnd() * 0.15})`; g.fillRect(rnd() * 256, rnd() * 256, 2, 2); }
+      return c;
+    }
+
+    const brickC = brickCanvas(), stoneC = stoneCanvas();
+    function texMat(canvasEl, rx, ry, bump) {
+      const t = new THREE.CanvasTexture(canvasEl);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry);
+      t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+      return new THREE.MeshStandardMaterial({ map: t, bumpMap: t, bumpScale: bump, roughness: 0.95 });
+    }
+
+    /* ---------- 3D Building ---------- */
+    const W = 14, D = 10, BASE = 3, FH = 2.6, NF = 5, TOP = BASE + NF * FH;
+    const building = new THREE.Group();
+    building.position.y = 0.3;
+    scene.add(building);
+
+    const mConc = new THREE.MeshStandardMaterial({ color: 0xd2d4d6, roughness: 0.8 });
+    const mDark = new THREE.MeshStandardMaterial({ color: 0x23282e, roughness: 0.6, metalness: 0.3 });
+    const mMetal = new THREE.MeshStandardMaterial({ color: 0x9aa3aa, roughness: 0.5, metalness: 0.6 });
+    const mFrame = new THREE.MeshStandardMaterial({ color: 0xeef1f2, roughness: 0.5 });
+    const mGlass = new THREE.MeshStandardMaterial({ color: 0x6BB5CB, roughness: 0.05, metalness: 0.7, emissive: 0x0F2237, emissiveIntensity: 0.6 });
+    const mWarm = new THREE.MeshStandardMaterial({ color: 0xffd9a0, roughness: 0.2, emissive: 0xffc27a, emissiveIntensity: 0.7 });
+    const mGuard = new THREE.MeshStandardMaterial({ color: 0x9fd3e0, transparent: true, opacity: 0.3, roughness: 0.05, side: THREE.DoubleSide });
+    const box = (w, h, d, m, x, y, z, par = building) => {
+      const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+      o.position.set(x, y, z);
+      par.add(o);
+      return o;
+    };
+
+    // Stone base + Brick upper floors
+    box(W + 0.4, BASE, D + 0.4, texMat(stoneC, (W + 0.4) / 3, 1.4, 0.8), 0, BASE / 2, 0);
+    const brickBody = new THREE.Mesh(new THREE.BoxGeometry(W, NF * FH, D), [
+      texMat(brickC, D / 1.8, NF * FH / 1.44, 0.9), texMat(brickC, D / 1.8, NF * FH / 1.44, 0.9),
+      mConc, mConc,
+      texMat(brickC, W / 1.8, NF * FH / 1.44, 0.9), texMat(brickC, W / 1.8, NF * FH / 1.44, 0.9)
+    ]);
+    brickBody.position.y = BASE + NF * FH / 2;
+    building.add(brickBody);
+
+    for (let k = 0; k <= NF; k++) box(W + 0.3, 0.18, D + 0.3, mConc, 0, BASE + k * FH - (k === NF ? 0.09 : 0), 0);
+
+    // Windows
+    const frameGeo = new THREE.BoxGeometry(1.5, 1.7, 0.12), glassGeo = new THREE.PlaneGeometry(1.25, 1.45), sillGeo = new THREE.BoxGeometry(1.7, 0.1, 0.3);
+    function win(x, y, z, ry, w = 1, h = 1, warm = rnd() < 0.25) {
+      const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = ry;
+      const f = new THREE.Mesh(frameGeo, mFrame); f.scale.set(w, h, 1);
+      const gl = new THREE.Mesh(glassGeo, warm ? mWarm : mGlass); gl.scale.set(w, h, 1); gl.position.z = 0.07;
+      const s = new THREE.Mesh(sillGeo, mConc); s.position.set(0, -0.9 * h, 0.12); s.scale.x = w;
+      g.add(f, gl, s); building.add(g);
+    }
+
+    // Balconies
+    function balcony(y, ry) {
+      const g = new THREE.Group(); g.position.y = y; g.rotation.y = ry; building.add(g);
+      const z0 = D / 2;
+      box(5.6, 0.14, 1.2, mConc, 0, 0, z0 + 0.6, g);
+      const front = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 0.95), mGuard); front.position.set(0, 0.55, z0 + 1.15); g.add(front);
+      box(5.6, 0.06, 0.06, mMetal, 0, 1.05, z0 + 1.17, g);
+      for (const s of [-1, 1]) {
+        const side = new THREE.Mesh(new THREE.PlaneGeometry(1.05, 0.95), mGuard); side.rotation.y = Math.PI / 2; side.position.set(s * 2.75, 0.55, z0 + 0.6); g.add(side);
+        box(0.06, 0.06, 1.2, mMetal, s * 2.8, 1.05, z0 + 0.6, g);
+        box(0.07, 1, 0.07, mMetal, s * 2.8, 0.5, z0 + 1.17, g);
+      }
+    }
+
+    const cols = [-5.25, -1.75, 1.75, 5.25];
+    for (let k = 0; k < NF; k++) {
+      const fy = BASE + k * FH, wy = fy + 1.35;
+      for (const x of cols) { win(x, wy, D / 2 + 0.02, 0); win(x, wy, -D / 2 - 0.02, Math.PI); }
+      for (const z of [-3, 0, 3]) { win(W / 2 + 0.02, wy, z, Math.PI / 2); win(-W / 2 - 0.02, wy, z, -Math.PI / 2); }
+      balcony(fy + 0.07, 0); balcony(fy + 0.07, Math.PI);
+    }
+
+    // Ground floor entrance & canopy
+    box(2.2, 2.3, 0.2, mDark, 0, 1.15, D / 2 + 0.25);
+    box(3.8, 0.16, 1.5, mConc, 0, 2.7, D / 2 + 0.95);
+    box(0.12, 2.6, 0.12, mMetal, -1.8, 1.35, D / 2 + 1.6); box(0.12, 2.6, 0.12, mMetal, 1.8, 1.35, D / 2 + 1.6);
+    box(4, 0.2, 1, mConc, 0, 0.1, D / 2 + 0.8);
+    for (const x of [-5.2, -3, 3, 5.2]) win(x, 1.6, D / 2 + 0.22, 0, 0.9, 0.8, false);
+    for (const x of [-4.5, -1.5, 1.5, 4.5]) win(x, 1.6, -D / 2 - 0.22, Math.PI, 0.9, 0.8, false);
+
+    // Roof features
+    const mRoof = new THREE.MeshStandardMaterial({ color: 0x4a4f55, roughness: 0.9 });
+    box(W - 0.2, 0.15, D - 0.2, mRoof, 0, TOP + 0.07, 0);
+    box(W + 0.3, 0.7, 0.25, mConc, 0, TOP + 0.45, D / 2 + 0.05); box(W + 0.3, 0.7, 0.25, mConc, 0, TOP + 0.45, -D / 2 - 0.05);
+    box(0.25, 0.7, D - 0.1, mConc, W / 2 + 0.05, TOP + 0.45, 0); box(0.25, 0.7, D - 0.1, mConc, -W / 2 - 0.05, TOP + 0.45, 0);
+    box(3, 2.2, 3, new THREE.MeshStandardMaterial({ color: 0xb7aa9a, roughness: 0.9 }), -4.5, TOP + 1.25, -1.5);
+    box(1, 1.7, 0.1, mDark, -4.5, TOP + 1.0, 0.02);
+    box(3.3, 0.15, 3.3, mConc, -4.5, TOP + 2.4, -1.5);
+
+    for (const x of [-5.5, -3.5, -1.5, 0.5, 2.5, 4.5]) {
+      box(1.6, 0.9, 1.1, mMetal, x, TOP + 0.65, 3);
+      const fan = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.05, 20), mDark); fan.position.set(x, TOP + 1.13, 3); building.add(fan);
+    }
+    for (const [x, z] of [[2.7, -3.4], [4.3, -3.4], [2.7, -1.6], [4.3, -1.6]]) box(0.1, 0.7, 0.1, mDark, x, TOP + 0.5, z);
+    const tank = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1.8, 24), mMetal); tank.position.set(3.5, TOP + 1.7, -2.5); building.add(tank);
+    const lid = new THREE.Mesh(new THREE.ConeGeometry(1.05, 0.4, 24), mDark); lid.position.set(3.5, TOP + 2.8, -2.5); building.add(lid);
+    const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 4, 6), mMetal); ant.position.set(-6, TOP + 2.2, -3.5); building.add(ant);
+    box(1.2, 0.05, 0.05, mMetal, -6, TOP + 3.6, -3.5); box(0.9, 0.05, 0.05, mMetal, -6, TOP + 3.1, -3.5);
+
+    // Platform & trees
+    const platform = new THREE.Mesh(new THREE.BoxGeometry(21, 0.3, 21), new THREE.MeshStandardMaterial({ color: 0x1d4560, roughness: 0.9 }));
+    platform.position.y = 0.15; platform.receiveShadow = true; scene.add(platform);
+    const pEdge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(21, 0.3, 21)), new THREE.LineBasicMaterial({ color: 0x6BB5CB }));
+    pEdge.position.y = 0.15; scene.add(pEdge);
+
+    const trunkM = new THREE.MeshStandardMaterial({ color: 0x4b3a2c }), leafM = new THREE.MeshStandardMaterial({ color: 0x3f8a76, roughness: 0.9 });
+    function tree(x, z) {
+      const g = new THREE.Group(); g.position.set(x, 0.3, z);
+      const t = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 1.3, 6), trunkM); t.position.y = 0.65;
+      const l = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 1), leafM); l.position.y = 2.1; l.scale.set(1, 1.2 + rnd() * 0.4, 1);
+      t.castShadow = l.castShadow = true; g.add(t, l); scene.add(g);
+    }
+    for (let k = 0; k < 8; k++) { const x = -9.5 + k * 2.7; tree(x, 9); tree(x, -9); }
+    for (const z of [-6, -2, 2, 6]) { tree(9.5, z); tree(-9.5, z); }
+
+    building.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+    building.scale.y = 0.02; building.visible = false;
+
+    /* ---------- Floating Particles ---------- */
+    const pc = 500, pp = new Float32Array(pc * 3);
+    for (let i = 0; i < pc; i++) { pp[i * 3] = (rnd() - 0.5) * 110; pp[i * 3 + 1] = 2 + rnd() * 35; pp[i * 3 + 2] = (rnd() - 0.5) * 110; }
+    const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pp, 3));
+    const particles = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0x6BB5CB, size: 0.3, transparent: true, opacity: 0.55, depthWrite: false }));
+    scene.add(particles);
+
+    /* ---------- Hero 2D Canvas Layout Map ---------- */
+    const hc = document.getElementById('hero'), hx = hc.getContext('2d');
+    let HW, HH, DPR, bgLayer, hOp = 1, lastFlip = 0;
+    const mouse = { x: 0.5, y: 0.5 };
+    const poly = [[-54, -20], [-10, -52], [44, -40], [56, 8], [30, 50], [-24, 54], [-52, 26]];
+    const inPoly = (x, y) => {
+      let c = false;
+      for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const a = poly[i], b = poly[j];
+        if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) c = !c;
+      }
+      return c;
+    };
+
+    const heroPlots = [];
+    for (let gx = -14; gx <= 14; gx++) for (let gy = -8; gy <= 8; gy++) {
+      if ((((gx % 5) + 5) % 5) === 4 || (((gy % 4) + 4) % 4) === 3) continue;
+      const x = gx * 4.4, y = gy * 8.4, w = 3.6, h = 7.4;
+      if (![[-1, -1], [1, -1], [1, 1], [-1, 1]].every(([a, b]) => inPoly(x + a * w / 2, y + b * h / 2))) continue;
+      if (x > -14 && x < 26 && y > 4 && y < 34) continue;
+      if (x > 6 && x < 22 && y > -18 && y < 2) continue;
+      const r = rnd();
+      heroPlots.push({ x, y, w, h, type: r < 0.62 ? 't' : r < 0.76 ? 'a' : 'd', delay: 0.4 + Math.hypot(x - 10, y + 10) * 0.018 + rnd() * 0.3, flash: 0 });
+    }
+
+    function buildBg() {
+      bgLayer = document.createElement('canvas'); bgLayer.width = HW * DPR; bgLayer.height = HH * DPR;
+      const g = bgLayer.getContext('2d'); g.scale(DPR, DPR);
+      const gr = g.createLinearGradient(0, 0, HW, HH); gr.addColorStop(0, '#101a28'); gr.addColorStop(1, '#0a121c');
+      g.fillStyle = gr; g.fillRect(0, 0, HW, HH); g.lineCap = 'round';
+      let sd = 3; const r2 = () => (sd = sd * 16807 % 2147483647) / 2147483647;
+      g.strokeStyle = 'rgba(74,144,164,0.07)'; g.lineWidth = 1.5;
+      for (let i = 0; i < 40; i++) { const x = r2() * HW, y = r2() * HH, a = r2() * 3.14; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * 220, y + Math.sin(a) * 220); g.stroke(); }
+      g.strokeStyle = 'rgba(74,144,164,0.16)'; g.lineWidth = Math.max(14, HW * 0.022);
+      g.beginPath(); g.moveTo(-50, HH * 0.02); g.quadraticCurveTo(HW * 0.3, HH * 0.6, HW * 1.05, HH * 0.95); g.stroke();
+      g.strokeStyle = 'rgba(74,144,164,0.14)'; g.lineWidth = 8; g.beginPath(); g.moveTo(HW * 0.78, 0); g.bezierCurveTo(HW * 0.9, HH * 0.1, HW * 0.85, HH * 0.4, HW * 1.02, HH * 0.5); g.stroke();
+    }
+
+    function resizeHero() { HW = innerWidth; HH = innerHeight; DPR = Math.min(devicePixelRatio, 2); hc.width = HW * DPR; hc.height = HH * DPR; buildBg(); }
+    resizeHero(); window.addEventListener('resize', resizeHero);
+    window.addEventListener('pointermove', e => { mouse.x = e.clientX / innerWidth; mouse.y = e.clientY / innerHeight; });
+
+    function drawHero(t) {
+      hx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      hx.drawImage(bgLayer, 0, 0, HW, HH);
+      hx.save(); hx.strokeStyle = 'rgba(107,181,203,0.45)'; hx.lineWidth = 1.5; hx.setLineDash([14, 14]); hx.lineDashOffset = -t * 26;
+      hx.beginPath(); hx.moveTo(-50, HH * 0.02); hx.quadraticCurveTo(HW * 0.3, HH * 0.6, HW * 1.05, HH * 0.95); hx.stroke(); hx.restore();
+      for (let k = 0; k < 7; k++) {
+        const u = (t * 0.04 + k / 7) % 1, a = (1 - u) * (1 - u), b = 2 * (1 - u) * u, c = u * u;
+        const x = -50 * a + HW * 0.3 * b + HW * 1.05 * c, y = HH * 0.02 * a + HH * 0.6 * b + HH * 0.95 * c;
+        const gr = hx.createRadialGradient(x, y, 0, x, y, 10); gr.addColorStop(0, 'rgba(143,233,240,0.9)'); gr.addColorStop(1, 'rgba(143,233,240,0)');
+        hx.fillStyle = gr; hx.fillRect(x - 10, y - 10, 20, 20);
+      }
+      const sc = Math.min(HW, HH * 1.55) / 150, narrow = HW < 760, intro = ss(t / 1.6);
+      hx.save();
+      hx.translate(HW * (narrow ? 0.62 : 0.66) - (mouse.x - 0.5) * 24, HH * (narrow ? 0.7 : 0.5) - (mouse.y - 0.5) * 16);
+      hx.rotate(-0.52 + Math.sin(t * 0.25) * 0.015); hx.scale(sc, sc);
+      hx.beginPath(); poly.forEach((p, i) => i ? hx.lineTo(p[0], p[1]) : hx.moveTo(p[0], p[1])); hx.closePath();
+      hx.fillStyle = `rgba(20,42,52,${0.85 * intro})`; hx.fill();
+      hx.lineWidth = 0.18; hx.strokeStyle = 'rgba(107,181,203,0.85)'; hx.setLineDash([400 * intro, 400]); hx.stroke(); hx.setLineDash([]);
+      hx.fillStyle = `rgba(20,80,66,${0.5 * intro})`; hx.fillRect(-14, 4, 40, 30);
+      hx.fillStyle = `rgba(27,34,43,${intro})`; hx.fillRect(6, -18, 16, 20);
+      if (t - lastFlip > 0.5) {
+        lastFlip = t; const p = heroPlots[Math.floor(Math.random() * heroPlots.length)];
+        if (p.type !== 'd') { p.type = p.type === 't' ? 'a' : 't'; p.flash = 1; }
+      }
+      const sw = (t * 0.14 % 1.6) - 0.3;
+      for (const p of heroPlots) {
+        const e = ss((t - p.delay) / 0.7); if (e <= 0) continue;
+        const b = Math.max(0, 1 - Math.abs((p.x + p.y) / 120 + 0.5 - sw) * 6);
+        const c = p.type === 't' ? '58,170,196' : p.type === 'a' ? '217,168,74' : '26,36,46';
+        const s = 0.4 + 0.6 * e, w = p.w * s, h = p.h * s; p.flash *= 0.94;
+        hx.fillStyle = `rgba(${c},${(p.type === 'd' ? 0.85 : 0.62 + 0.38 * b) * e})`; hx.fillRect(p.x - w / 2, p.y - h / 2, w, h);
+        if (p.type !== 'd') { hx.strokeStyle = `rgba(255,255,255,${0.18 * e})`; hx.lineWidth = 0.1; hx.beginPath(); hx.moveTo(p.x - w / 2, p.y); hx.lineTo(p.x + w / 2, p.y); hx.stroke(); }
+        if (p.flash > 0.02) { hx.fillStyle = `rgba(255,255,255,${p.flash * 0.6})`; hx.fillRect(p.x - w / 2, p.y - h / 2, w, h); }
+      }
+      if (t > 2.2) heroPlots.filter((p, i) => i % 19 === 5).slice(0, 4).forEach((p, k) => {
+        const f = (t * 0.5 + k * 0.27) % 1;
+        hx.strokeStyle = `rgba(143,233,240,${(1 - f) * 0.9})`; hx.lineWidth = 0.25; hx.beginPath(); hx.arc(p.x, p.y, 1 + f * 6, 0, 6.283); hx.stroke();
+        hx.fillStyle = '#fff'; hx.beginPath(); hx.arc(p.x, p.y, 0.7, 0, 6.283); hx.fill();
+      });
+      hx.fillStyle = `rgba(200,215,224,${0.85 * intro})`; hx.font = '700 1.8px Inter, sans-serif'; hx.textAlign = 'center';
+      hx.fillText('Zorario Park', 6, 19);
+      hx.save(); hx.translate(30, -30); hx.rotate(0.5); hx.fillText('Zorario Avenue', 0, 0); hx.restore();
+      hx.restore();
+      const lg2 = hx.createLinearGradient(0, 0, HW * (narrow ? 1 : 0.7), 0);
+      lg2.addColorStop(0, 'rgba(13,27,42,0.95)'); lg2.addColorStop(0.6, 'rgba(13,27,42,0.55)'); lg2.addColorStop(1, 'rgba(13,27,42,0)');
+      hx.fillStyle = lg2; hx.fillRect(0, 0, HW, HH);
+    }
+
+    /* ---------- World Journey: Earth -> India -> Bihar -> Patna ---------- */
+    const R = 57.2958, D2R = Math.PI / 180, G = new THREE.Vector3(0, 1400, 0);
+    const INDIA = [[74.1, 36.9], [75.6, 37.05], [77, 35.9], [78.3, 35.7], [79.4, 35.6], [80.2, 35.1], [79.7, 34.2], [79.3, 33.1], [78.9, 32.4], [78.5, 31.8], [79, 31], [80.2, 30.3], [80.9, 30.1], [80.4, 29.4], [81.3, 28.6], [82.4, 27.9], [83.4, 27.4], [84.7, 27.1], [86, 26.65], [87.3, 26.35], [88.1, 26.45], [88.2, 27.1], [88, 27.9], [88.8, 28.1], [88.9, 27.3], [89.6, 26.8], [90.7, 26.8], [92.1, 26.9], [92.1, 27.8], [93.4, 28.6], [94.4, 29.2], [95.2, 29.1], [96.2, 29.0], [97, 28.3], [96.6, 27.4], [96, 27.2], [95.2, 26.6], [95, 26], [94.6, 25.4], [94.4, 24.6], [94.3, 23.8], [93.4, 23], [93.1, 22.2], [92.6, 21.9], [92.3, 22.8], [91.9, 23.3], [91.3, 23], [91.2, 23.9], [91.8, 24.3], [92.3, 24.9], [91.9, 25.15], [90.5, 25.15], [89.8, 25.3], [89.85, 26], [89, 26.35], [88.7, 26.4], [88.45, 26], [88.2, 25.8], [88, 25.2], [88.5, 24.7], [88.1, 24.6], [88.65, 23.4], [88.8, 22.6], [88.9, 21.65], [88.1, 21.7], [87.3, 21.5], [86.8, 20.7], [86.7, 20.3], [85.8, 19.8], [84.9, 19.3], [84, 18.3], [83.3, 17.7], [82.3, 17], [81.15, 16.2], [80.2, 15.9], [80.1, 14.4], [80.3, 13.7], [80.3, 13.1], [79.85, 11.9], [79.85, 10.75], [79.85, 10.3], [79.3, 9.3], [78.15, 8.8], [77.5, 8.08], [76.95, 8.5], [76.6, 8.9], [76.3, 9.5], [76.25, 9.95], [75.8, 11.25], [75.4, 11.9], [74.85, 12.9], [74.1, 14.8], [73.8, 15.5], [73.3, 17], [72.9, 18.6], [72.8, 19], [72.8, 20.4], [72.8, 21.1], [72.8, 21.7], [72.5, 22.3], [72.15, 21.75], [71, 20.7], [70.35, 20.9], [69.6, 21.65], [69, 22.25], [69.05, 22.4], [70, 22.7], [70.2, 23], [69.4, 22.85], [68.6, 23.1], [68.2, 23.7], [68.3, 23.95], [69.5, 24.3], [71, 24.4], [70.1, 25.9], [70, 27.1], [70.4, 28], [71.8, 28.9], [73, 29.9], [74, 30.6], [74.5, 31.1], [74.6, 31.9], [74.9, 32.5], [74.4, 32.7], [73.8, 33.9], [73.3, 34.5], [73, 35.2], [72.6, 36], [72.8, 36.7]];
+    const BIHAR = [[83.32, 27.35], [83.9, 27.45], [84.35, 27.3], [84.7, 27.05], [85.15, 26.8], [85.55, 26.7], [86, 26.62], [86.55, 26.5], [87.05, 26.4], [87.27, 26.4], [87.85, 26.45], [88.15, 26.43], [88.2, 26.05], [88.05, 25.7], [88.1, 25.25], [87.9, 25.2], [87.7, 25.3], [87.55, 25.05], [87.25, 24.95], [87, 24.7], [86.6, 24.65], [86.2, 24.55], [85.8, 24.5], [85.4, 24.35], [84.9, 24.5], [84.4, 24.55], [84.1, 24.4], [83.8, 24.2], [83.35, 24.1], [83.4, 24.5], [83.6, 24.7], [83.75, 25.1], [83.7, 25.45], [83.95, 25.6], [84.3, 25.95], [84.6, 26.2], [84.1, 26.5], [83.9, 26.4], [83.6, 26.9], [83.32, 27.2]];
+    const GANGA = [[83.95, 25.6], [84.6, 25.65], [85.14, 25.62], [85.7, 25.45], [86.47, 25.38], [87, 25.25], [87.6, 25.05]];
+    const PATNA = [85.14, 25.59];
+    const LAND = [
+      [[-168, 66], [-140, 70], [-120, 72], [-95, 72], [-80, 68], [-62, 60], [-55, 50], [-67, 45], [-76, 38], [-81, 30], [-80, 25], [-90, 29], [-97, 26], [-97, 20], [-94, 18], [-88, 21], [-87, 16], [-83, 10], [-78, 8], [-83, 8], [-87, 13], [-92, 15], [-97, 16], [-105, 20], [-110, 24], [-117, 32], [-124, 40], [-125, 49], [-135, 58], [-150, 60], [-165, 60]],
+      [[-78, 8], [-72, 12], [-62, 10], [-52, 5], [-50, 0], [-35, -6], [-39, -15], [-48, -26], [-58, -35], [-65, -42], [-68, -52], [-72, -54], [-74, -45], [-72, -30], [-70, -18], [-76, -14], [-81, -5], [-80, 0], [-77, 4]],
+      [[-17, 21], [-10, 30], [-6, 36], [10, 37], [20, 32], [32, 31], [35, 28], [43, 12], [51, 12], [40, -3], [40, -15], [35, -25], [27, -34], [18, -34], [12, -18], [13, -5], [9, 3], [-8, 4], [-17, 14]],
+      [[-9, 37], [-9, 43], [-2, 43.5], [-4, 48], [2, 51], [8, 54], [9, 57], [5, 59], [6, 62], [14, 67], [20, 70], [30, 71], [45, 68], [60, 69], [70, 73], [85, 75], [105, 78], [113, 74], [130, 72], [150, 71], [170, 70], [180, 68], [178, 64], [165, 60], [160, 54], [156, 51], [141, 53], [140, 48], [135, 43], [130, 42], [129, 35], [126, 35], [125, 39], [121, 40], [119, 37], [122, 31], [120, 27], [117, 23], [110, 21], [108, 17], [109, 12], [105, 9], [102, 12], [100, 13], [99, 8], [101, 3], [104, 1], [100, 6], [98, 8], [98, 14], [97, 17], [94, 16], [94, 19], [92, 21], [91, 23], [88, 22], [87, 21], [84.5, 19], [82.5, 17], [80.3, 15.5], [80, 13], [79.8, 10.5], [77.5, 8], [76, 10], [74.8, 13], [73, 17], [72.8, 21], [70, 21], [69, 22.5], [68, 23.5], [66, 25], [62, 25], [57, 26], [56, 27.5], [54, 26.5], [51, 28], [49, 30], [48, 29], [50, 26], [51.5, 24.5], [56, 26], [56.5, 24], [59, 22.5], [57, 19], [52, 16], [45, 13], [43, 13.5], [39, 21], [36, 27], [34.5, 29], [34, 31.5], [35.5, 35], [36, 36.5], [30, 36.5], [27, 37], [26.5, 40], [29, 41], [28, 42], [23, 40], [24, 38], [22, 36.5], [20, 39.5], [19, 42], [18, 40], [16, 38], [13, 40.5], [10, 44], [7, 43.5], [3, 43], [0, 39], [-2, 36.7], [-6, 36.2]],
+      [[114, -22], [122, -18], [130, -12], [137, -12], [142, -11], [146, -19], [153, -26], [150, -37], [141, -38], [131, -31], [115, -34]],
+      [[-55, 60], [-45, 60], [-20, 70], [-20, 82], [-60, 82], [-70, 76]]
+    ];
+
+    const worldGroup = new THREE.Group(); worldGroup.position.copy(G); worldGroup.visible = false; scene.add(worldGroup);
+
+    function earthCanvas() {
+      const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+      const X = lo => (lo + 180) / 360 * 2048, Y = la => (90 - la) / 180 * 1024;
+      g.fillStyle = '#0b1b2b'; g.fillRect(0, 0, 2048, 1024);
+      g.strokeStyle = 'rgba(107,181,203,0.14)'; g.lineWidth = 1;
+      for (let lo = -180; lo <= 180; lo += 15) { g.beginPath(); g.moveTo(X(lo), 0); g.lineTo(X(lo), 1024); g.stroke(); }
+      for (let la = -90; la <= 90; la += 15) { g.beginPath(); g.moveTo(0, Y(la)); g.lineTo(2048, Y(la)); g.stroke(); }
+      const poly = (pts, fill, stroke, lw) => {
+        g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(X(p[0]), Y(p[1])) : g.moveTo(X(p[0]), Y(p[1]))); g.closePath();
+        g.fillStyle = fill; g.fill(); g.strokeStyle = stroke; g.lineWidth = lw; g.stroke();
+      };
+      LAND.forEach(l => poly(l, '#1d3d4e', 'rgba(107,181,203,0.55)', 2));
+      poly(INDIA, '#2fb5b5', '#bdf0f5', 2.5); poly(BIHAR, '#8fe9f0', '#ffffff', 1.5);
+      return c;
+    }
+
+    const earthTex = new THREE.CanvasTexture(earthCanvas()); earthTex.colorSpace = THREE.SRGBColorSpace; earthTex.anisotropy = 8;
+    const earthMat = new THREE.MeshStandardMaterial({ map: earthTex, emissiveMap: earthTex, emissive: 0xffffff, emissiveIntensity: 0.35, roughness: 0.9, transparent: true });
+    const earth = new THREE.Mesh(new THREE.SphereGeometry(R, 128, 64), earthMat);
+    const glowMat = new THREE.ShaderMaterial({
+      transparent: true, side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false, uniforms: { uO: { value: 1 } },
+      vertexShader: 'varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'varying vec3 vN; uniform float uO; void main(){ float i = pow(max(0.0, 0.62 - dot(vN, vec3(0.0,0.0,1.0))), 3.0); gl_FragColor = vec4(.29,.62,.8,1.0) * i * 2.2 * uO; }'
+    });
+    const glow = new THREE.Mesh(new THREE.SphereGeometry(R * 1.12, 64, 32), glowMat);
+    const earthGrp = new THREE.Group(); earthGrp.add(earth, glow);
+    {
+      const la = 23 * D2R, lo = 82 * D2R;
+      const e = new THREE.Vector3(-Math.sin(lo), 0, -Math.cos(lo));
+      const n = new THREE.Vector3(-Math.sin(la) * Math.cos(lo), Math.cos(la), Math.sin(la) * Math.sin(lo));
+      const u = new THREE.Vector3(Math.cos(la) * Math.cos(lo), Math.sin(la), -Math.cos(la) * Math.sin(lo));
+      earthGrp.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(e, u, n.clone().negate())).invert();
+    }
+    const spin = new THREE.Group(); spin.add(earthGrp); worldGroup.add(spin);
+
+    // Flat Extruded Map
+    const mapGroup = new THREE.Group(); mapGroup.position.set(0, R + 0.3, 0); worldGroup.add(mapGroup);
+    const mapMats = [], lineMats = [], labels = [], markers = [];
+    const mm = (o, b = 1) => { const m = new THREE.MeshStandardMaterial(Object.assign({ transparent: true }, o)); mapMats.push([m, b]); return m; };
+    const proj = (lo, la) => [(lo - 82) * Math.cos(la * D2R), -(la - 23)];
+    const shapeOf = pts => { const sh = new THREE.Shape(); pts.forEach(([lo, la], i) => { const [x, z] = proj(lo, la); i ? sh.lineTo(x, -z) : sh.moveTo(x, -z); }); return sh; };
+    const extr = (pts, depth, mat) => { const m = new THREE.Mesh(new THREE.ExtrudeGeometry(shapeOf(pts), { depth, bevelEnabled: true, bevelSize: 0.05, bevelThickness: 0.04, bevelSegments: 2 }).rotateX(-Math.PI / 2), mat); mapGroup.add(m); return m; };
+    const outline = (pts, y) => {
+      const lm = new THREE.LineBasicMaterial({ color: 0xbdf0f5, transparent: true }); lineMats.push([lm, 0.9]);
+      mapGroup.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts.map(([lo, la]) => { const [x, z] = proj(lo, la); return new THREE.Vector3(x, y, z); })), lm));
+    };
+
+    const ASIA = [[46, 60], [130, 60], [130, 19], [108, 19], [106, 12], [104.5, 10], [100, 13.5], [99, 8], [98.5, 16], [97.5, 16.8], [94.4, 16], [94.3, 19.5], [92.6, 21.8], [91.6, 22.4], [90.5, 22], [89.1, 21.8], [86, 22], [80, 22], [74, 22], [70, 23.5], [68, 23.7], [66.7, 25.4], [64, 25.2], [62, 25.2], [60, 25.3], [57.2, 25.7], [56.5, 27.1], [54.5, 26.5], [52, 27.8], [50.6, 29.2], [48.7, 30], [46, 30]];
+    const ARABIA = [[46, 30], [48.5, 29], [50, 26.5], [51.5, 24.5], [56, 26], [56.5, 24], [59.5, 22.5], [57, 19], [52, 16], [45, 13], [43, 13.5], [39, 21], [36, 27], [34.5, 29], [34, 31.5], [36, 36], [46, 37]];
+    const LANKA = [[79.8, 9.4], [80.2, 9.8], [81.2, 8.5], [81.9, 7.2], [81.7, 6.3], [80.8, 5.95], [80, 6], [79.7, 7.3]];
+
+    function baseCanvas() {
+      const S = 2048, c = document.createElement('canvas'); c.width = c.height = S; const g = c.getContext('2d');
+      const P = (lo, la) => { const [x, z] = proj(lo, la); return [(x + 48) / 96 * S, (z + 48) / 96 * S]; };
+      const sea = g.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2); sea.addColorStop(0, '#0d3440'); sea.addColorStop(1, '#08161f');
+      g.fillStyle = sea; g.fillRect(0, 0, S, S);
+      g.strokeStyle = 'rgba(107,181,203,0.08)'; g.lineWidth = 1.5;
+      for (let lo = 40; lo <= 140; lo += 5) { g.beginPath(); for (let la = -5; la <= 60; la++) { const [x, y] = P(lo, la); la === -5 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke(); }
+      for (let la = 0; la <= 60; la += 5) { const y = P(82, la)[1]; g.beginPath(); g.moveTo(0, y); g.lineTo(S, y); g.stroke(); }
+      const poly = (pts, fill, stroke, lw) => {
+        g.beginPath(); pts.forEach(([lo, la], i) => { const [x, y] = P(lo, la); i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.closePath();
+        g.fillStyle = fill; g.fill(); g.strokeStyle = stroke; g.lineWidth = lw; g.stroke();
+      };
+      g.shadowColor = 'rgba(74,144,164,0.6)'; g.shadowBlur = 14;
+      [ASIA, ARABIA, LANKA].forEach(l => poly(l, '#15262e', 'rgba(107,181,203,0.35)', 2.5));
+      poly(INDIA, '#1c5560', '#8fe9f0', 3); g.shadowBlur = 0;
+      g.globalCompositeOperation = 'destination-in';
+      const f = g.createRadialGradient(S / 2, S / 2, S * 0.28, S / 2, S / 2, S / 2); f.addColorStop(0, '#fff'); f.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = f; g.fillRect(0, 0, S, S); return c;
+    }
+
+    const baseTex = new THREE.CanvasTexture(baseCanvas()); baseTex.colorSpace = THREE.SRGBColorSpace; baseTex.anisotropy = 8;
+    const base = new THREE.Mesh(new THREE.PlaneGeometry(96, 96).rotateX(-Math.PI / 2), mm({ map: baseTex, roughness: 1 })); base.position.y = -0.1; mapGroup.add(base);
+    extr(INDIA, 0.3, mm({ color: 0x1f7d86, roughness: 0.55, metalness: 0.1, emissive: 0x0a3a42 }));
+    extr(BIHAR, 0.9, mm({ color: 0x3ad0c8, roughness: 0.45, emissive: 0x0e6a68 }));
+    outline(INDIA, 0.36); outline(BIHAR, 0.96);
+
+    // Ganga River
+    {
+      const pts = GANGA.map(([lo, la]) => { const [x, z] = proj(lo, la); return new THREE.Vector3(x, 0.98, z); });
+      mapGroup.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 60, 0.028, 6), mm({ color: 0x5fb8e8, emissive: 0x2a7fb0, roughness: 0.3 })));
+    }
+
+    // Patna Plot Cluster
+    const [px, pz] = proj(PATNA[0], PATNA[1]), [bx, bz] = proj(85.7, 25.9);
+    const tealM = mm({ color: 0x35bdb8, emissive: 0x35bdb8, emissiveIntensity: 0.3, roughness: 0.6 });
+    const amberM = mm({ color: 0xc48a34, emissive: 0xc48a34, emissiveIntensity: 0.25, roughness: 0.6 });
+    const darkM = mm({ color: 0x1a2430, roughness: 0.8 });
+    const flatG = new THREE.BoxGeometry(0.1, 0.01, 0.1), volG = new THREE.BoxGeometry(0.07, 1, 0.07).translate(0, 0.5, 0);
+    const cluster = new THREE.Group(); cluster.position.set(px, 0.94, pz); mapGroup.add(cluster);
+    const cvols = [];
+    for (let i = 0; i < 8; i++) for (let j = 0; j < 5; j++) {
+      const r = rnd(), m = r < 0.6 ? tealM : r < 0.8 ? amberM : darkM;
+      const f = new THREE.Mesh(flatG, m); f.position.set((i - 3.5) * 0.14, 0.005, (j - 2) * 0.14); cluster.add(f);
+      if (r < 0.7) {
+        const v = new THREE.Mesh(volG, m); v.position.set(f.position.x, 0.01, f.position.z);
+        v.userData.h = 0.04 + rnd() * 0.12; v.scale.y = 0.001; cluster.add(v); cvols.push(v);
+      }
+    }
+
+    for (let k = 0; k < 2; k++) {
+      const rm = new THREE.MeshBasicMaterial({ color: 0x8fe9f0, transparent: true, side: THREE.DoubleSide, depthWrite: false });
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.9, 1, 48).rotateX(-Math.PI / 2), rm); ring.position.set(px, 0.97, pz); mapGroup.add(ring);
+      markers.push({ ring, k });
+    }
+
+    // World journey map labels
+    function label(txt, w, h, pos, win) {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 128; const g = c.getContext('2d');
+      g.font = '700 64px Inter, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#fff';
+      g.shadowColor = 'rgba(107,181,203,0.9)'; g.shadowBlur = 18; g.fillText(txt.split('').join(' '), 256, 64);
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthTest: false, fog: false }));
+      sp.scale.set(w, h, 1); sp.position.set(pos[0], pos[1], pos[2]); sp.renderOrder = 10; mapGroup.add(sp); labels.push({ sp, win });
+    }
+    label('INDIA', 9, 2.25, [0, 1.6, -6], [6.4, 6.9, 7.2, 7.5]);
+    label('BIHAR', 2.4, 0.6, [bx, 1.8, bz - 1.6], [7.1, 7.4, 7.7, 7.95]);
+    label('PATNA', 0.55, 0.14, [px, 1.45, pz - 0.55], [7.7, 7.95, 99, 100]);
+
+    // Camera keyframes for world journey
+    const WP = (x, y, z) => new THREE.Vector3(x, y + R + 0.3, z).add(G);
+    const worldKeys = [
+      { p: G.clone().add(new THREE.Vector3(0.1, 0.78, 0.62).multiplyScalar(215)), t: G.clone() },
+      { p: WP(0.5, 58, 51.5), t: WP(0.5, 0, -0.5) },
+      { p: WP(bx, 7, bz + 7.5), t: WP(bx, 0.5, bz) },
+      { p: WP(px, 1.5, pz + 2), t: WP(px, 0.95, pz) }
+    ];
+
+    const win4 = (v, a, b, c, d) => ss((v - a) / (b - a)) * (1 - ss((v - c) / (d - c)));
+    function updateWorld(t) {
+      scene.fog.density = 0.007 * (1 - ss(sv - 3));
+      worldGroup.visible = sv > 4.8; if (!worldGroup.visible) return;
+      const gOp = 1 - ss((sv - 6.3) / 0.9), mOp = ss((sv - 6.5) / 0.8);
+      spin.rotation.y = -0.9 * (1 - ss((sv - 5.5) / 1.2));
+      earthGrp.visible = gOp > 0.01; earthMat.opacity = gOp; glowMat.uniforms.uO.value = gOp;
+      mapGroup.visible = mOp > 0.01;
+      for (const [m, b] of mapMats) { m.opacity = b * mOp; m.transparent = mOp < 0.99 || b < 1; }
+      for (const [m, b] of lineMats) m.opacity = b * mOp;
+      for (const mk of markers) { const f = (t * 0.7 + mk.k * 0.5) % 1; mk.ring.scale.setScalar(0.5 + f * 1.1); mk.ring.material.opacity = (1 - f) * 0.9 * mOp; }
+      for (const l of labels) l.sp.material.opacity = win4(sv, ...l.win) * mOp;
+      const gv = ss((sv - 7.6) / 0.4);
+      for (const v of cvols) v.scale.y = Math.max(0.001, v.userData.h * gv);
+    }
+
+    /* ---------- Master Land Layout (Slides 5-6) ---------- */
+    const IW = 654, IH = 522, LK = 0.352, OX = 452, OY = 330;
+    const LX = ix => (ix - OX) * LK, LZ = iy => (iy - OY) * LK;
+    const ROAD = [[376, 0], [565, 0], [565, 522], [88, 522], [88, 418], [190, 250], [332, 125], [354, 70]];
+    const pip = (pts, x, y) => {
+      let c = false; for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+        const a = pts[i], b = pts[j];
+        if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) c = !c;
+      }
+      return c;
+    };
+
+    const OSP = [{ x: 412, y: 168, w: 136, h: 42, pond: [508, 176, 34, 26] }, { x: 88, y: 398, w: 242, h: 42, pond: [96, 404, 74, 30] }];
+    const GROUPS = [
+      [356, 0, 160, 2], [412, 0, 160, 2], [466, 0, 160, 2], [516, 0, 160, 2], [356, 168, 215, 2],
+      [356, 232, 445, 2], [412, 232, 445, 2], [466, 232, 445, 2], [516, 232, 445, 2], [290, 232, 385, 2],
+      [235, 232, 385, 2], [180, 232, 385, 2], [125, 232, 385, 2], [92, 232, 385, 1], [92, 468, 522, 2],
+      [142, 468, 522, 2], [192, 468, 522, 2], [242, 468, 522, 2], [292, 468, 522, 2], [356, 468, 522, 2],
+      [412, 468, 522, 2], [466, 468, 522, 2], [516, 468, 522, 2]
+    ];
+
+    function layoutCanvas() {
+      const W = 3072, H = 2452, c = document.createElement('canvas'); c.width = W; c.height = H;
+      const g = c.getContext('2d'); g.scale(W / IW, H / IH);
+      g.fillStyle = '#1c1f1b'; g.fillRect(0, 0, IW, IH);
+      for (let i = 0; i < 5000; i++) {
+        const t = rnd(); g.fillStyle = t < 0.5 ? `rgba(60,72,50,${rnd() * 0.35})` : t < 0.8 ? `rgba(10,12,10,${rnd() * 0.4})` : `rgba(110,95,70,${rnd() * 0.2})`;
+        g.beginPath(); g.arc(rnd() * IW, rnd() * IH, 0.8 + rnd() * 4, 0, 6.283); g.fill();
+      }
+      g.save(); g.beginPath(); g.rect(575, 0, IW - 575, IH); g.clip(); g.strokeStyle = 'rgba(150,130,90,0.2)'; g.lineWidth = 1.2;
+      for (let k = -200; k < 400; k += 8) { g.beginPath(); g.moveTo(575 + k, 0); g.lineTo(775 + k, IH); g.stroke(); } g.restore();
+      const path = () => { g.beginPath(); ROAD.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1])); g.closePath(); };
+      path(); g.fillStyle = '#141517'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.1)'; g.lineWidth = 0.8; g.stroke();
+      const rects = []; let n = 100;
+      g.save(); path(); g.clip(); g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '5.5px sans-serif';
+      for (const [x0, y0, y1, nc] of GROUPS) {
+        const rows = Math.round((y1 - y0) / 15.3), rh = (y1 - y0) / rows;
+        for (let ci = 0; ci < nc; ci++) for (let r = 0; r < rows; r++) {
+          const x = x0 + ci * 20, y = y0 + r * rh, w = 19, h = rh - 1;
+          g.fillStyle = '#d8cfb8'; g.fillRect(x, y, w, h); g.fillStyle = '#4a463c'; g.fillText(String(n++), x + w / 2, y + h / 2);
+          if ([[x, y], [x + w, y], [x, y + h], [x + w, y + h]].every(q => pip(ROAD, q[0], q[1]))) rects.push([x, y, w, h]);
+        }
+      }
+      g.restore();
+      g.fillStyle = 'rgba(255,255,255,0.75)'; g.font = '4.6px sans-serif';
+      [["33' Wide Road", 482, 164, 0], ["33' Wide Road", 380, 224, 0], ["40' Wide Road", 215, 448, 0], ["40' Wide Road", 440, 455, 0], ["33' Wide Road", 215, 460, 0]].forEach(([t, x, y, a]) => g.fillText(t, x, y));
+      [[404, 100], [459, 100], [509, 100], [404, 330], [459, 330], [509, 330], [282, 310], [228, 310], [173, 310], [118, 310]].forEach(([x, y]) => { g.save(); g.translate(x, y); g.rotate(-Math.PI / 2); g.fillText("33' Wide Road", 0, 0); g.restore(); });
+      for (const o of OSP) {
+        g.fillStyle = '#2d5d2b'; g.fillRect(o.x, o.y, o.w, o.h); g.strokeStyle = '#a7c785'; g.lineWidth = 1; g.strokeRect(o.x, o.y, o.w, o.h);
+        const [px, py, pw, ph] = o.pond; g.fillStyle = '#2f86cc'; g.beginPath(); g.ellipse(px + pw / 2, py + ph / 2, pw / 2, ph / 2, 0, 0, 6.283); g.fill();
+        g.fillStyle = '#fff'; g.font = '600 6px sans-serif'; g.fillText('OPEN SPACE', o.pond[0] < o.x + o.w / 2 ? o.x + o.w * 0.62 : o.x + o.w * 0.3, o.y + o.h / 2);
+      }
+      g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'destination-in';
+      const f = g.createRadialGradient(W / 2, H / 2, W * 0.36, W / 2, H / 2, W * 0.56); f.addColorStop(0, '#fff'); f.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = f; g.fillRect(0, 0, W, H);
+      return { c, rects };
+    }
+
+    const layGroup = new THREE.Group(); layGroup.visible = false; scene.add(layGroup);
+    const layMats = [], beams = [];
+    const lmat = (o, b = 1) => { const m = new THREE.MeshStandardMaterial(Object.assign({ transparent: true }, o)); layMats.push([m, b]); return m; };
+    const { c: lc, rects } = layoutCanvas();
+    const ltex = new THREE.CanvasTexture(lc); ltex.colorSpace = THREE.SRGBColorSpace; ltex.anisotropy = 8;
+    const lplane = new THREE.Mesh(new THREE.PlaneGeometry(IW * LK, IH * LK).rotateX(-Math.PI / 2), lmat({ map: ltex, roughness: 1 }));
+    lplane.position.set(LX(IW / 2), 0.03, LZ(IH / 2)); lplane.receiveShadow = true; layGroup.add(lplane);
+
+    const vilM = [lmat({ color: 0xe9dfc8, roughness: 0.8 }), lmat({ color: 0x35bdb8, emissive: 0x1b6e6a, roughness: 0.6 }), lmat({ color: 0xc48a34, roughness: 0.7 })];
+    const unitBox = new THREE.BoxGeometry(1, 1, 1).translate(0, 0.5, 0), villas = [];
+    rects.forEach(([x, y, w, h]) => {
+      const cx = LX(x + w / 2), cz = LZ(y + h / 2); if (Math.abs(cx) < 13 && Math.abs(cz) < 13) return;
+      const r = rnd(); if (r > 0.38) {
+        if (r > 0.98) {
+          const bm = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 10, 6).translate(0, 5, 0), new THREE.MeshBasicMaterial({ color: 0x6BB5CB, transparent: true }));
+          bm.position.set(cx, 0.03, cz); layGroup.add(bm); beams.push(bm);
+        }
+        return;
+      }
+      const m = new THREE.Mesh(unitBox, vilM[r < 0.2 ? 0 : r < 0.3 ? 1 : 2]); m.position.set(cx, 0.03, cz);
+      m.scale.set(w * 0.6 * LK, 0.001, h * 0.6 * LK); m.userData.h = 0.9 + rnd() * 2.6; m.castShadow = true; layGroup.add(m); villas.push(m);
+    });
+
+    for (let k = 0; k < 8; k++) {
+      const [x, y, w, h] = rects[Math.floor(rnd() * rects.length)];
+      const bm = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 12, 6).translate(0, 6, 0), new THREE.MeshBasicMaterial({ color: 0x6BB5CB, transparent: true }));
+      bm.position.set(LX(x + w / 2), 0.03, LZ(y + h / 2)); layGroup.add(bm); beams.push(bm);
+    }
+
+    const waterM = lmat({ color: 0x2f86cc, roughness: 0.1, metalness: 0.5, emissive: 0x0a3a66 });
+    const treeG = new THREE.ConeGeometry(0.9, 2.6, 7).translate(0, 1.3, 0), dummy = new THREE.Object3D();
+    for (const o of OSP) {
+      const [px, py, pw, ph] = o.pond; const w = new THREE.Mesh(new THREE.CircleGeometry(0.5, 40).rotateX(-Math.PI / 2), waterM);
+      w.scale.set(pw * LK, 1, ph * LK); w.position.set(LX(px + pw / 2), 0.09, LZ(py + ph / 2)); layGroup.add(w);
+      const tm = new THREE.InstancedMesh(treeG, lmat({ color: 0x2f7a45, roughness: 0.9 }), 26); let k = 0;
+      while (k < 26) {
+        const x = o.x + 3 + rnd() * (o.w - 6), y = o.y + 3 + rnd() * (o.h - 6);
+        if (x > px - 3 && x < px + pw + 3 && y > py - 3 && y < py + ph + 3) continue;
+        dummy.position.set(LX(x), 0.03, LZ(y)); dummy.scale.setScalar(0.7 + rnd() * 0.6); dummy.updateMatrix(); tm.setMatrixAt(k++, dummy.matrix);
+      }
+      tm.castShadow = true; layGroup.add(tm);
+    }
+
+    function updateLayout(t) {
+      const op = ss((sv - 3.2) / 0.8) * (1 - ss((sv - 5.5) / 0.6));
+      layGroup.visible = op > 0.01; if (!layGroup.visible) return;
+      for (const [m, b] of layMats) { m.opacity = b * op; m.transparent = op < 0.99; }
+      const gv = ss((sv - 4.3) / 0.7); for (const v of villas) v.scale.y = Math.max(0.001, v.userData.h * gv);
+      beams.forEach((b, i) => { b.material.opacity = op * (0.35 + 0.3 * Math.sin(t * 2 + i)); });
+      waterM.emissiveIntensity = 0.7 + 0.3 * Math.sin(t * 1.5);
+    }
+
+    const layoutKeys = [
+      { p: new THREE.Vector3(-44, 190, 22), t: new THREE.Vector3(-44, 0, -35) },
+      { p: new THREE.Vector3(40, 80, 55), t: new THREE.Vector3(-30, 0, -30) }
+    ];
+
+    /* ---------- OrbitControls ---------- */
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true; controls.dampingFactor = 0.07;
+    controls.enableZoom = false; controls.enablePan = false;
+    controls.minPolarAngle = 0.05; controls.maxPolarAngle = Math.PI / 2 - 0.02;
+    controls.enabled = false;
+    canvas.style.touchAction = 'pan-y';
+
+    /* ---------- Scroll-Driven Camera Timeline ---------- */
+    const V = (a, b, c) => new THREE.Vector3(a, b, c);
+    const K = [
+      { p: V(0, 72, 26), t: V(0, 0, 0) },
+      { p: V(26, 14, 34), t: V(0, 8, 0) },
+      { p: V(-30, 10, 22), t: V(0, 9, 0) },
+      { p: V(-8, 34, 30), t: V(0, 12, 0) }
+    ];
+    const KS = [0, 1, 2, 3, 4, 5, 6, 7, 7.65, 8];
+    K.push(...layoutKeys, ...worldKeys);
+    camera.position.copy(K[0].p); controls.target.copy(K[0].t); controls.update();
+
+    const tools = document.getElementById('tools');
+    let sv = 0, lastScroll = 0;
+    const secs = [...document.querySelectorAll('.sec')];
+
+    function onScroll() {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      if (scrollProgressBar) {
+        const scrolled = window.scrollY;
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgressBar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+      }
+
+      if (backToTop) {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+      }
+
+      const pr = document.getElementById('price'), P = pr.offsetTop, PH = pr.offsetHeight;
+      sv = (scrollY <= P ? scrollY : scrollY <= P + PH ? P : scrollY - PH) / innerHeight;
+      lastScroll = performance.now();
+      controls.enabled = sv > 0.95;
+      controls.enablePan = sv > 3.8 && sv < 5.8;
+      tools.classList.toggle('on', sv > 4.3 && sv < 5.15 && scrollY < document.getElementById('price').offsetTop - innerHeight * 0.15);
+
+      // Fade the 2D hero canvas map on scroll (Keep navigation intact!)
+      hOp = 1 - ss(sv / 0.85);
+      hc.style.opacity = hOp;
+      hc.style.visibility = hOp < 0.01 ? 'hidden' : 'visible';
+
+      const idx = secs.findIndex(el => { const r = el.getBoundingClientRect(); return r.top <= innerHeight * 0.5 && r.bottom > innerHeight * 0.5; });
+      secs.forEach((s, i) => s.classList.toggle('on', i === idx));
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    controls.addEventListener('start', () => { lastScroll = 0; });
+
+    let panMode = false;
+    const zoom = f => {
+      const d = camera.position.clone().sub(controls.target);
+      d.setLength(clamp(d.length() * f, 20, 330));
+      camera.position.copy(controls.target).add(d);
+      lastScroll = 0;
+    };
+
+    document.getElementById('zin').onclick = () => zoom(0.78);
+    document.getElementById('zout').onclick = () => zoom(1.28);
+    const panBtn = document.getElementById('pan');
+    const panLabel = document.getElementById('pan-label');
+    panBtn.onclick = () => {
+      panMode = !panMode;
+      if (panLabel) panLabel.textContent = panMode ? 'Pan: On' : 'Pan: Off';
+      panBtn.classList.toggle('active', panMode);
+      controls.mouseButtons.LEFT = panMode ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+      controls.touches.ONE = panMode ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+      canvas.style.touchAction = panMode ? 'none' : 'pan-y';
+    };
+
+    onScroll();
+
+    const goalP = new THREE.Vector3(), goalT = new THREE.Vector3();
+    function updateGoal() {
+      const v = clamp(sv, 0, 8); let i = 0; while (i < KS.length - 2 && v > KS[i + 1]) i++;
+      const u = ss((v - KS[i]) / (KS[i + 1] - KS[i]));
+      goalP.lerpVectors(K[i].p, K[i + 1].p, u); goalT.lerpVectors(K[i].t, K[i + 1].t, u);
+    }
+
+    /* ---------- Resize Handler ---------- */
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    /* ---------- Render Loop ---------- */
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = Math.min(clock.getDelta(), 0.1), t = clock.elapsedTime;
+
+      const gridK = 1 - ss((sv - 3.1) / 0.7); gridGroup.visible = gridK > 0.01;
+      for (const v of vols) {
+        const e = ss((t - v.userData.delay) / 1.4);
+        v.scale.y = Math.max(0.001, v.userData.h * e * gridK);
+      }
+
+      const bp = ss(sv);
+      building.visible = bp > 0.01;
+      building.scale.y = 0.02 + 0.98 * bp;
+      plotLines.material.opacity = 0.5 - 0.25 * bp;
+      beacon.material.opacity = 0.7 * (1 - bp); ring.material.opacity = 0.8 * (1 - bp);
+      ring.scale.setScalar(1 + 0.25 * Math.sin(t * 2.2)); beacon.visible = ring.visible = bp < 0.98;
+      availMat.emissiveIntensity = 0.3 + 0.15 * Math.sin(t * 1.6);
+      particles.rotation.y = t * 0.01; particles.position.y = Math.sin(t * 0.3) * 0.8;
+      lid.rotation.y = t * 0.2;
+
+      if (hOp > 0.01) drawHero(t);
+      updateWorld(t); updateLayout(t);
+
+      const shift = innerWidth > 760 ? 0.2 * innerWidth * ss(sv - 3.8) : 0;
+      if (shift > 0.5) camera.setViewOffset(innerWidth, innerHeight, -shift, 0, innerWidth, innerHeight);
+      else if (camera.view && camera.view.enabled) camera.clearViewOffset();
+
+      if (!controls.enabled || performance.now() - lastScroll < 2200) {
+        updateGoal();
+        const k = 1 - Math.exp(-4 * dt);
+        camera.position.lerp(goalP, k); controls.target.lerp(goalT, k);
+      }
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    /* ---------- Price Reveal & Counter ---------- */
+    const priceEl = document.getElementById('price'), amt = document.getElementById('amt');
+    new IntersectionObserver((es, ob) => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      priceEl.classList.add('in');
+      ob.disconnect();
+      const T = performance.now();
+      (function tick(n) {
+        const k = Math.min(1, (n - T) / 1500);
+        amt.textContent = Math.round(10000 * (1 - Math.pow(1 - k, 3))).toLocaleString('en-IN');
+        if (k < 1) requestAnimationFrame(tick);
+      })(T);
+    }), { threshold: 0.2 }).observe(priceEl);
+  </script>
+</body>
+
+</html>

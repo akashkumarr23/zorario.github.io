@@ -19,6 +19,10 @@
     <!-- Base Zorario Styles -->
     <link rel="stylesheet" href="style.css">
 
+    <!-- Three.js & OrbitControls for 3D Township Digital Twin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
     <style>
         /* ── Master Layout Specific Overrides & Engine ───────────── */
         :root {
@@ -251,6 +255,191 @@
             background: rgba(74, 144, 164, 0.15);
             box-shadow: 0 0 14px rgba(74, 144, 164, 0.3);
             width: 210px;
+        }
+
+        /* ── 2D / 3D View Mode Toggle ───────────────────────────── */
+        .view-mode-pill {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(15, 34, 55, 0.95);
+            border: 1px solid rgba(74, 144, 164, 0.35);
+            border-radius: 100px;
+            padding: 3px;
+            gap: 4px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+            flex-shrink: 0;
+        }
+
+        .mode-tab-btn {
+            background: transparent;
+            border: none;
+            color: #9CA3AF;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.22s ease;
+            font-family: inherit;
+        }
+
+        .mode-tab-btn:hover {
+            color: var(--layout-teal-light);
+        }
+
+        .mode-tab-btn.active {
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #ffffff;
+            box-shadow: 0 2px 12px rgba(74, 144, 164, 0.45);
+        }
+
+        /* ── 3D Viewport & Canvas ─────────────────────────────────── */
+        .three-canvas-viewport {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: block;
+            outline: none;
+            overflow: hidden;
+            background: #09182a;
+        }
+
+        .three-canvas-viewport.is-hidden {
+            display: none !important;
+            pointer-events: none;
+        }
+
+        #threeCanvas3D {
+            width: 100%;
+            height: 100%;
+            display: block;
+            outline: none;
+            cursor: grab;
+        }
+
+        #threeCanvas3D:active {
+            cursor: grabbing;
+        }
+
+        .three-loading-badge {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 34, 55, 0.92);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(74, 144, 164, 0.35);
+            border-radius: 100px;
+            padding: 8px 18px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--layout-teal-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 25;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .three-loading-badge.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* ── Floating 3D Navigation & Lighting Controls ─────────── */
+        .floating-3d-controls {
+            position: absolute;
+            bottom: 24px;
+            left: 76px;
+            display: flex;
+            gap: 10px;
+            z-index: 45;
+            pointer-events: auto;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .floating-3d-controls.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+        }
+
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 34, 55, 0.94);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(74, 144, 164, 0.35);
+            border-radius: 100px;
+            padding: 4px;
+            gap: 4px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+
+        .ctrl-btn-3d {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .ctrl-btn-3d:hover {
+            color: #ffffff;
+            background: rgba(74, 144, 164, 0.18);
+        }
+
+        .ctrl-btn-3d.active {
+            background: rgba(74, 144, 164, 0.32);
+            color: #ffffff;
+            border: 1px solid rgba(107, 181, 203, 0.5);
+            box-shadow: 0 0 10px rgba(74, 144, 164, 0.35);
+        }
+
+        .light-group {
+            padding: 4px;
+            gap: 3px;
+        }
+
+        .light-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .light-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .light-btn.active {
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(74, 144, 164, 0.45);
         }
 
         /* ── Canvas Viewport ────────────────────────────────────── */
@@ -988,6 +1177,18 @@
                     <i class="fas fa-search search-icon" aria-hidden="true"></i>
                     <input type="text" id="plotSearchInput" class="search-plot-input" placeholder="Search Plot (1-123)..." autocomplete="off">
                 </div>
+
+                <!-- 2D Plan / 3D Digital Twin Mode Switcher -->
+                <div class="view-mode-pill" id="viewModeToggle" role="tablist" aria-label="Layout View Modes">
+                    <button type="button" class="mode-tab-btn active" id="btnMode2D" role="tab" aria-selected="true" title="2D Master Architectural Plan">
+                        <i class="fas fa-map"></i>
+                        <span>2D Plan</span>
+                    </button>
+                    <button type="button" class="mode-tab-btn" id="btnMode3D" role="tab" aria-selected="false" title="Interactive 3D Digital Twin Township">
+                        <i class="fas fa-cube"></i>
+                        <span>3D Twin</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Filter Strip -->
@@ -1016,6 +1217,7 @@
 
         <!-- MAIN CANVAS VIEWPORT -->
         <main class="layout-canvas-area" id="canvasArea" aria-label="Interactive Plot Layout Map">
+            <!-- 2D Vector Plan Viewport -->
             <div class="panzoom-viewport" id="viewport">
                 <div class="svg-container" id="svgContainer">
                     <!-- SVG is inlined dynamically for direct DOM access -->
@@ -1025,8 +1227,46 @@
                 </div>
             </div>
 
-            <!-- Floating Zoom & Reset Buttons -->
-            <div class="floating-zoom-controls" aria-label="Zoom Controls">
+            <!-- 3D Digital Twin Three.js Viewport -->
+            <div class="three-canvas-viewport" id="threeViewport" style="display:none;">
+                <canvas id="threeCanvas3D"></canvas>
+                <div class="township-3d-badge">
+                    <span class="pulse-indicator"></span>
+                    <span>AURANGABAD TOWNSHIP &bull; 3D DIGITAL TWIN</span>
+                </div>
+            </div>
+
+            <!-- Floating 3D Controls (Camera Views & Lighting) -->
+            <div class="floating-3d-controls" id="controls3D" style="display:none;" aria-label="3D Controls">
+                <div class="view-preset-strip">
+                    <button type="button" class="preset-btn active" id="btnCamAerial" title="Aerial Overview">
+                        <i class="fas fa-satellite"></i>
+                        <span>Aerial</span>
+                    </button>
+                    <button type="button" class="preset-btn" id="btnCamStreet" title="Street Avenue View">
+                        <i class="fas fa-road"></i>
+                        <span>Street</span>
+                    </button>
+                    <button type="button" class="preset-btn" id="btnCamOrbit" title="Drone Orbit 360">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Orbit</span>
+                    </button>
+                </div>
+                <div class="lighting-mode-strip">
+                    <button type="button" class="light-btn active" id="btnLightDay" title="Daylight">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button type="button" class="light-btn" id="btnLightSunset" title="Golden Sunset">
+                        <i class="fas fa-cloud-sun"></i>
+                    </button>
+                    <button type="button" class="light-btn" id="btnLightNight" title="Night Lights">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Floating Zoom & Reset Buttons (for 2D View) -->
+            <div class="floating-zoom-controls" id="zoomControls2D" aria-label="Zoom Controls">
                 <button type="button" class="zoom-btn" id="btnZoomIn" title="Zoom In" aria-label="Zoom In">
                     <i class="fas fa-plus"></i>
                 </button>
@@ -1254,6 +1494,213 @@
         let selectedPlotKey = null;
         let activeFilter = 'All';
         const plotElementsRegistry = new Map();
+        const plotBBoxesMap = new Map();
+
+        // Exact Master Coordinates of all 123 Plots Extracted from AurangabadLayoutnew.svg
+        const AURANGABAD_PLOT_COORDINATES = {
+            Plot_1:   { x: 762.25, y: 642.25, w: 38.5, h: 55.5 },
+            Plot_2:   { x: 762.25, y: 570.25, w: 37.5, h: 44.5 },
+            Plot_3:   { x: 762.25, y: 527.25, w: 37.5, h: 42.5 },
+            Plot_4:   { x: 762.25, y: 484.25, w: 37.5, h: 42.5 },
+            Plot_5:   { x: 762.25, y: 441.25, w: 37.5, h: 42.5 },
+            Plot_6:   { x: 762.25, y: 398.25, w: 37.5, h: 42.5 },
+            Plot_7:   { x: 762.25, y: 355.25, w: 37.5, h: 42.5 },
+            Plot_8:   { x: 762.25, y: 312.25, w: 37.5, h: 42.5 },
+            Plot_9:   { x: 762.25, y: 269.25, w: 37.5, h: 42.5 },
+            Plot_10:  { x: 762.25, y: 226.25, w: 37.5, h: 42.5 },
+            Plot_11:  { x: 762.25, y: 183.25, w: 37.5, h: 42.5 },
+            Plot_12:  { x: 762.25, y: 140.25, w: 37.5, h: 42.5 },
+            Plot_13:  { x: 762.25, y: 97.25,  w: 37.5, h: 42.5 },
+            Plot_14:  { x: 704.25, y: 97.25,  w: 37.5, h: 42.5 },
+            Plot_15:  { x: 704.25, y: 140.25, w: 37.5, h: 42.5 },
+            Plot_16:  { x: 704.25, y: 183.25, w: 37.5, h: 42.5 },
+            Plot_17:  { x: 704.25, y: 226.25, w: 37.5, h: 42.5 },
+            Plot_18:  { x: 704.25, y: 269.25, w: 37.5, h: 42.5 },
+            Plot_19:  { x: 704.25, y: 312.25, w: 37.5, h: 42.5 },
+            Plot_20:  { x: 704.25, y: 355.25, w: 37.5, h: 42.5 },
+            Plot_21:  { x: 704.25, y: 398.25, w: 37.5, h: 42.5 },
+            Plot_22:  { x: 704.25, y: 441.25, w: 37.5, h: 42.5 },
+            Plot_23:  { x: 704.25, y: 484.25, w: 37.5, h: 42.5 },
+            Plot_24:  { x: 704.25, y: 527.25, w: 37.5, h: 42.5 },
+            Plot_25:  { x: 704.25, y: 570.25, w: 37.5, h: 41.5 },
+
+            Plot_26:  { x: 691.25, y: 642.25, w: 51.5, h: 55.5 },
+            Plot_27:  { x: 660.25, y: 642.25, w: 30.5, h: 55.5 },
+            Plot_28:  { x: 632.25, y: 642.25, w: 27.5, h: 55.5 },
+            Plot_29:  { x: 601.25, y: 642.25, w: 30.5, h: 55.5 },
+            Plot_30:  { x: 572.25, y: 642.25, w: 28.5, h: 55.5 },
+            Plot_31:  { x: 544.25, y: 642.25, w: 27.5, h: 55.5 },
+
+            Plot_32:  { x: 653.25, y: 559.25, w: 50.5, h: 52.5 },
+            Plot_33:  { x: 653.25, y: 526.25, w: 50.5, h: 32.5 },
+            Plot_34:  { x: 653.25, y: 493.25, w: 50.5, h: 32.5 },
+            Plot_35:  { x: 653.25, y: 460.25, w: 50.5, h: 32.5 },
+            Plot_36:  { x: 653.25, y: 427.25, w: 50.5, h: 32.5 },
+            Plot_37:  { x: 653.25, y: 394.25, w: 50.5, h: 32.5 },
+            Plot_38:  { x: 653.25, y: 361.25, w: 50.5, h: 32.5 },
+            Plot_39:  { x: 653.25, y: 328.25, w: 50.5, h: 32.5 },
+            Plot_40:  { x: 653.25, y: 295.25, w: 50.5, h: 32.5 },
+            Plot_41:  { x: 653.25, y: 262.25, w: 50.5, h: 32.5 },
+            Plot_42:  { x: 653.25, y: 229.25, w: 50.5, h: 32.5 },
+            Plot_43:  { x: 653.25, y: 196.25, w: 50.5, h: 32.5 },
+            Plot_44:  { x: 653.25, y: 163.25, w: 50.5, h: 32.5 },
+            Plot_45:  { x: 653.25, y: 130.25, w: 50.5, h: 32.5 },
+            Plot_46:  { x: 653.25, y: 97.25,  w: 50.5, h: 32.5 },
+
+            Plot_47:  { x: 598.75, y: 545.25, w: 37.0, h: 66.5 },
+            Plot_48:  { x: 598.25, y: 501.25, w: 37.5, h: 43.5 },
+            Plot_49:  { x: 598.25, y: 459.25, w: 37.5, h: 41.5 },
+            Plot_50:  { x: 597.25, y: 417.25, w: 38.5, h: 41.5 },
+            Plot_51:  { x: 597.25, y: 376.25, w: 38.5, h: 40.5 },
+            Plot_52:  { x: 596.75, y: 336.25, w: 39.0, h: 39.5 },
+            Plot_53:  { x: 596.25, y: 295.25, w: 39.5, h: 40.5 },
+            Plot_54:  { x: 596.25, y: 255.25, w: 39.5, h: 39.5 },
+            Plot_55:  { x: 596.25, y: 215.25, w: 39.5, h: 39.5 },
+            Plot_56:  { x: 595.25, y: 173.25, w: 40.5, h: 41.5 },
+            Plot_57:  { x: 595.25, y: 136.25, w: 40.5, h: 36.5 },
+            Plot_58:  { x: 595.25, y: 97.25,  w: 40.5, h: 38.0 },
+
+            Plot_59:  { x: 553.25, y: 97.25,  w: 41.5, h: 38.0 },
+            Plot_60:  { x: 554.25, y: 135.25, w: 40.5, h: 37.5 },
+            Plot_61:  { x: 555.25, y: 173.25, w: 39.5, h: 41.5 },
+            Plot_62:  { x: 555.75, y: 215.25, w: 39.5, h: 39.5 },
+            Plot_63:  { x: 556.75, y: 255.25, w: 39.0, h: 39.5 },
+            Plot_64:  { x: 557.25, y: 295.25, w: 38.5, h: 40.5 },
+            Plot_65:  { x: 557.75, y: 336.25, w: 39.0, h: 39.5 },
+            Plot_66:  { x: 558.75, y: 376.25, w: 38.0, h: 40.5 },
+            Plot_67:  { x: 559.73, y: 417.25, w: 37.0, h: 41.5 },
+            Plot_68:  { x: 560.25, y: 459.25, w: 36.5, h: 41.5 },
+            Plot_69:  { x: 561.25, y: 501.25, w: 36.5, h: 43.5 },
+            Plot_70:  { x: 561.25, y: 545.25, w: 36.5, h: 66.5 },
+
+            Plot_71:  { x: 509.25, y: 556.25, w: 35.5, h: 55.5 },
+            Plot_72:  { x: 507.95, y: 510.25, w: 35.3, h: 45.5 },
+            Plot_73:  { x: 506.76, y: 466.25, w: 36.0, h: 43.5 },
+            Plot_74:  { x: 505.26, y: 422.25, w: 36.5, h: 43.5 },
+            Plot_75:  { x: 504.25, y: 381.25, w: 36.5, h: 40.5 },
+            Plot_76:  { x: 502.76, y: 339.75, w: 37.5, h: 41.0 },
+            Plot_77:  { x: 501.26, y: 297.25, w: 38.5, h: 41.5 },
+            Plot_78:  { x: 500.25, y: 253.25, w: 39.0, h: 43.5 },
+            Plot_79:  { x: 499.25, y: 214.25, w: 39.0, h: 38.5 },
+            Plot_80:  { x: 497.76, y: 175.25, w: 40.0, h: 38.5 },
+            Plot_81:  { x: 496.75, y: 136.25, w: 40.5, h: 38.5 },
+            Plot_82:  { x: 495.26, y: 97.25,  w: 41.5, h: 38.5 },
+
+            Plot_83:  { x: 454.25, y: 97.25,  w: 41.5, h: 39.0 },
+            Plot_84:  { x: 455.26, y: 136.25, w: 41.5, h: 38.5 },
+            Plot_85:  { x: 457.25, y: 175.25, w: 40.5, h: 38.5 },
+            Plot_86:  { x: 458.25, y: 214.25, w: 41.5, h: 38.5 },
+            Plot_87:  { x: 459.25, y: 253.25, w: 41.5, h: 39.5 },
+            Plot_88:  { x: 460.25, y: 293.25, w: 41.5, h: 41.5 },
+            Plot_89:  { x: 461.25, y: 335.25, w: 41.5, h: 36.5 },
+            Plot_90:  { x: 462.75, y: 372.25, w: 41.0, h: 40.5 },
+            Plot_91:  { x: 464.25, y: 413.25, w: 41.0, h: 39.5 },
+            Plot_92:  { x: 465.25, y: 453.25, w: 41.5, h: 38.5 },
+            Plot_93:  { x: 466.26, y: 492.25, w: 41.5, h: 40.5 },
+            Plot_94:  { x: 468.25, y: 533.25, w: 42.0, h: 78.5 },
+
+            Plot_95:  { x: 413.26, y: 520.25, w: 39.5, h: 91.5 },
+            Plot_96:  { x: 411.26, y: 464.25, w: 38.5, h: 55.5 },
+            Plot_97:  { x: 408.26, y: 410.25, w: 39.5, h: 53.5 },
+            Plot_98:  { x: 406.26, y: 359.25, w: 40.5, h: 50.5 },
+            Plot_99:  { x: 403.76, y: 307.25, w: 42.0, h: 51.5 },
+            Plot_100: { x: 401.26, y: 258.25, w: 42.0, h: 48.5 },
+            Plot_101: { x: 398.26, y: 210.25, w: 43.5, h: 47.5 },
+            Plot_102: { x: 397.25, y: 163.25, w: 43.0, h: 46.5 },
+            Plot_103: { x: 393.75, y: 97.25,  w: 44.0, h: 45.0 },
+
+            Plot_104: { x: 425.25, y: 642.25, w: 37.5, h: 55.5 },
+            Plot_105: { x: 463.25, y: 642.25, w: 28.5, h: 55.5 },
+            Plot_106: { x: 492.25, y: 642.25, w: 28.5, h: 55.5 },
+
+            Plot_107: { x: 742.25, y: 699.25,  w: 49.5, h: 32.5 },
+            Plot_108: { x: 743.25, y: 732.25,  w: 48.5, h: 30.5 },
+            Plot_109: { x: 743.25, y: 763.25,  w: 48.5, h: 31.5 },
+            Plot_110: { x: 743.25, y: 795.25,  w: 48.5, h: 34.5 },
+            Plot_111: { x: 744.25, y: 830.25,  w: 47.5, h: 35.5 },
+            Plot_112: { x: 744.25, y: 866.25,  w: 47.5, h: 33.5 },
+            Plot_113: { x: 745.25, y: 900.25,  w: 46.5, h: 30.5 },
+            Plot_114: { x: 745.25, y: 931.25,  w: 46.5, h: 35.5 },
+            Plot_115: { x: 746.25, y: 967.25,  w: 45.5, h: 35.5 },
+            Plot_116: { x: 746.25, y: 1003.25, w: 45.5, h: 35.5 },
+            Plot_117: { x: 747.25, y: 1039.25, w: 44.5, h: 36.5 },
+            Plot_118: { x: 748.25, y: 1076.25, w: 43.5, h: 36.5 },
+            Plot_119: { x: 748.75, y: 1113.25, w: 43.0, h: 39.5 },
+            Plot_120: { x: 749.25, y: 1153.25, w: 42.5, h: 37.5 },
+            Plot_121: { x: 749.50, y: 1191.0,  w: 42.5, h: 41.0 },
+            Plot_122: { x: 750.25, y: 1232.25, w: 41.5, h: 38.5 },
+            Plot_123: { x: 750.75, y: 1271.25, w: 41.0, h: 80.5 }
+        };
+
+        // Pre-populate plot bounding boxes so 3D digital twin has 100% of plots immediately available!
+        for (const [k, v] of Object.entries(AURANGABAD_PLOT_COORDINATES)) {
+            plotBBoxesMap.set(k, { x: v.x, y: v.y, width: v.w, height: v.h });
+        }
+
+        // Robust 3-tier bounding box extractor (never fails even if SVG is not rendered or in memory)
+        function extractPlotBBox(el) {
+            if (!el) return null;
+            let bbox = null;
+            try {
+                const b = el.getBBox();
+                if (b && b.width > 0 && b.height > 0) {
+                    return { x: b.x, y: b.y, width: b.width, height: b.height };
+                }
+            } catch (e) {}
+
+            // Fallback 1: Rect attributes
+            if (el.tagName && el.tagName.toLowerCase() === 'rect') {
+                const x = parseFloat(el.getAttribute('x') || 0);
+                const y = parseFloat(el.getAttribute('y') || 0);
+                const w = parseFloat(el.getAttribute('width') || 0);
+                const h = parseFloat(el.getAttribute('height') || 0);
+                if (w > 0 && h > 0) return { x, y, width: w, height: h };
+            }
+
+            // Fallback 2: Path coordinate min/max
+            if (el.tagName && el.tagName.toLowerCase() === 'path') {
+                const d = el.getAttribute('d');
+                if (d) {
+                    const nums = d.match(/-?\d+(?:\.\d+)?/g);
+                    if (nums && nums.length >= 4) {
+                        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                        for (let i = 0; i < nums.length - 1; i += 2) {
+                            const px = parseFloat(nums[i]);
+                            const py = parseFloat(nums[i + 1]);
+                            if (!isNaN(px) && !isNaN(py)) {
+                                minX = Math.min(minX, px);
+                                maxX = Math.max(maxX, px);
+                                minY = Math.min(minY, py);
+                                maxY = Math.max(maxY, py);
+                            }
+                        }
+                        if (maxX > minX && maxY > minY) {
+                            return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+                        }
+                    }
+                }
+            }
+
+            // Fallback 3: Group children union
+            if (el.tagName && el.tagName.toLowerCase() === 'g') {
+                const children = el.querySelectorAll('rect, path');
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                children.forEach(c => {
+                    const cb = extractPlotBBox(c);
+                    if (cb) {
+                        minX = Math.min(minX, cb.x);
+                        maxX = Math.max(maxX, cb.x + cb.width);
+                        minY = Math.min(minY, cb.y);
+                        maxY = Math.max(maxY, cb.y + cb.height);
+                    }
+                });
+                if (maxX > minX && maxY > minY) {
+                    return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+                }
+            }
+
+            return null;
+        }
 
         // ── Pan & Zoom Engine State ────────────────────────────────
         const canvasArea = document.getElementById('canvasArea');
@@ -1738,40 +2185,56 @@
                 svg.style.width = '100%';
                 svg.style.height = '100%';
 
-                // Register all Plot elements
+                // Register all Plot elements & cache 3D geometry bounds
                 plotElementsRegistry.clear();
+
                 svg.querySelectorAll('[id]').forEach(el => {
                     const key = toPlotKey(el.getAttribute('id'));
                     if (key && !plotElementsRegistry.has(key)) {
                         plotElementsRegistry.set(key, el);
+                        if (!plotBBoxesMap.has(key)) {
+                            const b = extractPlotBBox(el);
+                            if (b && b.width > 0 && b.height > 0) plotBBoxesMap.set(key, b);
+                        }
                     }
                 });
 
-                console.log(`Registered ${plotElementsRegistry.size} interactive plots!`);
+                console.log(`Registered ${plotElementsRegistry.size} interactive plots (${plotBBoxesMap.size} with extracted 3D bounds)!`);
 
                 // Insert centered numeric labels & apply initial styling
                 plotElementsRegistry.forEach((el, key) => {
                     el.style.cursor = 'pointer';
 
+                    let bbox = plotBBoxesMap.get(key);
+                    if (!bbox && typeof AURANGABAD_PLOT_COORDINATES !== 'undefined' && AURANGABAD_PLOT_COORDINATES[key]) {
+                        const c = AURANGABAD_PLOT_COORDINATES[key];
+                        bbox = { x: c.x, y: c.y, width: c.w, height: c.h };
+                        plotBBoxesMap.set(key, bbox);
+                    }
                     try {
-                        const bbox = el.getBBox();
-                        if (bbox.width > 0 && bbox.height > 0) {
-                            const num = key.replace('Plot_', '');
-                            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                            txt.setAttribute('x', String(bbox.x + bbox.width / 2));
-                            txt.setAttribute('y', String(bbox.y + bbox.height / 2));
-                            txt.setAttribute('text-anchor', 'middle');
-                            txt.setAttribute('dominant-baseline', 'central');
-                            txt.setAttribute('fill', '#111827');
-                            txt.setAttribute('font-size', bbox.width < 28 || bbox.height < 20 ? '8.5' : bbox.width < 40 ? '10' : '12');
-                            txt.setAttribute('font-weight', '800');
-                            txt.setAttribute('font-family', "'Inter', -apple-system, system-ui, sans-serif");
-                            txt.setAttribute('letter-spacing', '-0.2px');
-                            txt.setAttribute('pointer-events', 'none');
-                            txt.textContent = num;
-                            el.insertAdjacentElement('afterend', txt);
+                        const b = el.getBBox();
+                        if (b && b.width > 0 && b.height > 0) {
+                            bbox = { x: b.x, y: b.y, width: b.width, height: b.height };
+                            plotBBoxesMap.set(key, bbox);
                         }
                     } catch (e) { /* getBBox ignore */ }
+
+                    if (bbox && bbox.width > 0 && bbox.height > 0) {
+                        const num = key.replace('Plot_', '');
+                        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                        txt.setAttribute('x', String(bbox.x + bbox.width / 2));
+                        txt.setAttribute('y', String(bbox.y + bbox.height / 2));
+                        txt.setAttribute('text-anchor', 'middle');
+                        txt.setAttribute('dominant-baseline', 'central');
+                        txt.setAttribute('fill', '#111827');
+                        txt.setAttribute('font-size', bbox.width < 28 || bbox.height < 20 ? '8.5' : bbox.width < 40 ? '10' : '12');
+                        txt.setAttribute('font-weight', '800');
+                        txt.setAttribute('font-family', "'Inter', -apple-system, system-ui, sans-serif");
+                        txt.setAttribute('letter-spacing', '-0.2px');
+                        txt.setAttribute('pointer-events', 'none');
+                        txt.textContent = num;
+                        el.insertAdjacentElement('afterend', txt);
+                    }
 
                     stylePlot(key, el);
                 });
@@ -1799,11 +2262,135 @@
 
                 resetToCenter();
                 updateLegendCounts();
+                if (typeof is3DInitialized !== 'undefined' && is3DInitialized) {
+                    build3DPlotsFromLayout();
+                    sync3DPlotsStatus();
+                }
             })
             .catch(err => {
-                console.error('Failed to load SVG:', err);
-                document.getElementById('svgLoadingState').innerHTML = `<span style="color:var(--layout-red);">Failed to load layout SVG. Please ensure file exists.</span>`;
+                console.warn('Network SVG fetch failed (likely local file origin), initializing vector master layout:', err);
+                initFallback2DSvg();
             });
+
+        // ── Robust 2D Vector Layout Builder (Zero-dependency fallback for file://) ──
+        function initFallback2DSvg() {
+            const loadingState = document.getElementById('svgLoadingState');
+            if (loadingState) loadingState.style.display = 'none';
+
+            let svgHtml = `
+            <svg id="masterLayoutSvg" width="100%" height="100%" viewBox="0 0 996 1650" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;">
+                <!-- Township Base Footprint -->
+                <rect x="0" y="0" width="996" height="1650" fill="#0f1923" />
+                <rect x="180" y="30" width="750" height="1590" fill="#14241c" stroke="#2a4332" stroke-width="2" rx="8" />
+
+                <!-- Road Network Matching Real Aurangabad Layout -->
+                <!-- Road 14: Southern Highway (Madanpur-Gurua Main Road) -->
+                <rect id="Road_14_bg" x="152.5" y="1525" width="819" height="87" fill="#2d333b" stroke="#1f2429" stroke-width="2"/>
+                <line x1="152.5" y1="1568.5" x2="971.5" y2="1568.5" stroke="#f59e0b" stroke-width="3" stroke-dasharray="16 10"/>
+                <text x="235" y="1554" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="2">AURANGABAD &lt;--</text>
+                <text x="562" y="1554" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="2" text-anchor="middle">GHORHAT MORE</text>
+                <text x="760" y="1554" fill="#ffffff" font-size="12" font-weight="700" letter-spacing="2">--&gt; MADANPUR BAZAR</text>
+
+                <!-- Road 18: Highway Connecting Road & Entrance Neck -->
+                <path id="Road_18" d="M308 1391.5 H874.5 V1438.5 H662 V1526 H522 V1438.5 H308 Z" fill="#3b424d" stroke="#1f2429" stroke-width="1.5"/>
+
+                <!-- Road 7: Western Swept Avenue -->
+                <path id="Road_7" d="M354 1396 L313 1270 L288 1200 L279 1163 V461 L203 343 H238 L279 461 V1163 L319 1200 V1226 H298 L327 1311 L354 1396 Z" fill="#3b424d" stroke="#1f2429" stroke-width="1.5"/>
+
+                <!-- Road 13: Eastern Perimeter Road -->
+                <rect id="Road_13" x="874" y="149" width="33" height="1288" fill="#3b424d" stroke="#1f2429" stroke-width="1.5"/>
+
+                <!-- Upper Colony Streets (Roads 1, 2, 3, 4) -->
+                <rect id="Road_1" x="742" y="97" width="20.5" height="515" fill="#3b424d"/>
+                <rect id="Road_2" x="634" y="97" width="19.2" height="515" fill="#3b424d"/>
+                <rect id="Road_3" x="533" y="97" width="19.2" height="515" fill="#3b424d"/>
+                <rect id="Road_4" x="437" y="97" width="19.2" height="515" fill="#3b424d"/>
+
+                <!-- Central Cross Road 15 -->
+                <rect id="Road_15" x="418" y="615" width="382.5" height="28" fill="#3b424d"/>
+
+                <!-- Lower Colony Streets (Roads 5 and 6) -->
+                <rect id="Road_6" x="521" y="643" width="23" height="476" fill="#3b424d"/>
+                <rect id="Road_5" x="718" y="675" width="24" height="677" fill="#3b424d"/>
+
+                <!-- Top Roads 16 & 17 -->
+                <rect id="Road_16" x="401" y="16.5" width="385.5" height="25" fill="#3b424d"/>
+                <path id="Road_17" d="M772 33 L894 154 L884 162 L772 33 Z" fill="#3b424d"/>
+
+                <!-- Coming Soon Open Landscaped Parcels -->
+                <rect x="280" y="894" width="240.5" height="93.5" fill="#1e293b" stroke="#475569" stroke-dasharray="6 4" rx="4"/>
+                <text x="400" y="941" text-anchor="middle" dominant-baseline="middle" fill="#94a3b8" font-size="14" font-weight="700">COMING SOON</text>
+
+                <rect x="345" y="1119" width="230" height="107" fill="#1e293b" stroke="#475569" stroke-dasharray="6 4" rx="4"/>
+                <text x="460" y="1172" text-anchor="middle" dominant-baseline="middle" fill="#94a3b8" font-size="13" font-weight="700">FUTURE EXPANSION</text>
+
+                <!-- Plots Layer -->
+                <g id="plotsLayer">`;
+
+            for (const [key, c] of Object.entries(AURANGABAD_PLOT_COORDINATES)) {
+                svgHtml += `<rect id="${key}" x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" fill="#CFC4AB" stroke="#111827" stroke-width="0.8" rx="2" style="cursor:pointer;" />`;
+            }
+
+            svgHtml += `</g></svg>`;
+
+            svgContainer.innerHTML = svgHtml;
+            const svg = svgContainer.querySelector('svg');
+            masterSvg = svg;
+
+            plotElementsRegistry.clear();
+            svg.querySelectorAll('[id^="Plot_"]').forEach(el => {
+                const key = toPlotKey(el.getAttribute('id'));
+                if (key) {
+                    plotElementsRegistry.set(key, el);
+                }
+            });
+
+            // Insert plot number labels
+            plotElementsRegistry.forEach((el, key) => {
+                const bbox = plotBBoxesMap.get(key);
+                if (bbox) {
+                    const num = key.replace('Plot_', '');
+                    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    txt.setAttribute('x', String(bbox.x + bbox.width / 2));
+                    txt.setAttribute('y', String(bbox.y + bbox.height / 2));
+                    txt.setAttribute('text-anchor', 'middle');
+                    txt.setAttribute('dominant-baseline', 'central');
+                    txt.setAttribute('fill', '#111827');
+                    txt.setAttribute('font-size', bbox.width < 32 || bbox.height < 24 ? '8.5' : '10.5');
+                    txt.setAttribute('font-weight', '800');
+                    txt.setAttribute('font-family', "'Inter', sans-serif");
+                    txt.setAttribute('pointer-events', 'none');
+                    txt.textContent = num;
+                    el.insertAdjacentElement('afterend', txt);
+                }
+                stylePlot(key, el);
+            });
+
+            // Delegated click handler on fallback SVG
+            svg.addEventListener('click', (e) => {
+                let node = e.target;
+                while (node && node !== svg) {
+                    const key = toPlotKey(node.getAttribute ? node.getAttribute('id') : null);
+                    if (key && plotElementsRegistry.has(key)) {
+                        if (selectedPlotKey === key) {
+                            closePlotDetails();
+                        } else {
+                            openPlotDetails(key);
+                        }
+                        return;
+                    }
+                    node = node.parentElement;
+                }
+                if (selectedPlotKey) closePlotDetails();
+            });
+
+            resetToCenter();
+            updateLegendCounts();
+            if (typeof is3DInitialized !== 'undefined' && is3DInitialized) {
+                build3DPlotsFromLayout();
+                sync3DPlotsStatus();
+            }
+        }
 
         // ── Auto Background Sync from Google Sheet ─────────────────
         const GOOGLE_SHEET_CSV = 'https://docs.google.com/spreadsheets/d/1nDhquQanD89ZA9Q6DbCazCS13WA2S9NBTK6heH5dSqA/gviz/tq?tqx=out:csv&sheet=aurangabad_plot_details';
@@ -1837,6 +2424,9 @@
                 if (count > 0) {
                     console.log(`Synced ${count} plots from Google Sheet!`);
                     refreshAllPlots();
+                    if (typeof is3DInitialized !== 'undefined' && is3DInitialized) {
+                        sync3DPlotsStatus();
+                    }
                 }
             })
             .catch(e => console.log('Using local dataset fallback.'));
@@ -1844,7 +2434,1433 @@
         // Handle window resize
         window.addEventListener('resize', () => {
             applyViewBox();
+            if (renderer3D && camera3D && is3DModeActive) {
+                const container = document.getElementById('threeViewport');
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                camera3D.aspect = w / h;
+                camera3D.updateProjectionMatrix();
+                renderer3D.setSize(w, h);
+            }
         });
+
+        /* ==========================================================================
+           AURANGABAD TOWNSHIP 3D DIGITAL TWIN ENGINE (Three.js WebGL)
+           ========================================================================== */
+        let is3DModeActive = false;
+        let is3DInitialized = false;
+        let scene3D, camera3D, renderer3D, controls3DInstance;
+        let hemiLight, sunLight, nightFillLight;
+        const streetLights = [];
+        const foliageMeshes = [];
+        const plot3DMeshes = new Map();
+        const interactivePlotMeshesList = [];
+        let hoveredPlot3D = null;
+        let raycaster3D, mouseVector3D;
+        let currentLightingMode = 'day';
+        let cameraTargetTween = null;
+
+        // 3D Viewport Toggle Buttons
+        const btnMode2D = document.getElementById('btnMode2D');
+        const btnMode3D = document.getElementById('btnMode3D');
+        const viewport2D = document.getElementById('viewport');
+        const threeViewport = document.getElementById('threeViewport');
+        const zoomControls2D = document.getElementById('zoomControls2D');
+        const floatingControls3D = document.getElementById('controls3D');
+
+        function switchViewMode(mode) {
+            if (mode === '3D') {
+                is3DModeActive = true;
+                btnMode2D.classList.remove('active');
+                btnMode2D.setAttribute('aria-selected', 'false');
+                btnMode3D.classList.add('active');
+                btnMode3D.setAttribute('aria-selected', 'true');
+
+                // Keep SVG in DOM layout so getBBox/geometry is never lost
+                viewport2D.style.opacity = '0';
+                viewport2D.style.pointerEvents = 'none';
+                viewport2D.style.position = 'absolute';
+                viewport2D.style.transform = 'translateX(-200vw)';
+                if (zoomControls2D) zoomControls2D.style.display = 'none';
+                threeViewport.style.display = 'block';
+                floatingControls3D.style.display = 'flex';
+
+                if (!is3DInitialized) {
+                    init3DDigitalTwin();
+                } else {
+                    on3DViewportResize();
+                }
+
+                build3DPlotsFromLayout();
+                sync3DPlotsStatus();
+
+                // If a plot is already selected, focus on it in 3D
+                if (selectedPlotKey && plot3DMeshes.has(selectedPlotKey)) {
+                    focusCameraOnPlot3D(selectedPlotKey);
+                }
+            } else {
+                is3DModeActive = false;
+                btnMode3D.classList.remove('active');
+                btnMode3D.setAttribute('aria-selected', 'false');
+                btnMode2D.classList.add('active');
+                btnMode2D.setAttribute('aria-selected', 'true');
+
+                threeViewport.style.display = 'none';
+                floatingControls3D.style.display = 'none';
+                viewport2D.style.opacity = '1';
+                viewport2D.style.pointerEvents = 'auto';
+                viewport2D.style.position = 'absolute';
+                viewport2D.style.transform = 'none';
+                if (zoomControls2D) zoomControls2D.style.display = 'flex';
+
+                resetToCenter(0);
+                refreshAllPlots();
+            }
+        }
+
+        btnMode2D.addEventListener('click', () => switchViewMode('2D'));
+        btnMode3D.addEventListener('click', () => switchViewMode('3D'));
+
+        function on3DViewportResize() {
+            if (!renderer3D || !camera3D) return;
+            const container = document.getElementById('threeViewport');
+            const w = container.clientWidth || window.innerWidth;
+            const h = container.clientHeight || (window.innerHeight - 70);
+            camera3D.aspect = w / h;
+            camera3D.updateProjectionMatrix();
+            renderer3D.setSize(w, h);
+            renderer3D.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        }
+
+        /* ── Initialize 3D Digital Twin ───────────────────────────── */
+        function init3DDigitalTwin() {
+            is3DInitialized = true;
+            const container = document.getElementById('threeViewport');
+            const canvas = document.getElementById('threeCanvas3D');
+
+            const width = container.clientWidth || window.innerWidth;
+            const height = container.clientHeight || (window.innerHeight - 70);
+
+            // 1. Scene
+            scene3D = new THREE.Scene();
+            scene3D.background = new THREE.Color(0x0e1b2b);
+            scene3D.fog = new THREE.FogExp2(0x0e1b2b, 0.0030);
+
+            // 2. Camera: Positioned for full aerial view of Aurangabad Township
+            camera3D = new THREE.PerspectiveCamera(45, width / height, 0.5, 1200);
+            camera3D.position.set(8, 120, 105);
+
+            // 3. Renderer
+            renderer3D = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: false,
+                powerPreference: 'high-performance'
+            });
+            renderer3D.setSize(width, height);
+            renderer3D.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer3D.shadowMap.enabled = true;
+            renderer3D.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer3D.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer3D.toneMappingExposure = 1.08;
+
+            // 4. OrbitControls
+            controls3DInstance = new THREE.OrbitControls(camera3D, renderer3D.domElement);
+            controls3DInstance.enableDamping = true;
+            controls3DInstance.dampingFactor = 0.06;
+            controls3DInstance.target.set(8, 0, -2);
+            controls3DInstance.maxPolarAngle = Math.PI / 2.05; // Prevent dipping beneath ground
+            controls3DInstance.minDistance = 12;
+            controls3DInstance.maxDistance = 350;
+
+            // 5. Lighting Setup
+            setup3DLighting();
+
+            // 6. Ground & Master Landscape Footprint
+            build3DTownshipTerrain();
+
+            // 7. Exact Asphalt Roads Network & Sidewalks (Matching SVG)
+            build3DRoadsNetwork();
+
+            // 8. Roadside Street Lights (Along the real roads)
+            buildRoadsideStreetLights();
+
+            // 9. Lush Roadside Trees & Landscaping (Along the real roads)
+            buildRoadsideTreesAndHedges();
+
+            // 10. 3D Plots (All 123 Plots Extruded at Exact SVG Coordinates)
+            build3DPlotsFromLayout();
+
+            // 11. Luxury Villa Architectural Preview Model
+            buildLuxuryVillaPreview();
+
+            // 12. Setup Raycaster for Mouse/Touch Plot Selection
+            setup3DRaycaster();
+
+            // 13. Setup Preset Controls (Aerial, Street, Orbit, Day/Sunset/Night)
+            setup3DControlButtons();
+
+            // 14. Start Render Animation Loop
+            animate3D();
+        }
+
+        /* ── Lighting System (Day, Sunset, Night) ─────────────────── */
+        function setup3DLighting() {
+            hemiLight = new THREE.HemisphereLight(0xe8f4ff, 0x1f2e24, 0.78);
+            scene3D.add(hemiLight);
+
+            sunLight = new THREE.DirectionalLight(0xfff8e7, 1.4);
+            sunLight.position.set(75, 120, 50);
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+            sunLight.shadow.camera.near = 10;
+            sunLight.shadow.camera.far = 320;
+            const d = 105;
+            sunLight.shadow.camera.left = -d;
+            sunLight.shadow.camera.right = d;
+            sunLight.shadow.camera.top = d;
+            sunLight.shadow.camera.bottom = -d;
+            sunLight.shadow.bias = -0.0004;
+            scene3D.add(sunLight);
+
+            nightFillLight = new THREE.DirectionalLight(0x42689c, 0.0);
+            nightFillLight.position.set(-60, 90, -60);
+            scene3D.add(nightFillLight);
+        }
+
+        function setLightingMode(mode) {
+            currentLightingMode = mode;
+            document.querySelectorAll('.lighting-mode-strip .light-btn').forEach(b => b.classList.remove('active'));
+
+            if (mode === 'day') {
+                document.getElementById('btnLightDay').classList.add('active');
+                scene3D.background.set(0x0e1b2b);
+                scene3D.fog.color.set(0x0e1b2b);
+                hemiLight.color.set(0xe8f4ff);
+                hemiLight.groundColor.set(0x1f2e24);
+                hemiLight.intensity = 0.78;
+                sunLight.color.set(0xfff8e7);
+                sunLight.intensity = 1.4;
+                nightFillLight.intensity = 0.0;
+                setStreetLightsState(0.15, 0.0);
+            } else if (mode === 'sunset') {
+                document.getElementById('btnLightSunset').classList.add('active');
+                scene3D.background.set(0x28182b);
+                scene3D.fog.color.set(0x28182b);
+                hemiLight.color.set(0xff9e79);
+                hemiLight.groundColor.set(0x2a192d);
+                hemiLight.intensity = 0.65;
+                sunLight.color.set(0xff7733);
+                sunLight.intensity = 1.15;
+                nightFillLight.intensity = 0.15;
+                setStreetLightsState(1.4, 1.2);
+            } else if (mode === 'night') {
+                document.getElementById('btnLightNight').classList.add('active');
+                scene3D.background.set(0x070c14);
+                scene3D.fog.color.set(0x070c14);
+                hemiLight.color.set(0x182438);
+                hemiLight.groundColor.set(0x06090e);
+                hemiLight.intensity = 0.3;
+                sunLight.color.set(0x5a7ca6);
+                sunLight.intensity = 0.25;
+                nightFillLight.intensity = 0.35;
+                setStreetLightsState(2.8, 3.8); // Brilliant warm night street lights!
+            }
+        }
+
+        function setStreetLightsState(emissiveIntensity, spotIntensity) {
+            streetLights.forEach(sl => {
+                if (sl.bulbMat) sl.bulbMat.emissiveIntensity = emissiveIntensity;
+                if (sl.spot) sl.spot.intensity = spotIntensity;
+            });
+        }
+
+        /* ── Ground & Master Terrain matching Aurangabad Footprint ─── */
+        function build3DTownshipTerrain() {
+            // Infinite surroundings plane
+            const groundGeo = new THREE.PlaneGeometry(380, 380, 1, 1);
+            const groundMat = new THREE.MeshStandardMaterial({
+                color: 0x0a1420,
+                roughness: 0.95,
+                metalness: 0.05
+            });
+            const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+            groundMesh.rotation.x = -Math.PI / 2;
+            groundMesh.position.y = -0.06;
+            groundMesh.receiveShadow = true;
+            scene3D.add(groundMesh);
+
+            // Township Landscaped Base Plinth (matching layout bounds)
+            const baseGeo = new THREE.BoxGeometry(95, 0.4, 172);
+            const baseMat = new THREE.MeshStandardMaterial({
+                color: 0x14281a, // Landscaped deep green turf
+                roughness: 0.9,
+                metalness: 0.08
+            });
+            const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+            baseMesh.position.set(6.0, -0.2, 0.0);
+            baseMesh.receiveShadow = true;
+            scene3D.add(baseMesh);
+
+            // Township Outer Boundary Wall
+            const curbMat = new THREE.MeshStandardMaterial({ color: 0x36424e, roughness: 0.8 });
+            const westWall = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 172), curbMat);
+            westWall.position.set(-41.5, 0.2, 0.0);
+            westWall.castShadow = true;
+            scene3D.add(westWall);
+
+            const eastWall = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 172), curbMat);
+            eastWall.position.set(53.5, 0.2, 0.0);
+            eastWall.castShadow = true;
+            scene3D.add(eastWall);
+
+            const northWall = new THREE.Mesh(new THREE.BoxGeometry(95, 0.8, 0.8), curbMat);
+            northWall.position.set(6.0, 0.2, -86.0);
+            northWall.castShadow = true;
+            scene3D.add(northWall);
+
+            // Compass Rose indicator on ground
+            buildCompassRose(-32, 0.02, -45);
+        }
+
+        function buildCompassRose(x, y, z) {
+            const compassGroup = new THREE.Group();
+            compassGroup.position.set(x, y, z);
+
+            const dialGeo = new THREE.RingGeometry(2.5, 3.2, 32);
+            const dialMat = new THREE.MeshBasicMaterial({ color: 0xd4af37, side: THREE.DoubleSide });
+            const dial = new THREE.Mesh(dialGeo, dialMat);
+            dial.rotation.x = -Math.PI / 2;
+            compassGroup.add(dial);
+
+            // North Pointer Arrow
+            const arrowShape = new THREE.Shape();
+            arrowShape.moveTo(0, 3.8);
+            arrowShape.lineTo(0.9, 0);
+            arrowShape.lineTo(-0.9, 0);
+            arrowShape.closePath();
+            const arrowGeo = new THREE.ShapeGeometry(arrowShape);
+            const arrowMat = new THREE.MeshBasicMaterial({ color: 0xef4444, side: THREE.DoubleSide });
+            const arrowMesh = new THREE.Mesh(arrowGeo, arrowMat);
+            arrowMesh.rotation.x = -Math.PI / 2;
+            compassGroup.add(arrowMesh);
+
+            scene3D.add(compassGroup);
+        }
+
+        /* ── Road Network (Faithful Match to Aurangabad Layout) ─────── */
+        function build3DRoadsNetwork() {
+            const asphaltMat = new THREE.MeshStandardMaterial({
+                color: 0x1e2228,
+                roughness: 0.92,
+                metalness: 0.1
+            });
+            const sidewalkMat = new THREE.MeshStandardMaterial({
+                color: 0x444e59,
+                roughness: 0.85
+            });
+            const curbMat = new THREE.MeshStandardMaterial({
+                color: 0x828f9d,
+                roughness: 0.7
+            });
+            const comingSoonMat = new THREE.MeshStandardMaterial({
+                color: 0xCFC4AB, // Exact beige parcel color from 2D SVG
+                roughness: 0.85
+            });
+            const yellowLineMat = new THREE.MeshBasicMaterial({ color: 0xffcc00 });
+            const whiteLineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+            // 1. SOUTHERN HIGHWAY (Road 14 - Madanpur-Gurua Main Road)
+            // SVG: x = 152.5 to 971.5, y = 1525 to 1612 -> 3D: x: -34.6 to 47.4, z: 70.0 to 78.7
+            const hwRoad = new THREE.Mesh(new THREE.PlaneGeometry(84, 8.7), asphaltMat);
+            hwRoad.rotation.x = -Math.PI / 2;
+            hwRoad.position.set(6.4, 0.04, 74.35);
+            hwRoad.receiveShadow = true;
+            scene3D.add(hwRoad);
+
+            // Highway Curbs
+            const hwCurbNorth = new THREE.Mesh(new THREE.BoxGeometry(84, 0.28, 0.5), curbMat);
+            hwCurbNorth.position.set(6.4, 0.14, 70.0);
+            hwCurbNorth.castShadow = true;
+            scene3D.add(hwCurbNorth);
+
+            const hwCurbSouth = new THREE.Mesh(new THREE.BoxGeometry(84, 0.28, 0.5), curbMat);
+            hwCurbSouth.position.set(6.4, 0.14, 78.7);
+            hwCurbSouth.castShadow = true;
+            scene3D.add(hwCurbSouth);
+
+            // Highway Double Yellow Center Divider
+            const hwYellow1 = new THREE.Mesh(new THREE.PlaneGeometry(84, 0.2), yellowLineMat);
+            hwYellow1.rotation.x = -Math.PI / 2;
+            hwYellow1.position.set(6.4, 0.05, 74.2);
+            scene3D.add(hwYellow1);
+
+            const hwYellow2 = new THREE.Mesh(new THREE.PlaneGeometry(84, 0.2), yellowLineMat);
+            hwYellow2.rotation.x = -Math.PI / 2;
+            hwYellow2.position.set(6.4, 0.05, 74.5);
+            scene3D.add(hwYellow2);
+
+            // Highway Zebra Crosswalk at Entrance Neck Intersection (x = 10.0, z = 74.35)
+            for (let i = -5.0; i <= 5.0; i += 1.3) {
+                const stripe = new THREE.Mesh(new THREE.PlaneGeometry(0.65, 6.8), whiteLineMat);
+                stripe.rotation.x = -Math.PI / 2;
+                stripe.position.set(10.0 + i, 0.055, 74.35);
+                scene3D.add(stripe);
+            }
+
+            // Highway Directional Milestone Signs (Matching SVG)
+            buildMilestoneBoard(-28, 0, 79.2, "AURANGABAD <--");
+            buildMilestoneBoard(4, 0, 79.2, "GHORHAT MORE");
+            buildMilestoneBoard(36, 0, 79.2, "--> MADANPUR BAZAR");
+
+            // 2 Passenger Bus Shelters along Southern Highway
+            buildBusShelter(-10, 0, 79.0);
+            buildBusShelter(24, 0, 79.0);
+
+            // 2. HIGHWAY CONNECTING ROAD (Road 18)
+            // Connects Highway into Western Avenue & Eastern Road
+            // Main branch: x: -19 to 37.7, z: 56.6 to 61.4
+            const r18Road = new THREE.Mesh(new THREE.PlaneGeometry(56.7, 4.8), asphaltMat);
+            r18Road.rotation.x = -Math.PI / 2;
+            r18Road.position.set(9.35, 0.045, 59.0);
+            r18Road.receiveShadow = true;
+            scene3D.add(r18Road);
+
+            // Connecting branch downward to highway: x = 3 to 17, z = 61.4 to 70.0
+            const r18Neck = new THREE.Mesh(new THREE.PlaneGeometry(14, 8.6), asphaltMat);
+            r18Neck.rotation.x = -Math.PI / 2;
+            r18Neck.position.set(10.0, 0.045, 65.7);
+            r18Neck.receiveShadow = true;
+            scene3D.add(r18Neck);
+
+            // Grand Entrance Gate Arch spanning highway entrance neck (x = 10.0, z = 66.5, span = 14.5m)
+            buildEntranceGateArch(10.0, 0, 66.5, 14.5, "AURANGABAD TOWNSHIP");
+
+            // 3. WESTERN SWEPT AVENUE (Road 7 - Signature Sweeping Road from 2D Plan)
+            // Sweeps from (-16.6, 57.1) through (-21.0, 35.0) to (-23.8, 0.0) and north to (-23.8, -49.3)
+            createRoadSegment(-16.6, 57.1, -21.0, 35.0, 4.6, asphaltMat, sidewalkMat);
+            createRoadSegment(-21.0, 35.0, -23.8, 0.0,  4.2, asphaltMat, sidewalkMat);
+            createRoadSegment(-23.8, 0.0,  -23.8, -49.3, 4.2, asphaltMat, sidewalkMat);
+            createRoadSegment(-23.8, -49.3, -27.8, -48.5, 4.2, asphaltMat, sidewalkMat);
+
+            // Secondary Entrance Arch at Western Avenue (x = -17.5, z = 52.0)
+            buildEntranceGateArch(-17.5, 0, 52.0, 6.5, "WEST AVENUE");
+
+            // 4. EASTERN PERIMETER ROAD (Road 13)
+            // Runs down the entire right edge: x = 39.2, z: -67.6 to 61.2 (length ~ 129m)
+            const eastRoad = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 128.8), asphaltMat);
+            eastRoad.rotation.x = -Math.PI / 2;
+            eastRoad.position.set(39.2, 0.045, -3.2);
+            eastRoad.receiveShadow = true;
+            scene3D.add(eastRoad);
+
+            // East road outer curb
+            const eastCurb = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.25, 128.8), curbMat);
+            eastCurb.position.set(41.2, 0.125, -3.2);
+            eastCurb.castShadow = true;
+            scene3D.add(eastCurb);
+
+            // 5. UPPER COLONY STREETS (Roads 1, 2, 3, 4 - between plot columns)
+            // z: -72.8 to -21.3 (length = 51.5m)
+            // Road 4 (between Plots 83-94 and Plots 95-103)
+            const r4Mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 51.5), asphaltMat);
+            r4Mesh.rotation.x = -Math.PI / 2;
+            r4Mesh.position.set(-5.1, 0.045, -47.05);
+            r4Mesh.receiveShadow = true;
+            scene3D.add(r4Mesh);
+
+            // Road 3 (between Plots 83-71 and 60-70)
+            const r3Mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 51.5), asphaltMat);
+            r3Mesh.rotation.x = -Math.PI / 2;
+            r3Mesh.position.set(4.4, 0.045, -47.05);
+            r3Mesh.receiveShadow = true;
+            scene3D.add(r3Mesh);
+
+            // Road 2 (between Plots 60-70 and 46-32)
+            const r2Mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 51.5), asphaltMat);
+            r2Mesh.rotation.x = -Math.PI / 2;
+            r2Mesh.position.set(14.5, 0.045, -47.05);
+            r2Mesh.receiveShadow = true;
+            scene3D.add(r2Mesh);
+
+            // Road 1 (between Plots 46-32 and 14-01)
+            const r1Mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 51.5), asphaltMat);
+            r1Mesh.rotation.x = -Math.PI / 2;
+            r1Mesh.position.set(25.4, 0.045, -47.05);
+            r1Mesh.receiveShadow = true;
+            scene3D.add(r1Mesh);
+
+            // 6. LOWER COLONY STREETS (Roads 5 and 6)
+            // Road 6: x = 3.4, z: -18.3 to 29.3 (length = 47.6m)
+            const r6Mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 47.6), asphaltMat);
+            r6Mesh.rotation.x = -Math.PI / 2;
+            r6Mesh.position.set(3.4, 0.045, 5.5);
+            r6Mesh.receiveShadow = true;
+            scene3D.add(r6Mesh);
+
+            // Road 5: x = 23.2, z: -15.0 to 52.7 (length = 67.7m - fronts Plots 107-123!)
+            const r5Mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 67.7), asphaltMat);
+            r5Mesh.rotation.x = -Math.PI / 2;
+            r5Mesh.position.set(23.2, 0.045, 18.85);
+            r5Mesh.receiveShadow = true;
+            scene3D.add(r5Mesh);
+
+            // 7. CROSS COLONY ROADS
+            // Top Road 16: z = -79.5, x: -9.7 to 28.8 (width = 38.5m)
+            const r16Mesh = new THREE.Mesh(new THREE.PlaneGeometry(38.5, 2.5), asphaltMat);
+            r16Mesh.rotation.x = -Math.PI / 2;
+            r16Mesh.position.set(9.55, 0.045, -79.5);
+            r16Mesh.receiveShadow = true;
+            scene3D.add(r16Mesh);
+
+            // Top Diagonal Road 17: connecting (28.8, -79.5) to (39.2, -67.6)
+            createRoadSegment(28.8, -79.5, 39.2, -67.6, 2.8, asphaltMat, null);
+
+            // Main Central Cross Road: z = -19.8, x: -23.8 to 39.2 (width = 63m)
+            const centerCrossRoad = new THREE.Mesh(new THREE.PlaneGeometry(63.0, 3.0), asphaltMat);
+            centerCrossRoad.rotation.x = -Math.PI / 2;
+            centerCrossRoad.position.set(7.7, 0.045, -19.8);
+            centerCrossRoad.receiveShadow = true;
+            scene3D.add(centerCrossRoad);
+
+            // 8. "COMING SOON" OPEN LANDSCAPED SECTORS (Exact Match to 2D Plan Parcels)
+            buildComingSoonParcel(-9.8, 11.5, 24.0, 9.3, comingSoonMat, "COMING SOON");
+            buildComingSoonParcel(-9.8, 22.5, 24.0, 8.1, comingSoonMat, "FUTURE EXPANSION");
+            buildComingSoonParcel(-6.0, 41.2, 28.0, 23.6, comingSoonMat, "COMMERCIAL HUB");
+            buildComingSoonParcel(-9.0, -0.4, 22.0, 9.6, comingSoonMat, "CENTRAL PARK / AMENITY");
+        }
+
+        // Helper to create angled road segment with sidewalks
+        function createRoadSegment(x1, z1, x2, z2, width, roadMat, walkMat) {
+            const dx = x2 - x1;
+            const dz = z2 - z1;
+            const length = Math.hypot(dx, dz);
+            const angle = Math.atan2(dx, dz);
+            const cx = (x1 + x2) / 2;
+            const cz = (z1 + z2) / 2;
+
+            const road = new THREE.Mesh(new THREE.PlaneGeometry(width, length), roadMat);
+            road.rotation.x = -Math.PI / 2;
+            road.rotation.z = -angle;
+            road.position.set(cx, 0.045, cz);
+            road.receiveShadow = true;
+            scene3D.add(road);
+
+            if (walkMat) {
+                // Sidewalks on both sides
+                const w1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.18, length), walkMat);
+                w1.rotation.y = angle;
+                w1.position.set(cx - Math.cos(angle) * (width / 2 + 0.4), 0.09, cz + Math.sin(angle) * (width / 2 + 0.4));
+                scene3D.add(w1);
+
+                const w2 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.18, length), walkMat);
+                w2.rotation.y = angle;
+                w2.position.set(cx + Math.cos(angle) * (width / 2 + 0.4), 0.09, cz - Math.sin(angle) * (width / 2 + 0.4));
+                scene3D.add(w2);
+            }
+        }
+
+        function buildComingSoonParcel(cx, cz, width, depth, mat, labelText) {
+            const group = new THREE.Group();
+            group.position.set(cx, 0.1, cz);
+
+            const parcelMesh = new THREE.Mesh(new THREE.BoxGeometry(width, 0.2, depth), mat);
+            parcelMesh.castShadow = true;
+            parcelMesh.receiveShadow = true;
+            group.add(parcelMesh);
+
+            // Boundary Curb
+            const curbMat = new THREE.MeshStandardMaterial({ color: 0x8b8577, roughness: 0.8 });
+            const borderGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(width, 0.2, depth));
+            const borderLine = new THREE.LineSegments(borderGeo, new THREE.LineBasicMaterial({ color: 0x4a4539 }));
+            group.add(borderLine);
+
+            scene3D.add(group);
+        }
+
+        function buildMilestoneBoard(x, y, z, label) {
+            const group = new THREE.Group();
+            group.position.set(x, y, z);
+
+            const postMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.8 });
+            const p1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1.8, 8), postMat);
+            p1.position.set(-1.2, 0.9, 0);
+            group.add(p1);
+
+            const p2 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1.8, 8), postMat);
+            p2.position.set(1.2, 0.9, 0);
+            group.add(p2);
+
+            const boardMat = new THREE.MeshStandardMaterial({ color: 0x0F2237, roughness: 0.3 });
+            const board = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.9, 0.1), boardMat);
+            board.position.set(0, 1.6, 0);
+            group.add(board);
+
+            scene3D.add(group);
+        }
+
+        function buildBusShelter(x, y, z) {
+            const group = new THREE.Group();
+            group.position.set(x, y, z);
+
+            const frameMat = new THREE.MeshStandardMaterial({ color: 0x1B3A57, metalness: 0.7, roughness: 0.3 });
+            const roofMat  = new THREE.MeshStandardMaterial({ color: 0x4A90A4, metalness: 0.5, roughness: 0.4 });
+
+            // Posts
+            const p1 = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.5, 8), frameMat);
+            p1.position.set(-1.4, 1.25, 0);
+            group.add(p1);
+
+            const p2 = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.5, 8), frameMat);
+            p2.position.set(1.4, 1.25, 0);
+            group.add(p2);
+
+            // Curved Shelter Canopy Roof
+            const roof = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.1, 1.8), roofMat);
+            roof.position.set(0, 2.5, 0.3);
+            group.add(roof);
+
+            scene3D.add(group);
+        }
+
+        function buildEntranceGateArch(x, y, z, span = 7.8, title = "AURANGABAD TOWNSHIP") {
+            const archGroup = new THREE.Group();
+            archGroup.position.set(x, y, z);
+
+            const pillarMat = new THREE.MeshStandardMaterial({ color: 0x1B3A57, roughness: 0.35, metalness: 0.5 });
+            const halfSpan = span / 2;
+
+            const pillarL = new THREE.Mesh(new THREE.BoxGeometry(0.9, 6.2, 0.9), pillarMat);
+            pillarL.position.set(-halfSpan + 0.45, 3.1, 0);
+            pillarL.castShadow = true;
+            archGroup.add(pillarL);
+
+            const pillarR = new THREE.Mesh(new THREE.BoxGeometry(0.9, 6.2, 0.9), pillarMat);
+            pillarR.position.set(halfSpan - 0.45, 3.1, 0);
+            pillarR.castShadow = true;
+            archGroup.add(pillarR);
+
+            const beam = new THREE.Mesh(new THREE.BoxGeometry(span + 0.4, 1.2, 1.2), pillarMat);
+            beam.position.set(0, 6.4, 0);
+            beam.castShadow = true;
+            archGroup.add(beam);
+
+            // Nameplate with crisp custom banner text
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 96;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#0F2237';
+            ctx.fillRect(0, 0, 512, 96);
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = '#D4AF37';
+            ctx.strokeRect(4, 4, 504, 88);
+            ctx.fillStyle = '#F5D061';
+            ctx.font = 'bold 36px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(title, 256, 48);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const nameplateMat = new THREE.MeshBasicMaterial({ map: texture });
+            const nameplateW = Math.min(span - 1.2, 11.0);
+            const nameplate = new THREE.Mesh(new THREE.PlaneGeometry(nameplateW, 0.75), nameplateMat);
+            nameplate.position.set(0, 6.4, 0.62);
+            archGroup.add(nameplate);
+
+            const nameplateBack = new THREE.Mesh(new THREE.PlaneGeometry(nameplateW, 0.75), nameplateMat);
+            nameplateBack.position.set(0, 6.4, -0.62);
+            nameplateBack.rotation.y = Math.PI;
+            archGroup.add(nameplateBack);
+
+            scene3D.add(archGroup);
+        }
+
+        /* ── Roadside Street Lights (Along the REAL Roads!) ───────── */
+        function buildRoadsideStreetLights() {
+            const lightConfigs = [
+                // Southern Highway (along north & south curbs)
+                { x: -30, z: 69.5, rot: Math.PI },
+                { x: -16, z: 69.5, rot: Math.PI },
+                { x: -2,  z: 69.5, rot: Math.PI },
+                { x: 14,  z: 69.5, rot: Math.PI },
+                { x: 30,  z: 69.5, rot: Math.PI },
+                { x: 44,  z: 69.5, rot: Math.PI },
+                { x: -22, z: 79.2, rot: 0 },
+                { x: 6,   z: 79.2, rot: 0 },
+                { x: 22,  z: 79.2, rot: 0 },
+
+                // Grand Entrance Neck (Road 18) leading from Southern Highway
+                { x: 2.2,  z: 66.0, rot: -Math.PI / 2 },
+                { x: 17.8, z: 66.0, rot: Math.PI / 2 },
+                { x: 2.2,  z: 60.5, rot: -Math.PI / 2 },
+                { x: 17.8, z: 60.5, rot: Math.PI / 2 },
+
+                // Western Swept Avenue (along the signature curve)
+                { x: -15.0, z: 54.0, rot: Math.PI * 0.7 },
+                { x: -19.5, z: 38.0, rot: Math.PI * 0.6 },
+                { x: -22.5, z: 22.0, rot: Math.PI * 0.5 },
+                { x: -22.5, z: 6.0,  rot: Math.PI * 0.5 },
+                { x: -22.5, z: -10.0,rot: Math.PI * 0.5 },
+                { x: -22.5, z: -26.0,rot: Math.PI * 0.5 },
+                { x: -22.5, z: -42.0,rot: Math.PI * 0.5 },
+
+                // Eastern Perimeter Road (along right verge)
+                { x: 40.8, z: 50.0,  rot: -Math.PI / 2 },
+                { x: 40.8, z: 32.0,  rot: -Math.PI / 2 },
+                { x: 40.8, z: 14.0,  rot: -Math.PI / 2 },
+                { x: 40.8, z: -4.0,  rot: -Math.PI / 2 },
+                { x: 40.8, z: -22.0, rot: -Math.PI / 2 },
+                { x: 40.8, z: -40.0, rot: -Math.PI / 2 },
+                { x: 40.8, z: -58.0, rot: -Math.PI / 2 },
+
+                // Road 5 (fronting Plots 107-123!)
+                { x: 21.8, z: 45.0,  rot: Math.PI / 2 },
+                { x: 21.8, z: 28.0,  rot: Math.PI / 2 },
+                { x: 21.8, z: 12.0,  rot: Math.PI / 2 },
+                { x: 21.8, z: -4.0,  rot: Math.PI / 2 },
+
+                // Internal Colony Roads & Central Cross Junctions
+                { x: 5.6,  z: -22.0, rot: Math.PI },
+                { x: 15.6, z: -22.0, rot: Math.PI },
+                { x: 26.6, z: -22.0, rot: Math.PI },
+                { x: 4.8,  z: 8.0,   rot: Math.PI / 2 },
+                { x: -5.1, z: -48.0, rot: Math.PI / 2 },
+                { x: 14.5, z: -48.0, rot: Math.PI / 2 }
+            ];
+
+            lightConfigs.forEach(cfg => {
+                createStreetLightObject(cfg.x, cfg.z, cfg.rot);
+            });
+        }
+
+        function createStreetLightObject(x, z, rotationY) {
+            const poleGroup = new THREE.Group();
+            poleGroup.position.set(x, 0, z);
+            poleGroup.rotation.y = rotationY;
+
+            const poleMat = new THREE.MeshStandardMaterial({
+                color: 0x2b3137,
+                metalness: 0.85,
+                roughness: 0.25
+            });
+
+            // Concrete base anchor
+            const baseMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.45, 12), poleMat);
+            baseMesh.position.y = 0.225;
+            baseMesh.castShadow = true;
+            poleGroup.add(baseMesh);
+
+            // Vertical tapered steel pole
+            const poleMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, 5.8, 12), poleMat);
+            poleMesh.position.y = 2.9;
+            poleMesh.castShadow = true;
+            poleGroup.add(poleMesh);
+
+            // Curved outreach arm extending towards road center
+            const armMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.07, 1.8, 10), poleMat);
+            armMesh.rotation.z = Math.PI / 3.2;
+            armMesh.position.set(0.7, 5.7, 0);
+            armMesh.castShadow = true;
+            poleGroup.add(armMesh);
+
+            // Modern Luminaire Head (Fixture Housing)
+            const headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.16, 0.32), poleMat);
+            headMesh.position.set(1.4, 6.15, 0);
+            headMesh.castShadow = true;
+            poleGroup.add(headMesh);
+
+            // Glowing LED Optical Lens
+            const bulbMat = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                emissive: 0xffe6a3, // Warm 3500K golden LED
+                emissiveIntensity: 0.15,
+                roughness: 0.1
+            });
+            const bulbMesh = new THREE.Mesh(new THREE.PlaneGeometry(0.65, 0.25), bulbMat);
+            bulbMesh.rotation.x = Math.PI / 2;
+            bulbMesh.position.set(1.4, 6.06, 0);
+            poleGroup.add(bulbMesh);
+
+            // Downward Spot Light casting soft pools of light on asphalt
+            const spotLight = new THREE.SpotLight(0xffeedd, 0.0);
+            spotLight.position.set(1.4, 6.0, 0);
+            spotLight.angle = Math.PI / 4.2;
+            spotLight.penumbra = 0.6;
+            spotLight.decay = 1.8;
+            spotLight.distance = 26;
+
+            const spotTarget = new THREE.Object3D();
+            spotTarget.position.set(2.4, 0, 0);
+            poleGroup.add(spotTarget);
+            spotLight.target = spotTarget;
+            poleGroup.add(spotLight);
+
+            scene3D.add(poleGroup);
+
+            streetLights.push({
+                bulbMat: bulbMat,
+                spot: spotLight
+            });
+        }
+
+        /* ── Roadside Trees & Botanical Landscaping (Along REAL Roads) ── */
+        function buildRoadsideTreesAndHedges() {
+            // 1. Avenue Shade Trees (Neem / Gulmohar style) along road verges
+            const shadeTreeCoords = [
+                // Southern Highway Roadside (North Verge)
+                { x: -35, z: 68.5, s: 1.15 },
+                { x: -24, z: 68.5, s: 1.05 },
+                { x: -8,  z: 68.5, s: 1.2 },
+                { x: 8,   z: 68.5, s: 1.0 },
+                { x: 20,  z: 68.5, s: 1.25 },
+                { x: 32,  z: 68.5, s: 1.1 },
+                { x: 45,  z: 68.5, s: 1.2 },
+
+                // Southern Highway Roadside (South Verge)
+                { x: -30, z: 80.5, s: 1.2 },
+                { x: -14, z: 80.5, s: 1.1 },
+                { x: 0,   z: 80.5, s: 1.25 },
+                { x: 16,  z: 80.5, s: 1.05 },
+                { x: 30,  z: 80.5, s: 1.2 },
+                { x: 42,  z: 80.5, s: 1.15 },
+
+                // Grand Entrance Neck Roadside (Road 18)
+                { x: 1.8,  z: 65.0, s: 1.2 },
+                { x: 18.2, z: 65.0, s: 1.2 },
+                { x: 1.8,  z: 58.5, s: 1.15 },
+
+                // Western Swept Avenue (along the signature curve, matching 2D tree icons)
+                { x: -14.0, z: 60.0, s: 1.1 },
+                { x: -18.0, z: 46.0, s: 1.2 },
+                { x: -22.0, z: 32.0, s: 1.05 },
+                { x: -25.5, z: 18.0, s: 1.15 },
+                { x: -25.5, z: 4.0,  s: 1.2 },
+                { x: -25.5, z: -10.0,s: 1.05 },
+                { x: -25.5, z: -24.0,s: 1.25 },
+                { x: -25.5, z: -38.0,s: 1.1 },
+                { x: -29.0, z: -46.0,s: 1.2 },
+
+                // Road 5 Verge (fronting Plots 107-123)
+                { x: 21.6, z: 48.0,  s: 1.15 },
+                { x: 21.6, z: 32.0,  s: 1.1 },
+                { x: 21.6, z: 16.0,  s: 1.2 },
+                { x: 21.6, z: 0.0,   s: 1.05 },
+                { x: 21.6, z: -12.0, s: 1.15 },
+
+                // Central Cross Road 15 Verge
+                { x: -12.0, z: -18.2, s: 1.1 },
+                { x: 8.0,   z: -18.2, s: 1.15 },
+                { x: 18.0,  z: -18.2, s: 1.1 },
+                { x: 30.0,  z: -18.2, s: 1.2 },
+
+                // Eastern Perimeter Road Verge
+                { x: 41.8, z: 55.0,  s: 1.1 },
+                { x: 41.8, z: 40.0,  s: 1.25 },
+                { x: 41.8, z: 25.0,  s: 1.05 },
+                { x: 41.8, z: 10.0,  s: 1.2 },
+                { x: 41.8, z: -5.0,  s: 1.1 },
+                { x: 41.8, z: -20.0, s: 1.25 },
+                { x: 41.8, z: -35.0, s: 1.05 },
+                { x: 41.8, z: -50.0, s: 1.2 },
+                { x: 41.8, z: -65.0, s: 1.15 },
+
+                // Northern Road Verge
+                { x: -6,  z: -81.5, s: 1.1 },
+                { x: 6,   z: -81.5, s: 1.2 },
+                { x: 18,  z: -81.5, s: 1.05 },
+                { x: 28,  z: -81.5, s: 1.25 }
+            ];
+
+            shadeTreeCoords.forEach((pt, idx) => {
+                createAvenueShadeTree(pt.x, pt.z, pt.s, idx);
+            });
+
+            // 2. Tuscan Architectural Cypress Pines at corner junctions
+            const cypressCoords = [
+                { x: -20.0, z: 54.0, s: 1.2 },
+                { x: -13.0, z: 54.0, s: 1.2 },
+                { x: 38.5,  z: 58.0, s: 1.3 },
+                { x: 38.5,  z: -68.0,s: 1.3 },
+                { x: -25.5, z: -51.0,s: 1.2 },
+                { x: -22.5, z: -21.0,s: 1.25 },
+                { x: 37.0,  z: -21.0,s: 1.25 },
+                { x: 21.6,  z: 54.0,  s: 1.2 }
+            ];
+            cypressCoords.forEach(pt => createCypressTree(pt.x, pt.z, pt.s));
+
+            // 3. Royal Palms along Southern Highway & Main Entry Gate
+            const palmCoords = [
+                { x: -20, z: 74.35, s: 1.25 },
+                { x: 10,  z: 74.35, s: 1.25 },
+                { x: 28,  z: 74.35, s: 1.25 },
+                { x: 2.2, z: 66.5,  s: 1.3 },
+                { x: 17.8,z: 66.5,  s: 1.3 },
+                { x: -16.5, z: 54.0, s: 1.3 }
+            ];
+            palmCoords.forEach(pt => createPalmTree(pt.x, pt.z, pt.s));
+
+            // 4. Manicured Boxwood Hedges along Avenue Sidewalks
+            createRoadsideHedge(-24.6, -15.0, 0.4, 50, 0);
+            createRoadsideHedge(-21.8, -15.0, 0.4, 50, 0);
+        }
+
+        function createAvenueShadeTree(x, z, scale = 1.0, seed = 0) {
+            const treeGroup = new THREE.Group();
+            treeGroup.position.set(x, 0, z);
+
+            const trunkMat = new THREE.MeshStandardMaterial({ color: 0x4a3424, roughness: 0.9 });
+            const trunkH = 2.4 * scale;
+            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * scale, 0.32 * scale, trunkH, 8), trunkMat);
+            trunk.position.y = trunkH / 2;
+            trunk.castShadow = true;
+            treeGroup.add(trunk);
+
+            const leafColors = [0x164b22, 0x205e2d, 0x2b7538, 0x368c45];
+            const leafMat = new THREE.MeshStandardMaterial({
+                color: leafColors[seed % leafColors.length],
+                roughness: 0.82,
+                flatShading: true
+            });
+
+            const canopyGroup = new THREE.Group();
+            canopyGroup.position.y = trunkH;
+
+            const c1 = new THREE.Mesh(new THREE.DodecahedronGeometry(1.65 * scale, 1), leafMat);
+            c1.position.set(0, 0.8 * scale, 0);
+            c1.castShadow = true;
+            canopyGroup.add(c1);
+
+            const c2 = new THREE.Mesh(new THREE.DodecahedronGeometry(1.2 * scale, 1), leafMat);
+            c2.position.set(0.6 * scale, 0.4 * scale, 0.4 * scale);
+            c2.castShadow = true;
+            canopyGroup.add(c2);
+
+            const c3 = new THREE.Mesh(new THREE.DodecahedronGeometry(1.15 * scale, 1), leafMat);
+            c3.position.set(-0.5 * scale, 0.5 * scale, -0.3 * scale);
+            c3.castShadow = true;
+            canopyGroup.add(c3);
+
+            treeGroup.add(canopyGroup);
+            scene3D.add(treeGroup);
+
+            foliageMeshes.push({
+                obj: canopyGroup,
+                phase: seed * 0.8,
+                speed: 1.4 + (seed % 3) * 0.2
+            });
+        }
+
+        function createCypressTree(x, z, scale = 1.0) {
+            const group = new THREE.Group();
+            group.position.set(x, 0, z);
+
+            const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3a281c, roughness: 0.9 });
+            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.18, 1.2 * scale, 6), trunkMat);
+            trunk.position.y = 0.6 * scale;
+            trunk.castShadow = true;
+            group.add(trunk);
+
+            const foliageMat = new THREE.MeshStandardMaterial({
+                color: 0x12361d,
+                roughness: 0.78,
+                flatShading: true
+            });
+            const spire = new THREE.Mesh(new THREE.ConeGeometry(0.85 * scale, 4.2 * scale, 8), foliageMat);
+            spire.position.y = 2.8 * scale;
+            spire.castShadow = true;
+            group.add(spire);
+
+            scene3D.add(group);
+        }
+
+        function createPalmTree(x, z, scale = 1.0) {
+            const group = new THREE.Group();
+            group.position.set(x, 0, z);
+
+            const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5a4332, roughness: 0.95 });
+            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.16 * scale, 0.28 * scale, 5.2 * scale, 8), trunkMat);
+            trunk.position.y = 2.6 * scale;
+            trunk.rotation.z = 0.06;
+            trunk.castShadow = true;
+            group.add(trunk);
+
+            const frondMat = new THREE.MeshStandardMaterial({ color: 0x1f6631, roughness: 0.7, flatShading: true });
+            const crown = new THREE.Group();
+            crown.position.set(0.15, 5.2 * scale, 0);
+
+            for (let i = 0; i < 7; i++) {
+                const angle = (i / 7) * Math.PI * 2;
+                const frond = new THREE.Mesh(new THREE.ConeGeometry(0.4 * scale, 2.5 * scale, 4), frondMat);
+                frond.rotation.z = Math.PI / 2.8;
+                frond.rotation.y = angle;
+                frond.position.y = -0.2;
+                crown.add(frond);
+            }
+            group.add(crown);
+            scene3D.add(group);
+        }
+
+        function createRoadsideHedge(x, z, width, length, rotY) {
+            const hedgeMat = new THREE.MeshStandardMaterial({
+                color: 0x24632b,
+                roughness: 0.88,
+                flatShading: true
+            });
+            const hedge = new THREE.Mesh(new THREE.BoxGeometry(width, 0.45, length), hedgeMat);
+            hedge.position.set(x, 0.225, z);
+            hedge.rotation.y = rotY;
+            hedge.castShadow = true;
+            hedge.receiveShadow = true;
+            scene3D.add(hedge);
+        }
+
+        /* ── 3D Plots Builder: All 123 Plots at Exact SVG Coordinates ── */
+        function build3DPlotsFromLayout() {
+            // Remove previous plot meshes if any
+            interactivePlotMeshesList.length = 0;
+            plot3DMeshes.forEach(item => {
+                if (item.group && item.group.parent) {
+                    scene3D.remove(item.group);
+                }
+            });
+            plot3DMeshes.clear();
+
+            const CX = 498;
+            const CY = 825;
+            const SCALE = 0.1;
+
+            plotsMap.forEach((data, key) => {
+                let bbox = null;
+                if (typeof AURANGABAD_PLOT_COORDINATES !== 'undefined' && AURANGABAD_PLOT_COORDINATES[key]) {
+                    const c = AURANGABAD_PLOT_COORDINATES[key];
+                    bbox = { x: c.x, y: c.y, width: c.w, height: c.h };
+                } else if (plotBBoxesMap.has(key)) {
+                    bbox = plotBBoxesMap.get(key);
+                } else {
+                    const el = plotElementsRegistry.get(key);
+                    if (el) bbox = extractPlotBBox(el);
+                }
+
+                if (!bbox || bbox.width <= 0 || bbox.height <= 0) return;
+
+                // Exact 3D physical coordinates mapped from SVG
+                const worldX = (bbox.x + bbox.width / 2 - CX) * SCALE;
+                const worldZ = (bbox.y + bbox.height / 2 - CY) * SCALE;
+                const plotW  = Math.max(1.6, bbox.width * SCALE);
+                const plotD  = Math.max(1.6, bbox.height * SCALE);
+                const plotH  = 0.45; // Plinth height
+
+                const plotGroup = new THREE.Group();
+                plotGroup.position.set(worldX, 0, worldZ);
+
+                // Status color
+                const statusColorHex = getStatusColorHex(data.status);
+
+                // Plinth Foundation Mesh
+                const plinthGeo = new THREE.BoxGeometry(plotW * 0.94, plotH, plotD * 0.94);
+                const plinthMat = new THREE.MeshStandardMaterial({
+                    color: statusColorHex,
+                    roughness: 0.35,
+                    metalness: 0.18
+                });
+                const plinthMesh = new THREE.Mesh(plinthGeo, plinthMat);
+                plinthMesh.position.y = plotH / 2;
+                plinthMesh.castShadow = true;
+                plinthMesh.receiveShadow = true;
+                plinthMesh.userData = {
+                    plotKey: key,
+                    plotData: data,
+                    isPlot: true,
+                    originalColor: statusColorHex,
+                    originalY: plotH / 2
+                };
+                plotGroup.add(plinthMesh);
+                interactivePlotMeshesList.push(plinthMesh);
+
+                // Top Chamfer Border Wireframe
+                const borderGeo = new THREE.EdgesGeometry(plinthGeo);
+                const borderMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.38 });
+                const borderLine = new THREE.LineSegments(borderGeo, borderMat);
+                borderLine.position.y = plotH / 2;
+                plotGroup.add(borderLine);
+
+                // Floating 3D Plot Number Badge
+                const badgeMesh = createPlotNumberBadge(data.plotNumber);
+                badgeMesh.position.set(0, plotH + 0.9, 0);
+                plotGroup.add(badgeMesh);
+
+                scene3D.add(plotGroup);
+
+                plot3DMeshes.set(key, {
+                    group: plotGroup,
+                    plinthMesh: plinthMesh,
+                    borderLine: borderLine,
+                    badgeMesh: badgeMesh,
+                    data: data,
+                    originalY: plotH / 2
+                });
+            });
+
+            console.log(`Successfully mapped ${plot3DMeshes.size} plots into 3D Aurangabad Digital Twin!`);
+        }
+
+        function getStatusColorHex(status) {
+            if (status === 'Available') return 0x10B981;    // Emerald Green
+            if (status === 'Sold') return 0xEF4444;         // Crimson Red
+            if (status === 'Builder Hold') return 0xFFB800; // Golden Amber
+            return 0x4A90A4;                                // Default Teal
+        }
+
+        function createPlotNumberBadge(plotNumber) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 80;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'rgba(15, 34, 55, 0.94)';
+            ctx.beginPath();
+            if (ctx.roundRect) {
+                ctx.roundRect(6, 6, 116, 68, 16);
+            } else {
+                ctx.rect(6, 6, 116, 68);
+            }
+            ctx.fill();
+
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#4A90A4';
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 36px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(String(plotNumber), 64, 40);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const badgeMat = new THREE.MeshBasicMaterial({
+                map: texture,
+                transparent: true,
+                side: THREE.DoubleSide
+            });
+            const badgeGeo = new THREE.PlaneGeometry(1.6, 1.0);
+            return new THREE.Mesh(badgeGeo, badgeMat);
+        }
+
+        /* ── Luxury Villa Architectural Preview Model ─────────────── */
+        function buildLuxuryVillaPreview() {
+            const targetPlot = plot3DMeshes.get('Plot_62') || plot3DMeshes.get('Plot_14');
+            if (!targetPlot) return;
+
+            const pos = targetPlot.group.position;
+            const villaGroup = new THREE.Group();
+            villaGroup.position.set(pos.x, 0.45, pos.z);
+
+            const wallMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f7, roughness: 0.3 });
+            const woodMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b, roughness: 0.6 });
+            const glassMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.1, metalness: 0.8, transparent: true, opacity: 0.75 });
+            const roofMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.4 });
+
+            // Ground Floor Structure
+            const groundFloor = new THREE.Mesh(new THREE.BoxGeometry(2.8, 1.4, 3.8), wallMat);
+            groundFloor.position.y = 0.7;
+            groundFloor.castShadow = true;
+            villaGroup.add(groundFloor);
+
+            const frontWindow = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 0.9), glassMat);
+            frontWindow.position.set(0, 0.7, 1.91);
+            villaGroup.add(frontWindow);
+
+            // First Floor with cantilevered terrace
+            const firstFloor = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.3, 3.2), wallMat);
+            firstFloor.position.set(0.2, 2.05, -0.2);
+            firstFloor.castShadow = true;
+            villaGroup.add(firstFloor);
+
+            const balconyGlass = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.45, 0.05), glassMat);
+            balconyGlass.position.set(0.2, 1.62, 1.4);
+            villaGroup.add(balconyGlass);
+
+            const louvers = new THREE.Mesh(new THREE.BoxGeometry(0.08, 1.2, 1.0), woodMat);
+            louvers.position.set(1.42, 2.05, 0.4);
+            villaGroup.add(louvers);
+
+            const roof = new THREE.Mesh(new THREE.BoxGeometry(2.9, 0.15, 3.6), roofMat);
+            roof.position.set(0.2, 2.75, -0.2);
+            roof.castShadow = true;
+            villaGroup.add(roof);
+
+            scene3D.add(villaGroup);
+        }
+
+        /* ── 3D Raycasting & Interactive Plot Selection ───────────── */
+        function setup3DRaycaster() {
+            raycaster3D = new THREE.Raycaster();
+            mouseVector3D = new THREE.Vector2();
+
+            const canvas = document.getElementById('threeCanvas3D');
+            let pointerDownPos = { x: 0, y: 0 };
+
+            canvas.addEventListener('pointerdown', (e) => {
+                pointerDownPos.x = e.clientX;
+                pointerDownPos.y = e.clientY;
+            });
+
+            canvas.addEventListener('pointermove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouseVector3D.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouseVector3D.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+                raycaster3D.setFromCamera(mouseVector3D, camera3D);
+                const intersects = raycaster3D.intersectObjects(interactivePlotMeshesList);
+
+                if (intersects.length > 0) {
+                    const hit = intersects[0].object;
+                    canvas.style.cursor = 'pointer';
+                    if (hoveredPlot3D !== hit) {
+                        if (hoveredPlot3D) unhighlightPlot3D(hoveredPlot3D);
+                        hoveredPlot3D = hit;
+                        highlightPlot3D(hoveredPlot3D);
+                    }
+                } else {
+                    canvas.style.cursor = 'default';
+                    if (hoveredPlot3D) {
+                        unhighlightPlot3D(hoveredPlot3D);
+                        hoveredPlot3D = null;
+                    }
+                }
+            });
+
+            canvas.addEventListener('pointerup', (e) => {
+                const dx = Math.abs(e.clientX - pointerDownPos.x);
+                const dy = Math.abs(e.clientY - pointerDownPos.y);
+                if (dx > 6 || dy > 6) return; // Ignore drag operations
+
+                const rect = canvas.getBoundingClientRect();
+                mouseVector3D.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouseVector3D.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+                raycaster3D.setFromCamera(mouseVector3D, camera3D);
+                const intersects = raycaster3D.intersectObjects(interactivePlotMeshesList);
+
+                if (intersects.length > 0) {
+                    const key = intersects[0].object.userData.plotKey;
+                    if (selectedPlotKey === key) {
+                        closePlotDetails();
+                        sync3DPlotsStatus();
+                    } else {
+                        openPlotDetails(key);
+                        focusCameraOnPlot3D(key);
+                    }
+                } else {
+                    if (selectedPlotKey) {
+                        closePlotDetails();
+                        sync3DPlotsStatus();
+                    }
+                }
+            });
+        }
+
+        function highlightPlot3D(mesh) {
+            mesh.material.emissive.setHex(0x4A90A4);
+            mesh.material.emissiveIntensity = 0.55;
+            mesh.position.y = mesh.userData.originalY + 0.35;
+        }
+
+        function unhighlightPlot3D(mesh) {
+            const isSelected = (mesh.userData.plotKey === selectedPlotKey);
+            if (isSelected) {
+                mesh.material.emissive.setHex(0x4A90A4);
+                mesh.material.emissiveIntensity = 0.8;
+                mesh.position.y = mesh.userData.originalY + 0.35;
+            } else {
+                mesh.material.emissive.setHex(0x000000);
+                mesh.material.emissiveIntensity = 0.0;
+                mesh.position.y = mesh.userData.originalY;
+            }
+        }
+
+        function sync3DPlotsStatus() {
+            plot3DMeshes.forEach((item, key) => {
+                const isSelected = (selectedPlotKey === key);
+                const matchesFilter = (activeFilter === 'All') || (item.data.status === activeFilter);
+
+                if (isSelected) {
+                    item.plinthMesh.material.color.setHex(0x4A90A4);
+                    item.plinthMesh.material.emissive.setHex(0x4A90A4);
+                    item.plinthMesh.material.emissiveIntensity = 0.8;
+                    item.plinthMesh.position.y = item.originalY + 0.35;
+                    item.group.visible = true;
+                } else {
+                    item.plinthMesh.material.color.setHex(getStatusColorHex(item.data.status));
+                    item.plinthMesh.material.emissive.setHex(0x000000);
+                    item.plinthMesh.material.emissiveIntensity = 0.0;
+                    item.plinthMesh.position.y = item.originalY;
+
+                    if (!matchesFilter) {
+                        item.plinthMesh.material.transparent = true;
+                        item.plinthMesh.material.opacity = 0.2;
+                    } else {
+                        item.plinthMesh.material.transparent = false;
+                        item.plinthMesh.material.opacity = 1.0;
+                    }
+                }
+            });
+        }
+
+        function focusCameraOnPlot3D(key) {
+            const item = plot3DMeshes.get(key);
+            if (!item) return;
+
+            const targetPos = item.group.position;
+            const desiredCamPos = new THREE.Vector3(
+                targetPos.x + 14,
+                targetPos.y + 20,
+                targetPos.z + 22
+            );
+
+            tweenCamera3D(desiredCamPos, targetPos, 700);
+            sync3DPlotsStatus();
+        }
+
+        function tweenCamera3D(targetCamPos, targetLookAt, duration = 650) {
+            const startCamPos = camera3D.position.clone();
+            const startLookAt = controls3DInstance.target.clone();
+            const startTime = performance.now();
+
+            cameraTargetTween = {
+                step: (now) => {
+                    const elapsed = now - startTime;
+                    const p = Math.min(1, elapsed / duration);
+                    const ease = 1 - Math.pow(1 - p, 3); // Ease out cubic
+
+                    camera3D.position.lerpVectors(startCamPos, targetCamPos, ease);
+                    controls3DInstance.target.lerpVectors(startLookAt, targetLookAt, ease);
+
+                    if (p >= 1) {
+                        cameraTargetTween = null;
+                    }
+                }
+            };
+        }
+
+        /* ── Preset Buttons & Lighting Mode Wiring ────────────────── */
+        function setup3DControlButtons() {
+            const btnCamAerial = document.getElementById('btnCamAerial');
+            const btnCamStreet = document.getElementById('btnCamStreet');
+            const btnCamOrbit  = document.getElementById('btnCamOrbit');
+
+            btnCamAerial.addEventListener('click', () => {
+                controls3DInstance.autoRotate = false;
+                btnCamOrbit.classList.remove('active');
+                btnCamStreet.classList.remove('active');
+                btnCamAerial.classList.add('active');
+                tweenCamera3D(new THREE.Vector3(8, 120, 105), new THREE.Vector3(8, 0, -2), 800);
+            });
+
+            btnCamStreet.addEventListener('click', () => {
+                controls3DInstance.autoRotate = false;
+                btnCamOrbit.classList.remove('active');
+                btnCamAerial.classList.remove('active');
+                btnCamStreet.classList.add('active');
+                // Street view looking up the signature Western Avenue
+                tweenCamera3D(new THREE.Vector3(-16, 5, 62), new THREE.Vector3(-21, 2, 20), 800);
+            });
+
+            btnCamOrbit.addEventListener('click', () => {
+                const isActive = controls3DInstance.autoRotate;
+                controls3DInstance.autoRotate = !isActive;
+                controls3DInstance.autoRotateSpeed = 1.2;
+                if (!isActive) {
+                    btnCamOrbit.classList.add('active');
+                } else {
+                    btnCamOrbit.classList.remove('active');
+                }
+            });
+
+            document.getElementById('btnLightDay').addEventListener('click', () => setLightingMode('day'));
+            document.getElementById('btnLightSunset').addEventListener('click', () => setLightingMode('sunset'));
+            document.getElementById('btnLightNight').addEventListener('click', () => setLightingMode('night'));
+        }
+
+        /* ── Render Loop & Procedural Wind Sway Animation ─────────── */
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+
+            const time = performance.now() * 0.001;
+
+            if (cameraTargetTween) {
+                cameraTargetTween.step(performance.now());
+            }
+
+            if (controls3DInstance) {
+                controls3DInstance.update();
+            }
+
+            // Gentle Wind Sway on Roadside Tree Canopies
+            for (let i = 0; i < foliageMeshes.length; i++) {
+                const f = foliageMeshes[i];
+                f.obj.rotation.z = Math.sin(time * f.speed + f.phase) * 0.035;
+                f.obj.rotation.x = Math.cos(time * f.speed * 0.8 + f.phase) * 0.025;
+            }
+
+            // Billboarding Plot Number Badges to face camera
+            plot3DMeshes.forEach(item => {
+                if (item.badgeMesh) {
+                    item.badgeMesh.quaternion.copy(camera3D.quaternion);
+                }
+            });
+
+            if (renderer3D && scene3D && camera3D && is3DModeActive) {
+                renderer3D.render(scene3D, camera3D);
+            }
+        }
+
+        // Hook into existing details panel opening/closing for 3D sync
+        const origOpenPlotDetails = openPlotDetails;
+        openPlotDetails = function(key) {
+            origOpenPlotDetails(key);
+            if (is3DModeActive) {
+                sync3DPlotsStatus();
+                focusCameraOnPlot3D(key);
+            }
+        };
+
+        const origClosePlotDetails = closePlotDetails;
+        closePlotDetails = function() {
+            origClosePlotDetails();
+            if (is3DModeActive) {
+                sync3DPlotsStatus();
+            }
+        };
+
+        // Hook into filter buttons for 3D sync
+        document.querySelectorAll('#filterStrip .filter-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (is3DModeActive) {
+                    sync3DPlotsStatus();
+                }
+            });
+        });
+
+        // Hook search input for 3D camera auto-glide
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const num = parseInt(searchInput.value.replace(/\D/g, ''), 10);
+                if (!isNaN(num) && num >= 1 && num <= 123) {
+                    const key = `Plot_${num}`;
+                    if (is3DModeActive && plot3DMeshes.has(key)) {
+                        focusCameraOnPlot3D(key);
+                    }
+                }
+            }
+        });
+
+        // Deep-link support: Auto-switch to 3D if URL has #3d or ?mode=3d
+        if (window.location.hash.toLowerCase().includes('3d') || window.location.search.toLowerCase().includes('3d')) {
+            setTimeout(() => switchViewMode('3D'), 150);
+        }
     </script>
 </body>
 </html>

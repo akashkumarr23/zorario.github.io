@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -556,6 +556,661 @@
         .social-link { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 14px; transition: all 0.2s; }
         .social-link:hover { background: #4A90A4; color: #fff; border-color: #4A90A4; }
 
+        /* ── 3D DIGITAL TWIN & SPATIAL ENGINE SECTION ────────── */
+        .digital-twin-section {
+            background: linear-gradient(180deg, #091726 0%, #06101B 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 90px 5% 100px;
+        }
+        .digital-twin-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 50% 15%, rgba(74,144,164,0.2) 0%, transparent 65%),
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            pointer-events: none;
+        }
+        .twin-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(74,144,164,0.15);
+            border: 1px solid rgba(74,144,164,0.35);
+            color: #6BB5CB;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        .twin-eyebrow .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 10px #10B981;
+            animation: twinPulse 1.8s infinite;
+        }
+        @keyframes twinPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.5; }
+        }
+
+        /* 3D Viewport Card */
+        .twin-viewport-card {
+            background: rgba(15, 34, 55, 0.72);
+            border: 1px solid rgba(74, 144, 164, 0.32);
+            box-shadow: 0 32px 90px rgba(0, 0, 0, 0.6), 0 0 50px rgba(74, 144, 164, 0.15);
+            border-radius: 28px;
+            backdrop-filter: blur(24px);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 50px;
+            z-index: 2;
+        }
+
+        /* Top HUD Bar */
+        .twin-hud-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 26px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(9, 23, 38, 0.88);
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .twin-prop-badge {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .prop-badge-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(74,144,164,0.3), rgba(107,181,203,0.12));
+            border: 1px solid rgba(74,144,164,0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6BB5CB;
+            font-size: 18px;
+        }
+        .prop-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.2px;
+        }
+        .prop-sub {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.65);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+        .twin-pulse-status {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10B981;
+            display: inline-block;
+            box-shadow: 0 0 6px #10B981;
+        }
+
+        .twin-hud-quick-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .twin-action-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.85);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: inherit;
+        }
+        .twin-action-btn:hover, .twin-action-btn.active {
+            background: rgba(74, 144, 164, 0.3);
+            border-color: #6BB5CB;
+            color: #fff;
+        }
+
+        /* Canvas Stage */
+        .twin-canvas-wrap {
+            position: relative;
+            width: 100%;
+            height: 620px;
+            background: radial-gradient(circle at 50% 60%, #0d2238 0%, #06111d 80%);
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+        }
+        .twin-canvas-wrap:active {
+            cursor: grabbing;
+        }
+        #twin3dCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            outline: none;
+        }
+
+        /* Preloader */
+        .twin-canvas-loader {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            background: #091726;
+            z-index: 25;
+            color: #6BB5CB;
+            font-size: 14px;
+            font-weight: 600;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        .twin-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(74, 144, 164, 0.2);
+            border-top-color: #6BB5CB;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Floating 3D Hotspot Pins */
+        .twin-hotspot {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: auto;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+        .twin-hotspot:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+        .hotspot-pin {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px rgba(107, 181, 203, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 13px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .hotspot-pin::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid rgba(107, 181, 203, 0.6);
+            animation: pinPulse 2s infinite;
+        }
+        @keyframes pinPulse {
+            0% { transform: scale(0.9); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        .hotspot-label {
+            background: rgba(15, 34, 55, 0.92);
+            border: 1px solid rgba(74, 144, 164, 0.4);
+            backdrop-filter: blur(12px);
+            padding: 6px 12px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            white-space: nowrap;
+            display: flex;
+            flex-direction: column;
+            pointer-events: none;
+        }
+        .hotspot-label strong {
+            font-size: 11px;
+            color: #fff;
+        }
+        .hotspot-label span {
+            font-size: 9.5px;
+            color: #6BB5CB;
+        }
+
+        /* Exploded Level Badges */
+        .explode-level-badges {
+            position: absolute;
+            right: 24px;
+            top: 20px;
+            bottom: 20px;
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+            z-index: 10;
+        }
+        .explode-level-badges.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .level-badge {
+            background: rgba(15, 34, 55, 0.92);
+            border: 1px solid rgba(74, 144, 164, 0.4);
+            backdrop-filter: blur(12px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #fff;
+            pointer-events: auto;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .level-badge:hover {
+            border-color: #6BB5CB;
+            background: rgba(74, 144, 164, 0.3);
+            transform: translateX(-4px);
+        }
+        .level-badge span {
+            background: #4A90A4;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        /* Floating Interaction Hint */
+        .twin-interaction-hint {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(9, 23, 38, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(12px);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 7px 18px;
+            border-radius: 100px;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .twin-interaction-hint i {
+            color: #6BB5CB;
+        }
+
+        /* Dynamic Floating Inspector Card */
+        .twin-inspector-card {
+            position: absolute;
+            left: 24px;
+            bottom: 24px;
+            max-width: 330px;
+            background: rgba(15, 34, 55, 0.94);
+            border: 1px solid rgba(74, 144, 164, 0.45);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+            z-index: 15;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .twin-inspector-card.hidden {
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .inspector-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .inspector-tag {
+            background: rgba(74, 144, 164, 0.22);
+            color: #6BB5CB;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .inspector-close {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 18px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 4px;
+        }
+        .inspector-close:hover { color: #fff; }
+        .twin-inspector-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .twin-inspector-card p {
+            font-size: 11.5px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+        .inspector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+        .inspector-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .inspector-stat .lbl {
+            font-size: 9.5px;
+            color: rgba(255, 255, 255, 0.45);
+            text-transform: uppercase;
+        }
+        .inspector-stat .val {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Bottom Controls Toolbar */
+        .twin-controls-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 26px;
+            background: rgba(9, 23, 38, 0.96);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .control-lbl {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .pill-btn-group {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .twin-pill-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .twin-pill-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.09);
+        }
+        .twin-pill-btn.active {
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(74, 144, 164, 0.4);
+        }
+
+        /* 3 Feature Cards Under 3D Viewport */
+        .twin-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .twin-feature-card {
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .twin-feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(74, 144, 164, 0.08);
+            border-color: rgba(74, 144, 164, 0.3);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+        }
+        .feat-card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .twin-feature-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: -0.2px;
+        }
+        .twin-feature-card p {
+            font-size: 13.5px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+        .feat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6BB5CB;
+            background: rgba(74, 144, 164, 0.12);
+            padding: 5px 12px;
+            border-radius: 100px;
+        }
+
+        /* Bottom Action Banner */
+        .twin-cta-banner {
+            background: linear-gradient(135deg, rgba(74,144,164,0.18) 0%, rgba(15,34,55,0.85) 100%);
+            border: 1px solid rgba(74, 144, 164, 0.35);
+            border-radius: 22px;
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .twin-cta-text h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .twin-cta-text p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.65);
+            max-width: 560px;
+            line-height: 1.6;
+        }
+        .twin-cta-buttons {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .btn-twin-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 13px 26px;
+            border-radius: 100px;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(74, 144, 164, 0.35);
+            transition: all 0.3s;
+        }
+        .btn-twin-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px rgba(74, 144, 164, 0.5);
+        }
+        .btn-twin-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-twin-outline:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Subview styles for 2D floorplan card above */
+        .plan-subview {
+            transition: opacity 0.3s ease;
+        }
+        .isometric-3d-preview {
+            background: radial-gradient(circle at 50% 50%, #0d2740 0%, #081726 100%);
+            border-radius: 16px;
+            padding: 24px 20px;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .iso-cube-stage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .iso-room-pill {
+            background: rgba(74, 144, 164, 0.2);
+            border: 1.5px solid rgba(107, 181, 203, 0.5);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            animation: floatIso 3s ease-in-out infinite alternate;
+        }
+        .iso-room-pill:nth-child(2) { animation-delay: 0.6s; }
+        .iso-room-pill:nth-child(3) { animation-delay: 1.2s; }
+        @keyframes floatIso {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+        .iso-cta-btn {
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #fff;
+            border: none;
+            border-radius: 100px;
+            padding: 10px 22px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(74, 144, 164, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .iso-cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 24px rgba(74, 144, 164, 0.5);
+        }
+
         /* ── RESPONSIVE ──────────────────────────────────────── */
         @media (max-width: 1050px) {
             .tech-hero-inner { grid-template-columns: 1fr; }
@@ -569,6 +1224,11 @@
             .pricing-cards { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto 60px; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .strip-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); min-width: 140px; }
+            .twin-feature-grid { grid-template-columns: 1fr; }
+            .twin-canvas-wrap { height: 480px; }
+            .twin-cta-banner { padding: 24px; flex-direction: column; text-align: center; }
+            .twin-controls-toolbar { flex-direction: column; align-items: flex-start; }
+            .twin-inspector-card { max-width: 280px; left: 16px; bottom: 16px; padding: 14px; }
         }
         @media (max-width: 600px) {
             .hero-preview-stack { grid-template-columns: 1fr; }
@@ -576,6 +1236,10 @@
             .footer-grid { grid-template-columns: 1fr; }
             .final-cta { padding: 40px 24px; }
             .tech-hero { min-height: auto; padding: 130px 5% 60px; }
+            .twin-canvas-wrap { height: 400px; }
+            .twin-hud-header { flex-direction: column; align-items: flex-start; }
+            .explode-level-badges { display: none; }
+            .twin-inspector-card { display: none; }
         }
     </style>
 </head>
@@ -590,6 +1254,7 @@
         <ul class="nav-links" role="list">
             <li><a href="index.html#features">Features</a></li>
             <li><a href="projects.html">Projects</a></li>
+            <li><a href="plotter.html"><i class="fas fa-cube" style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a></li>
             <li><a href="blog.html">Blog</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
@@ -849,12 +1514,14 @@
                             <div class="layout-tab" onclick="setTab(this,'vr')">Virtual Tour</div>
                         </div>
                     </div>
-                    <div class="floor-plan" id="floor-plan-container">
+
+                    <!-- 2D Plan Subview -->
+                    <div class="floor-plan plan-subview" id="view-2d-plan">
                         <!-- Master Bedroom -->
                         <div class="room" style="top:15px;left:15px;width:160px;height:120px;" id="room-master">
                             <i class="fas fa-bed"></i>
                             <span>Master Bedroom</span>
-                            <span style="font-size:9px;opacity:0.6;">14Ã—12 ft</span>
+                            <span style="font-size:9px;opacity:0.6;">14 × 12 ft</span>
                             <div class="room-tag">Available</div>
                             <div class="room-info">₹12,000/mo · AC · Attached Bath</div>
                         </div>
@@ -862,21 +1529,21 @@
                         <div class="room" style="top:15px;left:190px;width:140px;height:160px;" id="room-living">
                             <i class="fas fa-couch"></i>
                             <span>Living Room</span>
-                            <span style="font-size:9px;opacity:0.6;">18Ã—15 ft</span>
+                            <span style="font-size:9px;opacity:0.6;">18 × 15 ft</span>
                             <div class="room-info">Spacious · Balcony Access</div>
                         </div>
                         <!-- Bedroom 2 -->
                         <div class="room" style="top:150px;left:15px;width:120px;height:100px;" id="room-bed2">
                             <i class="fas fa-bed"></i>
                             <span>Bedroom 2</span>
-                            <span style="font-size:9px;opacity:0.6;">11Ã—10 ft</span>
+                            <span style="font-size:9px;opacity:0.6;">11 × 10 ft</span>
                             <div class="room-info">₹8,000/mo · Furnished</div>
                         </div>
                         <!-- Kitchen -->
                         <div class="room" style="top:190px;left:150px;width:100px;height:80px;" id="room-kitchen">
                             <i class="fas fa-utensils"></i>
                             <span>Kitchen</span>
-                            <span style="font-size:9px;opacity:0.6;">10Ã—8 ft</span>
+                            <span style="font-size:9px;opacity:0.6;">10 × 8 ft</span>
                             <div class="room-info">Modular · 2 Gas Points</div>
                         </div>
                         <!-- Bath -->
@@ -886,6 +1553,41 @@
                             <div class="room-info">Attached · Geyser</div>
                         </div>
                     </div>
+
+                    <!-- 3D Isometric View Subview -->
+                    <div class="isometric-3d-preview plan-subview" id="view-3d-plan" style="display:none;">
+                        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#6BB5CB;text-transform:uppercase;margin-bottom:12px;">
+                            <i class="fas fa-cube"></i> Isometric 3D Space Cutaway
+                        </div>
+                        <div class="iso-cube-stage">
+                            <div class="iso-room-pill"><i class="fas fa-bed" style="color:#6BB5CB;"></i> Master Penthouse (14×12ft)</div>
+                            <div class="iso-room-pill"><i class="fas fa-couch" style="color:#10B981;"></i> Sunlit Living & Balcony</div>
+                            <div class="iso-room-pill"><i class="fas fa-utensils" style="color:#F59E0B;"></i> Modular Kitchen & Dining</div>
+                        </div>
+                        <p style="font-size:12px;color:rgba(255,255,255,0.7);max-width:320px;margin-bottom:16px;">
+                            Experience full 360° interactive rotation, exploded multi-story levels, and photorealistic WebGL lighting in our Digital Twin Studio below.
+                        </p>
+                        <a href="#3d-property-studio" class="iso-cta-btn">
+                            <i class="fas fa-satellite-dish"></i> Open 3D Spatial Studio Below ↓
+                        </a>
+                    </div>
+
+                    <!-- Virtual Tour Subview -->
+                    <div class="isometric-3d-preview plan-subview" id="view-vr-plan" style="display:none;">
+                        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#10B981;text-transform:uppercase;margin-bottom:12px;">
+                            <i class="fas fa-vr-cardboard"></i> 360° Virtual Tour Simulation
+                        </div>
+                        <div style="width:100px;height:100px;border-radius:50%;background:radial-gradient(circle, rgba(74,144,164,0.3) 0%, rgba(16,185,129,0.1) 70%);border:2px dashed #6BB5CB;display:flex;align-items:center;justify-content:center;margin-bottom:14px;animation:spin 12s linear infinite;">
+                            <i class="fas fa-compass" style="font-size:36px;color:#6BB5CB;"></i>
+                        </div>
+                        <p style="font-size:12px;color:rgba(255,255,255,0.7);max-width:300px;margin-bottom:16px;">
+                            Buyers inspect every corner of the property from their smartphone. High-definition spherical walkthroughs with zero buffering.
+                        </p>
+                        <a href="#3d-property-studio" class="iso-cta-btn">
+                            <i class="fas fa-play"></i> Launch Interactive 3D Experience ↓
+                        </a>
+                    </div>
+
                     <div class="layout-demo-footer">
                         <div class="demo-pill"><i class="fas fa-arrows-alt"></i> Click rooms to explore</div>
                         <div class="demo-pill"><i class="fas fa-ruler-combined"></i> Total: 1,200 sq ft</div>
@@ -916,11 +1618,198 @@
                         <div class="layout-feat">
                             <div class="layout-feat-icon"><i class="fas fa-vr-cardboard"></i></div>
                             <div>
-                                <h3>360Â° Virtual Tours</h3>
+                                <h3>360° Virtual Tours</h3>
                                 <p>Let buyers take a full virtual tour of your property from their phone. No travel required — available 24/7 on any device.</p>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── 3D DIGITAL TWIN & SPATIAL ARCHITECTURE SHOWCASE ──────── -->
+    <section class="ztech-section digital-twin-section" id="3d-property-studio" aria-labelledby="twin-heading">
+        <div class="ztech-inner">
+            <div class="sec-header center" style="margin-bottom: 44px;">
+                <div class="sec-eyebrow twin-eyebrow"><span class="live-dot"></span> LIVE 3D SPATIAL ENGINE · DIGITAL TWIN</div>
+                <h2 class="sec-title" id="twin-heading" style="color: #fff;">Explore Multi-Story Properties<br>in Interactive 3D Real-Time</h2>
+                <p class="sec-sub" style="color: rgba(255,255,255,0.65);">Orbit 360°, explode floor levels, inspect interior spaces, and simulate sunlight in WebGL 3D. Let buyers experience luxury apartments, villas, and commercial spaces before laying the first brick.</p>
+            </div>
+
+            <!-- Main Interactive 3D Stage -->
+            <div class="twin-viewport-card" id="twinViewportCard">
+                <!-- Top Status Bar & Inspector -->
+                <div class="twin-hud-header">
+                    <div class="twin-prop-badge">
+                        <div class="prop-badge-icon"><i class="fas fa-building"></i></div>
+                        <div>
+                            <div class="prop-title">Imperial Sky Villa · Tower B</div>
+                            <div class="prop-sub"><span class="twin-pulse-status"></span> WebGL 2.0 Live Digital Twin · 3,450 sq.ft · G+2 Structure</div>
+                        </div>
+                    </div>
+                    <div class="twin-hud-quick-actions">
+                        <button type="button" class="twin-action-btn active" id="btn-autorotate" title="Toggle 360° Auto-Rotate"><i class="fas fa-sync-alt"></i> <span>Auto Orbit</span></button>
+                        <button type="button" class="twin-action-btn" id="btn-explode" title="Explode Floor Levels"><i class="fas fa-layer-group"></i> <span>Explode Floors</span></button>
+                        <button type="button" class="twin-action-btn" id="btn-reset-cam" title="Reset View"><i class="fas fa-crosshairs"></i> <span>Reset</span></button>
+                        <button type="button" class="twin-action-btn" id="btn-fullscreen" title="Toggle Fullscreen"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+
+                <!-- WebGL Canvas Container -->
+                <div class="twin-canvas-wrap" id="twinCanvasWrap">
+                    <canvas id="twin3dCanvas"></canvas>
+                    
+                    <!-- Preloader / Loading Indicator inside 3D Canvas -->
+                    <div class="twin-canvas-loader" id="twinLoader">
+                        <div class="twin-spinner"></div>
+                        <span>Initializing 3D Spatial Engine & Materials...</span>
+                    </div>
+
+                    <!-- Floating Interactive Hotspots / Pins -->
+                    <div class="twin-hotspot" id="hotspot-penthouse" style="top: 24%; left: 48%;" onclick="focusHotspot('penthouse')">
+                        <div class="hotspot-pin"><i class="fas fa-crown"></i></div>
+                        <div class="hotspot-label">
+                            <strong>Master Penthouse</strong>
+                            <span>1,100 sq ft · Private Terrace</span>
+                        </div>
+                    </div>
+
+                    <div class="twin-hotspot" id="hotspot-living" style="top: 60%; left: 40%;" onclick="focusHotspot('living')">
+                        <div class="hotspot-pin"><i class="fas fa-couch"></i></div>
+                        <div class="hotspot-label">
+                            <strong>Double-Height Living</strong>
+                            <span>18ft Ceilings · Glass Facade</span>
+                        </div>
+                    </div>
+
+                    <div class="twin-hotspot" id="hotspot-pool" style="top: 72%; left: 66%;" onclick="focusHotspot('pool')">
+                        <div class="hotspot-pin"><i class="fas fa-water"></i></div>
+                        <div class="hotspot-label">
+                            <strong>Infinity Plunge Pool</strong>
+                            <span>30×12 ft · Heated Deck</span>
+                        </div>
+                    </div>
+
+                    <div class="twin-hotspot" id="hotspot-garden" style="top: 15%; left: 60%;" onclick="focusHotspot('garden')">
+                        <div class="hotspot-pin"><i class="fas fa-solar-panel"></i></div>
+                        <div class="hotspot-label">
+                            <strong>Solar Sky Lounge</strong>
+                            <span>850 sq ft · Rooftop Garden</span>
+                        </div>
+                    </div>
+
+                    <!-- Floating Level Indicator Badges (Visible during Explode mode) -->
+                    <div class="explode-level-badges" id="explodeLevelBadges">
+                        <div class="level-badge" onclick="focusFloor(3)"><span>Level 3</span> Sky Garden & Solar Deck</div>
+                        <div class="level-badge" onclick="focusFloor(2)"><span>Level 2</span> Master Penthouse Suite</div>
+                        <div class="level-badge" onclick="focusFloor(1)"><span>Level 1</span> 2BHK Guest & Kids Suites</div>
+                        <div class="level-badge" onclick="focusFloor(0)"><span>Ground</span> Grand Living, Dining & Pool</div>
+                    </div>
+
+                    <!-- Floating Interaction Helper Hint -->
+                    <div class="twin-interaction-hint" id="twinHint">
+                        <i class="fas fa-mouse-pointer"></i> Drag to orbit 360° · Scroll / pinch to zoom · Click pins to inspect spaces
+                    </div>
+
+                    <!-- Dynamic Floating Spec Sheet Overlay -->
+                    <div class="twin-inspector-card" id="twinInspector">
+                        <div class="inspector-header">
+                            <span class="inspector-tag" id="inspectTag">Selected Space</span>
+                            <button type="button" class="inspector-close" onclick="closeInspector()">&times;</button>
+                        </div>
+                        <h4 id="inspectTitle">Penthouse Suite & Private Terrace</h4>
+                        <p id="inspectDesc">Architectural master suite featuring floor-to-ceiling panoramic glass, cantilevered teak wood balcony, walk-in wardrobe, and en-suite spa bath.</p>
+                        <div class="inspector-grid">
+                            <div class="inspector-stat">
+                                <span class="lbl">Carpet Area</span>
+                                <span class="val" id="inspectArea">1,100 sq ft</span>
+                            </div>
+                            <div class="inspector-stat">
+                                <span class="lbl">Ceiling Height</span>
+                                <span class="val" id="inspectCeiling">11.5 ft</span>
+                            </div>
+                            <div class="inspector-stat">
+                                <span class="lbl">Orientation</span>
+                                <span class="val" id="inspectOrientation">East / North-East</span>
+                            </div>
+                            <div class="inspector-stat">
+                                <span class="lbl">Availability</span>
+                                <span class="val" style="color:#10B981;" id="inspectStatus">Verified Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Viewport Controls Toolbar -->
+                <div class="twin-controls-toolbar">
+                    <div class="control-group">
+                        <span class="control-lbl"><i class="fas fa-eye"></i> View Mode:</span>
+                        <div class="pill-btn-group">
+                            <button type="button" class="twin-pill-btn active" data-mode="exterior" onclick="setViewMode('exterior')"><i class="fas fa-home"></i> Exterior</button>
+                            <button type="button" class="twin-pill-btn" data-mode="exploded" onclick="setViewMode('exploded')"><i class="fas fa-layer-group"></i> Exploded</button>
+                            <button type="button" class="twin-pill-btn" data-mode="cutaway" onclick="setViewMode('cutaway')"><i class="fas fa-vector-square"></i> Cutaway</button>
+                            <button type="button" class="twin-pill-btn" data-mode="bim" onclick="setViewMode('bim')"><i class="fas fa-cubes"></i> BIM Wireframe</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <span class="control-lbl"><i class="fas fa-sun"></i> Lighting:</span>
+                        <div class="pill-btn-group">
+                            <button type="button" class="twin-pill-btn active" data-light="day" onclick="setLighting('day')"><i class="fas fa-sun"></i> Day</button>
+                            <button type="button" class="twin-pill-btn" data-light="golden" onclick="setLighting('golden')"><i class="fas fa-cloud-sun"></i> Golden Hour</button>
+                            <button type="button" class="twin-pill-btn" data-light="night" onclick="setLighting('night')"><i class="fas fa-moon"></i> Night Glow</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <span class="control-lbl"><i class="fas fa-camera"></i> Camera:</span>
+                        <div class="pill-btn-group">
+                            <button type="button" class="twin-pill-btn" onclick="setCameraPreset('isometric')">Isometric 45°</button>
+                            <button type="button" class="twin-pill-btn" onclick="setCameraPreset('front')">Front</button>
+                            <button type="button" class="twin-pill-btn" onclick="setCameraPreset('top')">Top-Down</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Capabilities Cards Under the 3D Stage -->
+            <div class="twin-feature-grid">
+                <div class="twin-feature-card">
+                    <div class="feat-card-icon" style="background:rgba(74,144,164,0.15);color:#6BB5CB;"><i class="fas fa-cube"></i></div>
+                    <h3>Pre-Construction Sell-Outs</h3>
+                    <p>Close high-ticket property sales months before construction begins. Buyers can walk through each floor, inspect room dimensions, and visualize interior furnishings from anywhere.</p>
+                    <div class="feat-badge"><i class="fas fa-chart-line"></i> 4.8x Higher Conversion</div>
+                </div>
+
+                <div class="twin-feature-card">
+                    <div class="feat-card-icon" style="background:rgba(16,185,129,0.15);color:#10B981;"><i class="fas fa-layer-group"></i></div>
+                    <h3>Exploded BIM & Floor Stacking</h3>
+                    <p>Disassemble any multi-story building with a click. Show floor-by-floor carpet area, balcony layouts, structural columns, and utility connections in transparent 3D layers.</p>
+                    <div class="feat-badge"><i class="fas fa-check"></i> CAD / Revit / BIM Ready</div>
+                </div>
+
+                <div class="twin-feature-card">
+                    <div class="feat-card-icon" style="background:rgba(245,158,11,0.15);color:#F59E0B;"><i class="fas fa-bolt"></i></div>
+                    <h3>Instant WebGL (No App Required)</h3>
+                    <p>Lightweight 60 FPS Three.js rendering that loads in under 1.5 seconds. Fully shareable via WhatsApp links, SMS, or embedded seamlessly on any builder website.</p>
+                    <div class="feat-badge"><i class="fas fa-mobile-alt"></i> 100% Mobile & Desktop Native</div>
+                </div>
+            </div>
+
+            <!-- Bottom Action Banner linking to 3D Plotter and WhatsApp Demo -->
+            <div class="twin-cta-banner">
+                <div class="twin-cta-text">
+                    <h3>Want an Interactive 3D Model for Your Real Estate Project?</h3>
+                    <p>From single luxury villas to 500-acre plotted townships in Bihar, we convert architectural blueprints into interactive digital twins.</p>
+                </div>
+                <div class="twin-cta-buttons">
+                    <a href="plotter.html" class="btn-twin-primary" id="twin-plotter-link">
+                        <i class="fas fa-map-marked-alt"></i> Explore 3D Master Plotter
+                    </a>
+                    <a href="https://wa.me/919334298441?text=Hi%20Zorario%21%20I%20want%20an%20interactive%203D%20digital%20twin%20for%20my%20real%20estate%20project." class="btn-twin-outline" target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp" style="color:#25D366;"></i> Request 3D Demo on WhatsApp
+                    </a>
                 </div>
             </div>
         </div>
@@ -1081,21 +1970,27 @@
         </div>
     </footer>
 
+    <!-- Three.js & OrbitControls CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
     <script>
-        // Nav scroll
+        // ── NAV SCROLL & HAMBURGER ─────────────────────────────
         window.addEventListener('scroll', () => {
-            document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 20);
+            const nav = document.getElementById('main-nav');
+            if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
         }, { passive: true });
 
-        // Hamburger
         const h = document.getElementById('nav-hamburger'), nl = document.querySelector('.nav-links');
-        if (h) h.addEventListener('click', () => {
-            const e = h.getAttribute('aria-expanded') === 'true';
-            h.setAttribute('aria-expanded', !e);
-            nl.classList.toggle('open');
-        });
+        if (h && nl) {
+            h.addEventListener('click', () => {
+                const e = h.getAttribute('aria-expanded') === 'true';
+                h.setAttribute('aria-expanded', !e);
+                nl.classList.toggle('open');
+            });
+        }
 
-        // Floor plan room interaction
+        // ── 2D FLOOR PLAN ROOM INTERACTION ─────────────────────
         document.querySelectorAll('.room').forEach(room => {
             room.addEventListener('click', () => {
                 document.querySelectorAll('.room').forEach(r => r.classList.remove('active'));
@@ -1103,13 +1998,24 @@
             });
         });
 
-        // Layout tab switch
+        // ── LAYOUT TAB SWITCH (2D / 3D / VR) ───────────────────
         function setTab(btn, tab) {
             document.querySelectorAll('.layout-tab').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
+            document.querySelectorAll('.plan-subview').forEach(v => v.style.display = 'none');
+            if (tab === '2d') {
+                const v = document.getElementById('view-2d-plan');
+                if (v) v.style.display = 'block';
+            } else if (tab === '3d') {
+                const v = document.getElementById('view-3d-plan');
+                if (v) v.style.display = 'flex';
+            } else if (tab === 'vr') {
+                const v = document.getElementById('view-vr-plan');
+                if (v) v.style.display = 'flex';
+            }
         }
 
-        // Smooth scroll for anchor links
+        // ── SMOOTH SCROLL FOR ANCHOR LINKS ─────────────────────
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 const target = document.querySelector(a.getAttribute('href'));
@@ -1120,7 +2026,7 @@
             });
         });
 
-        // Animate preview cards on scroll
+        // ── SCROLL OBSERVER FOR PREVIEW ANIMATION ──────────────
         const observer = new IntersectionObserver(entries => {
             entries.forEach((entry, i) => {
                 if (entry.isIntersecting) {
@@ -1130,11 +2036,644 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.preview-card, .crm-feature-item, .layout-feat').forEach(el => {
+        document.querySelectorAll('.preview-card, .crm-feature-item, .layout-feat, .twin-feature-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             observer.observe(el);
         });
+
+        // ══════════════════════════════════════════════════════════════
+        // ── 3D SPATIAL ENGINE & ARCHITECTURAL DIGITAL TWIN ───────────
+        // ══════════════════════════════════════════════════════════════
+        (function initDigitalTwin() {
+            const canvas = document.getElementById('twin3dCanvas');
+            const wrap = document.getElementById('twinCanvasWrap');
+            const loader = document.getElementById('twinLoader');
+            if (!canvas || !wrap || typeof THREE === 'undefined') {
+                if (loader) loader.style.display = 'none';
+                return;
+            }
+
+            // Scene, Camera, Renderer
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x071524, 0.015);
+
+            const camera = new THREE.PerspectiveCamera(38, wrap.clientWidth / wrap.clientHeight, 0.1, 500);
+            camera.position.set(24, 18, 26);
+
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+            renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.15;
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+            // Orbit Controls
+            let controls = null;
+            if (THREE.OrbitControls) {
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.maxPolarAngle = Math.PI / 2 - 0.05;
+                controls.minDistance = 10;
+                controls.maxDistance = 55;
+                controls.target.set(0, 4, 0);
+                controls.autoRotate = true;
+                controls.autoRotateSpeed = 0.8;
+            }
+
+            // ── LIGHTING SETUP ─────────────────────────────────────────
+            const hemiLight = new THREE.HemisphereLight(0x9bd4f0, 0x091b2e, 0.7);
+            scene.add(hemiLight);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const sunLight = new THREE.DirectionalLight(0xfff6ea, 1.8);
+            sunLight.position.set(20, 32, 16);
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+            sunLight.shadow.camera.near = 0.5;
+            sunLight.shadow.camera.far = 100;
+            sunLight.shadow.camera.left = -20;
+            sunLight.shadow.camera.right = 20;
+            sunLight.shadow.camera.top = 20;
+            sunLight.shadow.camera.bottom = -20;
+            sunLight.shadow.bias = -0.0005;
+            scene.add(sunLight);
+
+            // Warm interior & accent lights
+            const interiorLight = new THREE.PointLight(0xffa63b, 2.5, 18);
+            interiorLight.position.set(-1.5, 2.2, 1.5);
+            scene.add(interiorLight);
+
+            const masterLight = new THREE.PointLight(0xffb85c, 2.0, 16);
+            masterLight.position.set(1.5, 6.8, 1.0);
+            scene.add(masterLight);
+
+            const poolLight = new THREE.PointLight(0x38bdf8, 2.8, 15);
+            poolLight.position.set(6.2, 0.2, 5.5);
+            scene.add(poolLight);
+
+            // ── MATERIALS ──────────────────────────────────────────────
+            const materials = [];
+            function reg(m) { materials.push(m); return m; }
+
+            const matConcrete = reg(new THREE.MeshStandardMaterial({ color: 0xebf0f5, roughness: 0.75, metalness: 0.05 }));
+            const matDarkFascia = reg(new THREE.MeshStandardMaterial({ color: 0x1c242c, roughness: 0.5, metalness: 0.4 }));
+            const matTeak = reg(new THREE.MeshStandardMaterial({ color: 0x9e6c46, roughness: 0.6, metalness: 0.05 }));
+            const matGlass = reg(new THREE.MeshStandardMaterial({ color: 0x64b5d6, transparent: true, opacity: 0.55, roughness: 0.05, metalness: 0.25 }));
+            const matBalconyGlass = reg(new THREE.MeshStandardMaterial({ color: 0xa8e0f5, transparent: true, opacity: 0.38, roughness: 0.02, side: THREE.DoubleSide }));
+            const matPoolWater = reg(new THREE.MeshStandardMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.82, roughness: 0.1, metalness: 0.15 }));
+            const matGrass = reg(new THREE.MeshStandardMaterial({ color: 0x1f5c3d, roughness: 0.95 }));
+            const matPaving = reg(new THREE.MeshStandardMaterial({ color: 0xb5c0ca, roughness: 0.85 }));
+            const matSolar = reg(new THREE.MeshStandardMaterial({ color: 0x172554, metalness: 0.85, roughness: 0.2 }));
+            const matWarmWall = reg(new THREE.MeshStandardMaterial({ color: 0xffebd1, emissive: 0xffa63b, emissiveIntensity: 0.35, roughness: 0.6 }));
+            const matSofa = reg(new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 }));
+            const matMetal = reg(new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.8, roughness: 0.3 }));
+
+            // ── BUILDING HIERARCHY FOR FLOOR EXPLOSION ─────────────────
+            const buildingRoot = new THREE.Group();
+            scene.add(buildingRoot);
+
+            const groundGroup = new THREE.Group();
+            const floor1Group = new THREE.Group();
+            const floor2Group = new THREE.Group();
+            const floor3Group = new THREE.Group();
+
+            buildingRoot.add(groundGroup);
+            buildingRoot.add(floor1Group);
+            buildingRoot.add(floor2Group);
+            buildingRoot.add(floor3Group);
+
+            // Default heights
+            floor1Group.position.y = 2.8;
+            floor2Group.position.y = 5.6;
+            floor3Group.position.y = 8.4;
+
+            let targetY0 = 0;
+            let targetY1 = 2.8;
+            let targetY2 = 5.6;
+            let targetY3 = 8.4;
+
+            // ── GROUND LEVEL (Lawn, Pool, Living Wing, Foyer) ──────────
+            // Ground plot slab
+            const siteBase = new THREE.Mesh(new THREE.BoxGeometry(26, 0.4, 20), matPaving);
+            siteBase.position.y = -0.2;
+            siteBase.receiveShadow = true;
+            groundGroup.add(siteBase);
+
+            // Garden turf
+            const lawn = new THREE.Mesh(new THREE.BoxGeometry(11, 0.05, 18.8), matGrass);
+            lawn.position.set(-6.8, 0.03, 0);
+            lawn.receiveShadow = true;
+            groundGroup.add(lawn);
+
+            // Swimming pool basin & water
+            const poolBasin = new THREE.Mesh(new THREE.BoxGeometry(8.5, 0.3, 5), matDarkFascia);
+            poolBasin.position.set(6.2, 0.02, 5.5);
+            groundGroup.add(poolBasin);
+
+            const poolWater = new THREE.Mesh(new THREE.BoxGeometry(8.1, 0.1, 4.6), matPoolWater);
+            poolWater.position.set(6.2, 0.12, 5.5);
+            groundGroup.add(poolWater);
+
+            // Ground Living Wing Volume
+            const livingSlab = new THREE.Mesh(new THREE.BoxGeometry(13.5, 0.3, 10.5), matConcrete);
+            livingSlab.position.set(0, 0.15, 0);
+            livingSlab.receiveShadow = true;
+            groundGroup.add(livingSlab);
+
+            // Living Room Glass Facade
+            const livingGlass = new THREE.Mesh(new THREE.BoxGeometry(11.5, 2.5, 8.5), matGlass);
+            livingGlass.position.set(0, 1.45, 0);
+            livingGlass.castShadow = true;
+            groundGroup.add(livingGlass);
+
+            // Living Room Rear & Side Solid Walls
+            const livingBackWall = new THREE.Mesh(new THREE.BoxGeometry(11.5, 2.5, 0.3), matConcrete);
+            livingBackWall.position.set(0, 1.45, -4.2);
+            livingBackWall.castShadow = true;
+            livingBackWall.receiveShadow = true;
+            groundGroup.add(livingBackWall);
+
+            const livingSideWall = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.5, 8.5), matConcrete);
+            livingSideWall.position.set(-5.7, 1.45, 0);
+            livingSideWall.castShadow = true;
+            groundGroup.add(livingSideWall);
+
+            // Ground Interior Furnishings (Sectional Sofa + Table)
+            const sofa = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.5, 1.5), matSofa);
+            sofa.position.set(-1.8, 0.55, 1.2);
+            groundGroup.add(sofa);
+
+            const sofaL = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.5, 2.2), matSofa);
+            sofaL.position.set(-3.2, 0.55, 0.5);
+            groundGroup.add(sofaL);
+
+            const coffeeTable = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.35, 1.0), matTeak);
+            coffeeTable.position.set(-1.8, 0.45, -0.4);
+            groundGroup.add(coffeeTable);
+
+            // Architectural Entrance Canopy & Pillars
+            const canopy = new THREE.Mesh(new THREE.BoxGeometry(5.0, 0.25, 4.0), matDarkFascia);
+            canopy.position.set(4.2, 2.7, -3.2);
+            canopy.castShadow = true;
+            groundGroup.add(canopy);
+
+            const pillar1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.6, 12), matDarkFascia);
+            pillar1.position.set(2.0, 1.3, -4.8);
+            groundGroup.add(pillar1);
+            const pillar2 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.6, 12), matDarkFascia);
+            pillar2.position.set(6.2, 1.3, -4.8);
+            groundGroup.add(pillar2);
+
+            // Architectural Trees on lawn
+            function addModernTree(x, z, h) {
+                const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.12, h * 0.4, 8), matDarkFascia);
+                trunk.position.set(x, (h * 0.4) / 2, z);
+                trunk.castShadow = true;
+                groundGroup.add(trunk);
+
+                const foliage = new THREE.Mesh(new THREE.ConeGeometry(h * 0.35, h * 0.7, 8), matGrass);
+                foliage.position.set(x, (h * 0.4) + (h * 0.35), z);
+                foliage.castShadow = true;
+                groundGroup.add(foliage);
+            }
+            addModernTree(-9.5, 6.0, 3.8);
+            addModernTree(-7.8, -6.5, 4.4);
+            addModernTree(-10.2, -2.5, 3.2);
+
+            // ── LEVEL 1 (2BHK Guest & Kids Suites + Cantilever Balcony) ─
+            const f1Slab = new THREE.Mesh(new THREE.BoxGeometry(15.0, 0.3, 11.5), matConcrete);
+            f1Slab.position.set(0.5, 0, 0.3);
+            f1Slab.castShadow = true;
+            f1Slab.receiveShadow = true;
+            floor1Group.add(f1Slab);
+
+            // Level 1 Suite Enclosure
+            const f1Main = new THREE.Mesh(new THREE.BoxGeometry(11.5, 2.5, 8.0), matConcrete);
+            f1Main.position.set(-0.8, 1.4, -0.8);
+            f1Main.castShadow = true;
+            f1Main.receiveShadow = true;
+            floor1Group.add(f1Main);
+
+            // Level 1 Glass Window Walls
+            const f1Glass = new THREE.Mesh(new THREE.BoxGeometry(7.5, 2.1, 0.1), matGlass);
+            f1Glass.position.set(-0.8, 1.4, 3.2);
+            floor1Group.add(f1Glass);
+
+            // Teak Louvers on Facade
+            for (let i = 0; i < 9; i++) {
+                const louver = new THREE.Mesh(new THREE.BoxGeometry(0.08, 2.4, 0.12), matTeak);
+                louver.position.set(3.5 + (i * 0.35), 1.4, 3.25);
+                floor1Group.add(louver);
+            }
+
+            // Balcony Glass Balustrade
+            const f1Railing = new THREE.Mesh(new THREE.BoxGeometry(9.0, 0.85, 0.05), matBalconyGlass);
+            f1Railing.position.set(-1.0, 0.55, 5.8);
+            floor1Group.add(f1Railing);
+
+            const f1RailTop = new THREE.Mesh(new THREE.BoxGeometry(9.1, 0.06, 0.08), matDarkFascia);
+            f1RailTop.position.set(-1.0, 0.98, 5.8);
+            floor1Group.add(f1RailTop);
+
+            // ── LEVEL 2 (Master Penthouse Suite & Deep Terrace) ────────
+            const f2Slab = new THREE.Mesh(new THREE.BoxGeometry(13.8, 0.3, 10.5), matConcrete);
+            f2Slab.position.set(0.2, 0, 0);
+            f2Slab.castShadow = true;
+            f2Slab.receiveShadow = true;
+            floor2Group.add(f2Slab);
+
+            // Penthouse Main Suite
+            const f2Main = new THREE.Mesh(new THREE.BoxGeometry(8.5, 2.5, 7.5), matConcrete);
+            f2Main.position.set(1.5, 1.4, -0.6);
+            f2Main.castShadow = true;
+            f2Main.receiveShadow = true;
+            floor2Group.add(f2Main);
+
+            // Penthouse Panoramic Glass Corner
+            const f2GlassFront = new THREE.Mesh(new THREE.BoxGeometry(6.2, 2.2, 0.1), matGlass);
+            f2GlassFront.position.set(1.8, 1.4, 3.16);
+            floor2Group.add(f2GlassFront);
+
+            const f2GlassSide = new THREE.Mesh(new THREE.BoxGeometry(0.1, 2.2, 4.0), matGlass);
+            f2GlassSide.position.set(5.76, 1.4, 1.2);
+            floor2Group.add(f2GlassSide);
+
+            // Penthouse Terrace Railing
+            const f2Railing = new THREE.Mesh(new THREE.BoxGeometry(6.8, 0.85, 0.05), matBalconyGlass);
+            f2Railing.position.set(-3.2, 0.55, 4.8);
+            floor2Group.add(f2Railing);
+
+            const f2RailTop = new THREE.Mesh(new THREE.BoxGeometry(6.9, 0.06, 0.08), matDarkFascia);
+            f2RailTop.position.set(-3.2, 0.98, 4.8);
+            floor2Group.add(f2RailTop);
+
+            // ── LEVEL 3 (Rooftop Sky Deck, Pergola & Solar Array) ───────
+            const roofSlab = new THREE.Mesh(new THREE.BoxGeometry(13.8, 0.25, 10.5), matConcrete);
+            roofSlab.position.set(0.2, 0, 0);
+            roofSlab.castShadow = true;
+            roofSlab.receiveShadow = true;
+            floor3Group.add(roofSlab);
+
+            // Rooftop Garden Turf
+            const roofTurf = new THREE.Mesh(new THREE.BoxGeometry(5.0, 0.05, 5.0), matGrass);
+            roofTurf.position.set(-3.2, 0.15, 1.5);
+            floor3Group.add(roofTurf);
+
+            // Modern Pergola Framework
+            for (let i = 0; i < 6; i++) {
+                const slat = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.2, 5.2), matTeak);
+                slat.position.set(-4.5 + (i * 0.6), 2.2, 1.5);
+                slat.castShadow = true;
+                floor3Group.add(slat);
+            }
+            const pBeam1 = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.2, 0.15), matDarkFascia);
+            pBeam1.position.set(-3.0, 2.1, -1.0);
+            floor3Group.add(pBeam1);
+            const pBeam2 = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.2, 0.15), matDarkFascia);
+            pBeam2.position.set(-3.0, 2.1, 4.0);
+            floor3Group.add(pBeam2);
+
+            // Solar Panels (6 Array Units angled towards sun)
+            for (let row = 0; row < 2; row++) {
+                for (let col = 0; col < 3; col++) {
+                    const panel = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.05, 2.2), matSolar);
+                    panel.position.set(1.5 + (col * 1.8), 0.55 + (row * 0.4), -1.8 - (row * 1.8));
+                    panel.rotation.x = -Math.PI / 10;
+                    panel.castShadow = true;
+                    floor3Group.add(panel);
+                }
+            }
+
+            // Staircase / Lift Core Bulkhead
+            const bulkhead = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.2, 3.2), matDarkFascia);
+            bulkhead.position.set(2.4, 1.1, 2.5);
+            bulkhead.castShadow = true;
+            floor3Group.add(bulkhead);
+
+            // Hide preloader
+            if (loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 300);
+            }
+
+            // ── CAMERA TARGET & ANIMATION ──────────────────────────────
+            let camTargetPos = camera.position.clone();
+            let lookTarget = new THREE.Vector3(0, 4, 0);
+            let isExploded = false;
+
+            // Hotspots 3D Anchor Positions
+            const hotspotAnchors = {
+                'penthouse': new THREE.Vector3(1.5, 7.2, 1.5),
+                'living': new THREE.Vector3(-1.5, 2.0, 2.2),
+                'pool': new THREE.Vector3(6.2, 0.6, 5.5),
+                'garden': new THREE.Vector3(-2.8, 9.6, 1.5)
+            };
+
+            const screenVec = new THREE.Vector3();
+            function updateHotspots() {
+                for (const [id, anchor] of Object.entries(hotspotAnchors)) {
+                    const el = document.getElementById('hotspot-' + id);
+                    if (!el) continue;
+
+                    // Compute dynamic anchor based on exploded status
+                    let yOffset = 0;
+                    if (id === 'penthouse') yOffset = floor2Group.position.y - 5.6;
+                    if (id === 'garden') yOffset = floor3Group.position.y - 8.4;
+
+                    screenVec.copy(anchor);
+                    screenVec.y += yOffset;
+                    screenVec.project(camera);
+
+                    // Check if behind camera
+                    if (screenVec.z > 1) {
+                        el.style.opacity = '0';
+                        el.style.pointerEvents = 'none';
+                        continue;
+                    }
+
+                    const x = (screenVec.x * 0.5 + 0.5) * wrap.clientWidth;
+                    const y = (-screenVec.y * 0.5 + 0.5) * wrap.clientHeight;
+
+                    el.style.opacity = '1';
+                    el.style.pointerEvents = 'auto';
+                    el.style.left = `${x}px`;
+                    el.style.top = `${y}px`;
+                }
+            }
+
+            // ── GLOBAL INTERACTION METHODS ─────────────────────────────
+            window.setViewMode = function(mode) {
+                document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
+                const btn = document.querySelector(`[data-mode="${mode}"]`);
+                if (btn) btn.classList.add('active');
+
+                const badges = document.getElementById('explodeLevelBadges');
+
+                if (mode === 'exploded') {
+                    targetY0 = 0;
+                    targetY1 = 5.8;
+                    targetY2 = 11.6;
+                    targetY3 = 17.4;
+                    isExploded = true;
+                    if (badges) badges.classList.add('visible');
+                    document.getElementById('btn-explode')?.classList.add('active');
+                    materials.forEach(m => { m.wireframe = false; m.opacity = m === matGlass || m === matBalconyGlass || m === matPoolWater ? m.opacity : 1; });
+                } else if (mode === 'bim') {
+                    targetY0 = 0; targetY1 = 2.8; targetY2 = 5.6; targetY3 = 8.4;
+                    isExploded = false;
+                    if (badges) badges.classList.remove('visible');
+                    document.getElementById('btn-explode')?.classList.remove('active');
+                    materials.forEach(m => { m.wireframe = true; });
+                } else if (mode === 'cutaway') {
+                    targetY0 = 0; targetY1 = 2.8; targetY2 = 5.6; targetY3 = 8.4;
+                    isExploded = false;
+                    if (badges) badges.classList.remove('visible');
+                    document.getElementById('btn-explode')?.classList.remove('active');
+                    materials.forEach(m => { m.wireframe = false; });
+                    matConcrete.transparent = true;
+                    matConcrete.opacity = 0.25;
+                } else { // 'exterior'
+                    targetY0 = 0; targetY1 = 2.8; targetY2 = 5.6; targetY3 = 8.4;
+                    isExploded = false;
+                    if (badges) badges.classList.remove('visible');
+                    document.getElementById('btn-explode')?.classList.remove('active');
+                    materials.forEach(m => {
+                        m.wireframe = false;
+                        if (m === matConcrete) { m.transparent = false; m.opacity = 1.0; }
+                    });
+                }
+            };
+
+            window.setLighting = function(mode) {
+                document.querySelectorAll('[data-light]').forEach(b => b.classList.remove('active'));
+                const btn = document.querySelector(`[data-light="${mode}"]`);
+                if (btn) btn.classList.add('active');
+
+                if (mode === 'day') {
+                    sunLight.position.set(20, 32, 16);
+                    sunLight.intensity = 1.8;
+                    sunLight.color.setHex(0xfff6ea);
+                    ambientLight.intensity = 0.55;
+                    interiorLight.intensity = 2.0;
+                    poolLight.intensity = 2.2;
+                    scene.fog.color.setHex(0x071524);
+                } else if (mode === 'golden') {
+                    sunLight.position.set(28, 12, -22);
+                    sunLight.intensity = 2.2;
+                    sunLight.color.setHex(0xffaa44);
+                    ambientLight.intensity = 0.45;
+                    interiorLight.intensity = 3.2;
+                    poolLight.intensity = 2.6;
+                    scene.fog.color.setHex(0x1a121e);
+                } else if (mode === 'night') {
+                    sunLight.position.set(-15, 6, 18);
+                    sunLight.intensity = 0.15;
+                    sunLight.color.setHex(0x4477aa);
+                    ambientLight.intensity = 0.25;
+                    interiorLight.intensity = 4.2;
+                    poolLight.intensity = 3.8;
+                    scene.fog.color.setHex(0x030811);
+                }
+            };
+
+            window.setCameraPreset = function(preset) {
+                if (preset === 'isometric') {
+                    camTargetPos.set(24, 18, 26);
+                    lookTarget.set(0, 4, 0);
+                } else if (preset === 'front') {
+                    camTargetPos.set(0, 7, 30);
+                    lookTarget.set(0, 4, 0);
+                } else if (preset === 'top') {
+                    camTargetPos.set(0, 36, 1);
+                    lookTarget.set(0, 0, 0);
+                }
+            };
+
+            const specData = {
+                'penthouse': {
+                    tag: 'Level 2 Penthouse',
+                    title: 'Executive Master Penthouse Suite',
+                    desc: 'Panoramic master bedroom with cantilevered teak wood louver facade, floor-to-ceiling glass corner, private sundowner balcony, and walk-in wardrobe.',
+                    area: '1,100 sq ft',
+                    ceiling: '11.5 ft',
+                    orientation: 'East (Vastu Compliant)',
+                    status: 'Available · Priority Unit'
+                },
+                'living': {
+                    tag: 'Ground Floor',
+                    title: 'Double-Height Living & Foyer',
+                    desc: 'Double-height clear glass curtain wall facing the landscaped garden and swimming deck. Open-concept dining, modular kitchen, and guest powder room.',
+                    area: '1,250 sq ft',
+                    ceiling: '18.0 ft',
+                    orientation: 'North-East Facing',
+                    status: 'Furnished Showcase'
+                },
+                'pool': {
+                    tag: 'Outdoor Amenities',
+                    title: 'Infinity Plunge Pool & Sun Deck',
+                    desc: 'Private heated plunge pool with submerged LED mood lighting, non-slip stone coping, outdoor rain shower, and poolside barbecue lounge.',
+                    area: '480 sq ft',
+                    ceiling: 'Open to Sky',
+                    orientation: 'West / Sunset Deck',
+                    status: 'Included in Villa Plan'
+                },
+                'garden': {
+                    tag: 'Level 3 Rooftop',
+                    title: 'Solar Sky Lounge & Pergola Deck',
+                    desc: 'Private rooftop retreat featuring shaded teak pergola, artificial grass lawn, ambient garden lighting, and a 6kW rooftop solar photovoltaic array.',
+                    area: '850 sq ft',
+                    ceiling: 'Open to Sky',
+                    orientation: 'All 360° Panoramic',
+                    status: 'Solar Net-Metering Ready'
+                }
+            };
+
+            window.focusHotspot = function(id) {
+                const data = specData[id];
+                if (!data) return;
+
+                const inspector = document.getElementById('twinInspector');
+                if (inspector) {
+                    document.getElementById('inspectTag').textContent = data.tag;
+                    document.getElementById('inspectTitle').textContent = data.title;
+                    document.getElementById('inspectDesc').textContent = data.desc;
+                    document.getElementById('inspectArea').textContent = data.area;
+                    document.getElementById('inspectCeiling').textContent = data.ceiling;
+                    document.getElementById('inspectOrientation').textContent = data.orientation;
+                    document.getElementById('inspectStatus').textContent = data.status;
+                    inspector.classList.remove('hidden');
+                }
+
+                if (id === 'penthouse') {
+                    camTargetPos.set(12, 11, 14);
+                    lookTarget.set(1.5, 6.8, 1.0);
+                } else if (id === 'living') {
+                    camTargetPos.set(-7, 5, 12);
+                    lookTarget.set(-1.5, 2.0, 1.5);
+                } else if (id === 'pool') {
+                    camTargetPos.set(15, 6, 12);
+                    lookTarget.set(6.2, 0.4, 5.5);
+                } else if (id === 'garden') {
+                    camTargetPos.set(-8, 15, 12);
+                    lookTarget.set(-2.0, 9.6, 1.5);
+                }
+            };
+
+            window.focusFloor = function(idx) {
+                if (idx === 3) focusHotspot('garden');
+                else if (idx === 2) focusHotspot('penthouse');
+                else if (idx === 1) {
+                    camTargetPos.set(14, 9, 14);
+                    lookTarget.set(0, 4.5, 0);
+                } else {
+                    focusHotspot('living');
+                }
+            };
+
+            window.closeInspector = function() {
+                const inspector = document.getElementById('twinInspector');
+                if (inspector) inspector.classList.add('hidden');
+            };
+
+            // HUD Action Buttons
+            const btnAuto = document.getElementById('btn-autorotate');
+            if (btnAuto && controls) {
+                btnAuto.addEventListener('click', () => {
+                    controls.autoRotate = !controls.autoRotate;
+                    btnAuto.classList.toggle('active', controls.autoRotate);
+                });
+            }
+
+            const btnExplode = document.getElementById('btn-explode');
+            if (btnExplode) {
+                btnExplode.addEventListener('click', () => {
+                    if (isExploded) window.setViewMode('exterior');
+                    else window.setViewMode('exploded');
+                });
+            }
+
+            const btnReset = document.getElementById('btn-reset-cam');
+            if (btnReset) {
+                btnReset.addEventListener('click', () => {
+                    window.setViewMode('exterior');
+                    window.setLighting('day');
+                    window.setCameraPreset('isometric');
+                    window.closeInspector();
+                });
+            }
+
+            const btnFull = document.getElementById('btn-fullscreen');
+            if (btnFull) {
+                btnFull.addEventListener('click', () => {
+                    const card = document.getElementById('twinViewportCard');
+                    if (!document.fullscreenElement) {
+                        card?.requestFullscreen().catch(() => {});
+                    } else {
+                        document.exitFullscreen().catch(() => {});
+                    }
+                });
+            }
+
+            // ── RESIZE LISTENER ────────────────────────────────────────
+            function onWindowResize() {
+                if (!wrap) return;
+                const w = wrap.clientWidth;
+                const h = wrap.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+            window.addEventListener('resize', onWindowResize, { passive: true });
+
+            // ── ANIMATION LOOP ─────────────────────────────────────────
+            let clock = new THREE.Clock();
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const dt = clock.getDelta();
+                const time = clock.getElapsedTime();
+
+                // Smooth floor explosion lerp
+                floor1Group.position.y += (targetY1 - floor1Group.position.y) * 0.08;
+                floor2Group.position.y += (targetY2 - floor2Group.position.y) * 0.08;
+                floor3Group.position.y += (targetY3 - floor3Group.position.y) * 0.08;
+
+                // Subtle water surface wave ripple
+                if (poolWater) {
+                    poolWater.position.y = 0.12 + Math.sin(time * 2.5) * 0.015;
+                }
+
+                // Smooth camera animation towards target
+                if (controls) {
+                    if (controls.target.distanceTo(lookTarget) > 0.05) {
+                        controls.target.lerp(lookTarget, 0.05);
+                    }
+                    if (camera.position.distanceTo(camTargetPos) > 0.08 && !controls.state) {
+                        camera.position.lerp(camTargetPos, 0.05);
+                    }
+                    controls.update();
+                }
+
+                renderer.render(scene, camera);
+                updateHotspots();
+            animate();
+
+            // Clean icon badges
+            document.querySelectorAll('.popular-badge').forEach(b => {
+                b.innerHTML = '<i class="fas fa-star" style="color:#FFD700; margin-right:4px;"></i> Most Popular';
+            });
+            document.querySelectorAll('.crm-badge').forEach(b => {
+                b.innerHTML = '<i class="fas fa-circle" style="font-size:7px; vertical-align:middle; margin-right:4px;"></i> Live';
+            });
+        })();
     </script>
 </body>
 </html>

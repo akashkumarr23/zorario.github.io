@@ -1236,10 +1236,41 @@
             .footer-grid { grid-template-columns: 1fr; }
             .final-cta { padding: 40px 24px; }
             .tech-hero { min-height: auto; padding: 130px 5% 60px; }
-            .twin-canvas-wrap { height: 400px; }
-            .twin-hud-header { flex-direction: column; align-items: flex-start; }
-            .explode-level-badges { display: none; }
-            .twin-inspector-card { display: none; }
+            .twin-canvas-wrap { height: 440px; }
+            #twin3dCanvas { touch-action: pan-y; }
+            .twin-hud-header { flex-direction: column; align-items: flex-start; gap: 10px; padding: 12px 14px; }
+            .twin-hud-quick-actions { width: 100%; justify-content: flex-start; gap: 6px; }
+            .twin-action-btn { padding: 6px 10px; font-size: 11px; }
+            .explode-level-badges {
+                right: 10px;
+                top: 10px;
+                bottom: auto;
+                width: auto;
+                gap: 6px;
+            }
+            .level-badge {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+            .twin-inspector-card {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                max-width: none;
+                padding: 12px 14px;
+                border-radius: 14px;
+            }
+            .twin-controls-toolbar {
+                padding: 12px 14px;
+                gap: 12px;
+            }
+            .control-lbl {
+                font-size: 10.5px;
+            }
+            .twin-pill-btn {
+                padding: 5px 10px;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -2058,8 +2089,14 @@
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x071524, 0.015);
 
-            const camera = new THREE.PerspectiveCamera(38, wrap.clientWidth / wrap.clientHeight, 0.1, 500);
-            camera.position.set(24, 18, 26);
+            const aspect = wrap.clientWidth / wrap.clientHeight;
+            const initFov = aspect < 0.95 ? Math.min(62, Math.max(38, 38 * Math.sqrt(1.15 / aspect))) : 38;
+            const camera = new THREE.PerspectiveCamera(initFov, aspect, 0.1, 500);
+            if (aspect < 0.95) {
+                camera.position.set(28, 22, 30);
+            } else {
+                camera.position.set(24, 18, 26);
+            }
 
             const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
             renderer.setSize(wrap.clientWidth, wrap.clientHeight);
@@ -2077,10 +2114,14 @@
                 controls.dampingFactor = 0.05;
                 controls.maxPolarAngle = Math.PI / 2 - 0.05;
                 controls.minDistance = 10;
-                controls.maxDistance = 55;
+                controls.maxDistance = 65;
                 controls.target.set(0, 4, 0);
                 controls.autoRotate = true;
                 controls.autoRotateSpeed = 0.8;
+                controls.touches = {
+                    ONE: THREE.TOUCH.ROTATE,
+                    TWO: THREE.TOUCH.DOLLY_PAN
+                };
             }
 
             // ── LIGHTING SETUP ─────────────────────────────────────────
@@ -2485,14 +2526,16 @@
             };
 
             window.setCameraPreset = function(preset) {
+                const aspect = camera.aspect || (wrap.clientWidth / wrap.clientHeight);
+                const distMult = aspect < 0.95 ? 1.25 : 1.0;
                 if (preset === 'isometric') {
-                    camTargetPos.set(24, 18, 26);
+                    camTargetPos.set(24 * distMult, 18 * distMult, 26 * distMult);
                     lookTarget.set(0, 4, 0);
                 } else if (preset === 'front') {
-                    camTargetPos.set(0, 7, 30);
+                    camTargetPos.set(0, 7 * distMult, 30 * distMult);
                     lookTarget.set(0, 4, 0);
                 } else if (preset === 'top') {
-                    camTargetPos.set(0, 36, 1);
+                    camTargetPos.set(0, 36 * distMult, 1);
                     lookTarget.set(0, 0, 0);
                 }
             };
@@ -2627,7 +2670,13 @@
                 if (!wrap) return;
                 const w = wrap.clientWidth;
                 const h = wrap.clientHeight;
-                camera.aspect = w / h;
+                const aspect = w / h;
+                camera.aspect = aspect;
+                if (aspect < 0.95) {
+                    camera.fov = Math.min(62, Math.max(38, 38 * Math.sqrt(1.15 / aspect)));
+                } else {
+                    camera.fov = 38;
+                }
                 camera.updateProjectionMatrix();
                 renderer.setSize(w, h);
             }

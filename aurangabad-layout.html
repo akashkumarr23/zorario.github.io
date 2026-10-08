@@ -95,15 +95,29 @@
             to   { background-position: -200% 0; }
         }
 
-        .header-top-row {
+        .header-top-row,
+        .header-controls-row {
             display: contents;
         }
 
         .header-brand-group {
+            order: 1;
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
+        }
+
+        .legend-filter-bar {
+            order: 2;
+        }
+
+        .header-search-wrap {
+            order: 3;
+        }
+
+        .view-mode-pill {
+            order: 4;
         }
 
         .brand-nav-logo {
@@ -326,18 +340,20 @@
             cursor: grabbing;
         }
 
+        .township-3d-badge,
         .three-loading-badge {
             position: absolute;
-            top: 24px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(15, 34, 55, 0.92);
+            background: rgba(15, 34, 55, 0.94);
             backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(74, 144, 164, 0.35);
             border-radius: 100px;
-            padding: 8px 18px;
-            font-size: 12.5px;
-            font-weight: 600;
+            padding: 6px 16px;
+            font-size: 11.5px;
+            font-weight: 700;
             color: var(--layout-teal-light);
             display: flex;
             align-items: center;
@@ -345,6 +361,18 @@
             z-index: 25;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             transition: opacity 0.4s ease, visibility 0.4s ease;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .pulse-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 10px #10B981;
+            animation: pulseGlow 1.8s infinite;
         }
 
         .three-loading-badge.is-hidden {
@@ -357,25 +385,32 @@
         .floating-3d-controls {
             position: absolute;
             bottom: 24px;
-            left: 76px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 10px;
             z-index: 45;
             pointer-events: auto;
+            width: auto;
+            max-width: calc(100vw - 24px);
             transition: opacity 0.25s ease, transform 0.25s ease;
         }
 
         .floating-3d-controls.is-hidden {
             opacity: 0;
             pointer-events: none;
-            transform: translateY(10px);
+            transform: translate(-50%, 10px);
         }
 
+        .view-preset-strip,
         .ctrl-group {
             display: flex;
             align-items: center;
             background: rgba(15, 34, 55, 0.94);
             backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(74, 144, 164, 0.35);
             border-radius: 100px;
             padding: 4px;
@@ -383,6 +418,7 @@
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
         }
 
+        .preset-btn,
         .ctrl-btn-3d {
             background: transparent;
             border: none;
@@ -399,21 +435,32 @@
             font-family: inherit;
         }
 
+        .preset-btn:hover,
         .ctrl-btn-3d:hover {
             color: #ffffff;
             background: rgba(74, 144, 164, 0.18);
         }
 
+        .preset-btn.active,
         .ctrl-btn-3d.active {
-            background: rgba(74, 144, 164, 0.32);
+            background: rgba(74, 144, 164, 0.35);
             color: #ffffff;
             border: 1px solid rgba(107, 181, 203, 0.5);
             box-shadow: 0 0 10px rgba(74, 144, 164, 0.35);
         }
 
+        .lighting-mode-strip,
         .light-group {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 34, 55, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(74, 144, 164, 0.35);
+            border-radius: 100px;
             padding: 4px;
-            gap: 3px;
+            gap: 4px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
         }
 
         .light-btn {
@@ -913,8 +960,8 @@
             .layout-header {
                 height: auto;
                 flex-direction: column;
-                padding: 10px 14px 8px;
-                gap: 8px;
+                padding: 8px 12px 6px;
+                gap: 6px;
                 align-items: stretch;
             }
 
@@ -923,26 +970,35 @@
                 justify-content: space-between;
                 align-items: center;
                 width: 100%;
-                gap: 8px;
+                gap: 6px;
+                order: 1;
+            }
+
+            .header-brand-group {
+                gap: 6px;
+                flex: 1;
+                min-width: 0;
             }
 
             .brand-nav-logo img {
-                width: 32px;
-                height: 32px;
-                border-radius: 7px;
+                width: 28px;
+                height: 28px;
+                border-radius: 6px;
             }
 
             .brand-nav-text {
-                font-size: 19px;
+                font-size: 17px;
+                letter-spacing: -0.2px;
             }
 
             .brand-divider {
-                height: 20px;
-                margin: 0 2px;
+                height: 16px;
+                margin: 0 1px;
             }
 
             .header-project-title {
-                font-size: 12px;
+                font-size: 11px;
+                letter-spacing: 0.2px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -952,30 +1008,57 @@
                 display: none;
             }
 
+            /* 2D/3D toggle in Row 1 on mobile */
+            .view-mode-pill {
+                padding: 2px;
+                gap: 2px;
+                flex-shrink: 0;
+            }
+
+            .mode-tab-btn {
+                padding: 4px 8px;
+                font-size: 11px;
+                gap: 4px;
+            }
+
+            /* Row 2: Search + Scrollable Filters */
+            .header-controls-row {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                width: 100%;
+                order: 2;
+            }
+
+            .header-search-wrap {
+                flex-shrink: 0;
+            }
+
             .search-plot-input {
-                width: 130px;
-                font-size: 12px;
-                padding: 6px 10px 6px 28px;
+                width: 105px;
+                font-size: 11.5px;
+                padding: 5px 8px 5px 26px;
+                border-radius: 100px;
             }
 
             .search-plot-input:focus {
-                width: 155px;
+                width: 130px;
             }
 
             .search-icon {
-                left: 9px;
+                left: 7px;
                 font-size: 11px;
             }
 
             /* Scrollable filter bar */
             .legend-filter-bar {
-                width: 100%;
+                flex: 1;
                 display: flex;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
-                gap: 6px;
-                padding: 3px;
+                gap: 5px;
+                padding: 2px;
             }
 
             .legend-filter-bar::-webkit-scrollbar {
@@ -983,51 +1066,94 @@
             }
 
             .filter-pill {
-                padding: 5px 10px;
-                font-size: 11.5px;
+                padding: 4px 8px;
+                font-size: 11px;
                 flex-shrink: 0;
-                min-height: 32px;
+                min-height: 28px;
             }
 
             .layout-canvas-area {
-                height: calc(100vh - 96px);
-                height: calc(100dvh - 96px);
+                height: calc(100vh - 84px);
+                height: calc(100dvh - 84px);
             }
 
             .floating-zoom-controls {
-                bottom: 18px;
-                left: 14px;
-                gap: 6px;
+                bottom: 12px;
+                left: 12px;
+                gap: 4px;
+                z-index: 22;
             }
 
             .zoom-btn {
-                width: 38px;
-                height: 38px;
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
             }
 
-            /* Mobile Hint when no plot selected */
-            .mobile-map-hint {
-                position: absolute;
-                bottom: 20px;
+            /* Mobile 3D Controls & Badges */
+            .floating-3d-controls {
+                bottom: 12px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(15, 34, 55, 0.94);
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
+                gap: 5px;
+                max-width: 95vw;
+                padding: 0 2px;
+            }
+
+            .view-preset-strip,
+            .lighting-mode-strip {
+                padding: 2px;
+                gap: 2px;
+            }
+
+            .preset-btn {
+                padding: 4px 8px;
+                font-size: 10.5px;
+                gap: 3px;
+            }
+
+            .light-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 10.5px;
+            }
+
+            .township-3d-badge {
+                top: 10px;
+                left: 10px;
+                transform: none;
+                font-size: 9.5px;
+                padding: 4px 10px;
+            }
+
+            /* Mobile Hint when no plot selected - auto fades */
+            .mobile-map-hint {
+                position: absolute;
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(15, 34, 55, 0.92);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
                 border: 1px solid rgba(74, 144, 164, 0.35);
                 border-radius: 100px;
-                padding: 8px 16px;
+                padding: 5px 12px;
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 6px;
                 color: var(--layout-teal-light);
-                font-size: 12px;
+                font-size: 11px;
                 font-weight: 600;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55);
                 pointer-events: none;
-                z-index: 30;
+                z-index: 20;
                 white-space: nowrap;
-                animation: hintPulse 2.2s ease-in-out infinite;
+                animation: hintPulse 2.2s ease-in-out infinite, fadeHintAfterDelay 5.5s forwards;
+            }
+
+            @keyframes fadeHintAfterDelay {
+                0%, 75% { opacity: 0.95; visibility: visible; }
+                100%    { opacity: 0; visibility: hidden; }
             }
 
             @keyframes hintPulse {
@@ -1152,6 +1278,9 @@
             .header-project-title { font-size: 11px; }
             .search-plot-input { width: 110px; }
             .search-plot-input:focus { width: 130px; }
+            .preset-btn span { display: none; }
+            .preset-btn { padding: 6px 8px; font-size: 13px; }
+            .floating-3d-controls { gap: 4px; }
         }
     </style>
 </head>
@@ -1173,12 +1302,7 @@
                     </div>
                 </div>
 
-                <div class="header-search-wrap">
-                    <i class="fas fa-search search-icon" aria-hidden="true"></i>
-                    <input type="text" id="plotSearchInput" class="search-plot-input" placeholder="Search Plot (1-123)..." autocomplete="off">
-                </div>
-
-                <!-- 2D Plan / 3D Digital Twin Mode Switcher -->
+                <!-- 2D Plan / 3D Digital Twin Mode Switcher in Row 1 -->
                 <div class="view-mode-pill" id="viewModeToggle" role="tablist" aria-label="Layout View Modes">
                     <button type="button" class="mode-tab-btn active" id="btnMode2D" role="tab" aria-selected="true" title="2D Master Architectural Plan">
                         <i class="fas fa-map"></i>
@@ -1191,27 +1315,34 @@
                 </div>
             </div>
 
-            <!-- Filter Strip -->
-            <div class="legend-filter-bar" id="filterStrip">
-                <button class="filter-pill active" data-filter="All">
-                    <span class="pill-badge" id="countAll">123</span>
-                    <span>All Plots</span>
-                </button>
-                <button class="filter-pill" data-filter="Available">
-                    <span class="status-dot dot-available"></span>
-                    <span>Available</span>
-                    <span class="pill-badge" id="countAvailable">86</span>
-                </button>
-                <button class="filter-pill" data-filter="Sold">
-                    <span class="status-dot dot-sold"></span>
-                    <span>Sold</span>
-                    <span class="pill-badge" id="countSold">27</span>
-                </button>
-                <button class="filter-pill" data-filter="Builder Hold">
-                    <span class="status-dot dot-hold"></span>
-                    <span>Builder Hold</span>
-                    <span class="pill-badge" id="countHold">10</span>
-                </button>
+            <div class="header-controls-row">
+                <div class="header-search-wrap">
+                    <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                    <input type="text" id="plotSearchInput" class="search-plot-input" placeholder="Search (1-123)..." autocomplete="off">
+                </div>
+
+                <!-- Filter Strip -->
+                <div class="legend-filter-bar" id="filterStrip">
+                    <button class="filter-pill active" data-filter="All">
+                        <span class="pill-badge" id="countAll">123</span>
+                        <span>All Plots</span>
+                    </button>
+                    <button class="filter-pill" data-filter="Available">
+                        <span class="status-dot dot-available"></span>
+                        <span>Available</span>
+                        <span class="pill-badge" id="countAvailable">86</span>
+                    </button>
+                    <button class="filter-pill" data-filter="Sold">
+                        <span class="status-dot dot-sold"></span>
+                        <span>Sold</span>
+                        <span class="pill-badge" id="countSold">27</span>
+                    </button>
+                    <button class="filter-pill" data-filter="Builder Hold">
+                        <span class="status-dot dot-hold"></span>
+                        <span>Builder Hold</span>
+                        <span class="pill-badge" id="countHold">10</span>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -1758,7 +1889,11 @@
 
         function resetToCenter(duration = 450) {
             if (animId) cancelAnimationFrame(animId);
-            const target = { x: 0, y: 0, w: BASE_W, h: BASE_H };
+            const isMobile = window.innerWidth <= 768;
+            // On mobile portrait, provide extra bottom padding so Road 14 is never clipped by zoom buttons
+            const target = isMobile
+                ? { x: -35, y: -20, w: BASE_W + 70, h: BASE_H + 130 }
+                : { x: 0, y: 0, w: BASE_W, h: BASE_H };
             if (duration > 0) {
                 animateViewBox(target, duration);
             } else {
@@ -2434,13 +2569,8 @@
         // Handle window resize
         window.addEventListener('resize', () => {
             applyViewBox();
-            if (renderer3D && camera3D && is3DModeActive) {
-                const container = document.getElementById('threeViewport');
-                const w = container.clientWidth;
-                const h = container.clientHeight;
-                camera3D.aspect = w / h;
-                camera3D.updateProjectionMatrix();
-                renderer3D.setSize(w, h);
+            if (is3DModeActive) {
+                on3DViewportResize();
             }
         });
 
@@ -2482,6 +2612,8 @@
                 viewport2D.style.position = 'absolute';
                 viewport2D.style.transform = 'translateX(-200vw)';
                 if (zoomControls2D) zoomControls2D.style.display = 'none';
+                const mapHint = document.getElementById('mobileMapHint');
+                if (mapHint) mapHint.style.display = 'none';
                 threeViewport.style.display = 'block';
                 floatingControls3D.style.display = 'flex';
 
@@ -2512,6 +2644,8 @@
                 viewport2D.style.position = 'absolute';
                 viewport2D.style.transform = 'none';
                 if (zoomControls2D) zoomControls2D.style.display = 'flex';
+                const mapHint = document.getElementById('mobileMapHint');
+                if (mapHint && !selectedPlotKey) mapHint.style.display = 'flex';
 
                 resetToCenter(0);
                 refreshAllPlots();
@@ -2521,12 +2655,34 @@
         btnMode2D.addEventListener('click', () => switchViewMode('2D'));
         btnMode3D.addEventListener('click', () => switchViewMode('3D'));
 
+        function getAdaptiveAerialCameraPos(aspect) {
+            // Adaptive aerial camera altitude & framing for portrait mobile phones (aspect < 1.0)
+            if (aspect < 1.0) {
+                const mult = Math.min(2.35, Math.max(1.25, 1.25 / aspect));
+                return {
+                    pos: new THREE.Vector3(8, 120 * mult * 0.95, 105 * mult),
+                    target: new THREE.Vector3(8, 0, -2)
+                };
+            }
+            return {
+                pos: new THREE.Vector3(8, 120, 105),
+                target: new THREE.Vector3(8, 0, -2)
+            };
+        }
+
         function on3DViewportResize() {
             if (!renderer3D || !camera3D) return;
             const container = document.getElementById('threeViewport');
             const w = container.clientWidth || window.innerWidth;
             const h = container.clientHeight || (window.innerHeight - 70);
-            camera3D.aspect = w / h;
+            const aspect = w / h;
+            camera3D.aspect = aspect;
+            // On mobile portrait, dynamically widen vertical FOV slightly so the 95m wide master layout is never cropped
+            if (aspect < 0.8) {
+                camera3D.fov = Math.min(62, 45 * Math.sqrt(0.8 / aspect));
+            } else {
+                camera3D.fov = 45;
+            }
             camera3D.updateProjectionMatrix();
             renderer3D.setSize(w, h);
             renderer3D.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -2540,15 +2696,18 @@
 
             const width = container.clientWidth || window.innerWidth;
             const height = container.clientHeight || (window.innerHeight - 70);
+            const aspect = width / height;
 
             // 1. Scene
             scene3D = new THREE.Scene();
             scene3D.background = new THREE.Color(0x0e1b2b);
             scene3D.fog = new THREE.FogExp2(0x0e1b2b, 0.0030);
 
-            // 2. Camera: Positioned for full aerial view of Aurangabad Township
-            camera3D = new THREE.PerspectiveCamera(45, width / height, 0.5, 1200);
-            camera3D.position.set(8, 120, 105);
+            // 2. Camera: Positioned with adaptive framing so portrait mode shows entire layout
+            const initialFov = aspect < 0.8 ? Math.min(62, 45 * Math.sqrt(0.8 / aspect)) : 45;
+            camera3D = new THREE.PerspectiveCamera(initialFov, aspect, 0.5, 1600);
+            const aerialInit = getAdaptiveAerialCameraPos(aspect);
+            camera3D.position.copy(aerialInit.pos);
 
             // 3. Renderer
             renderer3D = new THREE.WebGLRenderer({
@@ -2564,14 +2723,18 @@
             renderer3D.toneMapping = THREE.ACESFilmicToneMapping;
             renderer3D.toneMappingExposure = 1.08;
 
-            // 4. OrbitControls
+            // 4. OrbitControls: Smooth touch gestures with rotation and pinch-zoom
             controls3DInstance = new THREE.OrbitControls(camera3D, renderer3D.domElement);
             controls3DInstance.enableDamping = true;
             controls3DInstance.dampingFactor = 0.06;
-            controls3DInstance.target.set(8, 0, -2);
+            controls3DInstance.target.copy(aerialInit.target);
             controls3DInstance.maxPolarAngle = Math.PI / 2.05; // Prevent dipping beneath ground
-            controls3DInstance.minDistance = 12;
-            controls3DInstance.maxDistance = 350;
+            controls3DInstance.minDistance = 10;
+            controls3DInstance.maxDistance = 650;
+            controls3DInstance.touches = {
+                ONE: THREE.TOUCH.ROTATE,
+                TWO: THREE.TOUCH.DOLLY_PAN
+            };
 
             // 5. Lighting Setup
             setup3DLighting();
@@ -3601,10 +3764,12 @@
 
             const canvas = document.getElementById('threeCanvas3D');
             let pointerDownPos = { x: 0, y: 0 };
+            let pointerDownTime = 0;
 
             canvas.addEventListener('pointerdown', (e) => {
                 pointerDownPos.x = e.clientX;
                 pointerDownPos.y = e.clientY;
+                pointerDownTime = performance.now();
             });
 
             canvas.addEventListener('pointermove', (e) => {
@@ -3635,7 +3800,10 @@
             canvas.addEventListener('pointerup', (e) => {
                 const dx = Math.abs(e.clientX - pointerDownPos.x);
                 const dy = Math.abs(e.clientY - pointerDownPos.y);
-                if (dx > 6 || dy > 6) return; // Ignore drag operations
+                const dt = performance.now() - pointerDownTime;
+                const isTouch = (e.pointerType === 'touch' || 'ontouchstart' in window);
+                const maxTapDist = isTouch ? 24 : 8;
+                if (dx > maxTapDist || dy > maxTapDist || dt > 650) return; // Ignore drag or long-hold operations
 
                 const rect = canvas.getBoundingClientRect();
                 mouseVector3D.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -3714,13 +3882,18 @@
             if (!item) return;
 
             const targetPos = item.group.position;
-            const desiredCamPos = new THREE.Vector3(
-                targetPos.x + 14,
-                targetPos.y + 20,
-                targetPos.z + 22
-            );
+            const isPortrait = window.innerWidth <= 768;
+            // On portrait mobile, bottom details sheet covers bottom 40-50% of screen.
+            // Elevate camera and offset look target slightly forward so the plot remains in the upper visible half!
+            const desiredCamPos = isPortrait
+                ? new THREE.Vector3(targetPos.x + 8, targetPos.y + 26, targetPos.z + 30)
+                : new THREE.Vector3(targetPos.x + 14, targetPos.y + 20, targetPos.z + 22);
 
-            tweenCamera3D(desiredCamPos, targetPos, 700);
+            const lookTarget = isPortrait
+                ? new THREE.Vector3(targetPos.x, targetPos.y, targetPos.z - 4)
+                : targetPos;
+
+            tweenCamera3D(desiredCamPos, lookTarget, 700);
             sync3DPlotsStatus();
         }
 
@@ -3756,7 +3929,10 @@
                 btnCamOrbit.classList.remove('active');
                 btnCamStreet.classList.remove('active');
                 btnCamAerial.classList.add('active');
-                tweenCamera3D(new THREE.Vector3(8, 120, 105), new THREE.Vector3(8, 0, -2), 800);
+                const container = document.getElementById('threeViewport');
+                const aspect = (container.clientWidth || window.innerWidth) / (container.clientHeight || (window.innerHeight - 70));
+                const aerial = getAdaptiveAerialCameraPos(aspect);
+                tweenCamera3D(aerial.pos, aerial.target, 800);
             });
 
             btnCamStreet.addEventListener('click', () => {
@@ -3764,8 +3940,12 @@
                 btnCamOrbit.classList.remove('active');
                 btnCamAerial.classList.remove('active');
                 btnCamStreet.classList.add('active');
-                // Street view looking up the signature Western Avenue
-                tweenCamera3D(new THREE.Vector3(-16, 5, 62), new THREE.Vector3(-21, 2, 20), 800);
+                const isPortrait = window.innerWidth <= 768;
+                if (isPortrait) {
+                    tweenCamera3D(new THREE.Vector3(-16, 6.5, 76), new THREE.Vector3(-21, 2, 14), 800);
+                } else {
+                    tweenCamera3D(new THREE.Vector3(-16, 5, 62), new THREE.Vector3(-21, 2, 20), 800);
+                }
             });
 
             btnCamOrbit.addEventListener('click', () => {

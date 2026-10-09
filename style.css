@@ -1984,6 +1984,12 @@ footer::before {
     flex-direction: column;
     gap: 12px;
     z-index: 999;
+    transition: bottom 0.35s ease, right 0.35s ease, transform 0.35s ease;
+}
+
+body.in-3d-journey .support-container {
+    bottom: 96px;
+    right: 28px;
 }
 
 .support-btn {
@@ -3232,12 +3238,15 @@ body.dark-mode .district-search::placeholder {
 }
 
 .journey-sticky-viewport {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
+    z-index: 25;
     background: radial-gradient(circle at 50% 35%, #152e47 0%, #0d1e2e 55%, #071018 100%);
     box-shadow: inset 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 -20px 40px rgba(0, 0, 0, 0.6);
 }
@@ -3248,12 +3257,16 @@ body.dark-mode .district-search::placeholder {
     width: 100%;
     height: 100%;
     display: block;
-    cursor: grab;
+    cursor: default;
     z-index: 1;
     touch-action: pan-y;
 }
 
-#journey-3d-canvas:active {
+#journey-3d-canvas.orbit-active {
+    cursor: grab;
+}
+
+#journey-3d-canvas.orbit-active:active {
     cursor: grabbing;
 }
 
@@ -3384,32 +3397,33 @@ body.dark-mode .district-search::placeholder {
     max-width: calc(100vw - 72px);
     z-index: 10;
     pointer-events: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-items: start;
 }
 
 .journey-card {
-    background: rgba(13, 27, 42, 0.75);
-    border: 1px solid rgba(107, 181, 203, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 28px 24px;
+    grid-area: 1 / 1;
+    background: rgba(11, 23, 38, 0.84);
+    border: 1px solid rgba(107, 181, 203, 0.3);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 26px 22px;
     border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.18);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px) scale(0.96);
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
-    pointer-events: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    transform: translateY(16px) scale(0.97);
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
+    pointer-events: none;
 }
 
 .journey-card.active {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
-    position: relative;
+    pointer-events: auto;
 }
 
 .jcard-badge {
@@ -3535,6 +3549,90 @@ body.dark-mode .district-search::placeholder {
 .jcard-cta-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 28px rgba(74, 144, 164, 0.55);
+}
+
+/* Interactive Interior Perspective Switcher */
+.int-view-selector {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    background: rgba(8, 20, 36, 0.65);
+    padding: 3px;
+    border-radius: 12px;
+    border: 1px solid rgba(107, 181, 203, 0.25);
+}
+
+.int-view-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 7px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.int-view-btn i {
+    font-size: 10px;
+    color: #6BB5CB;
+}
+
+.int-view-btn.active {
+    background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(74, 144, 164, 0.35);
+}
+
+.int-view-btn.active i {
+    color: #fff;
+}
+
+.int-view-btn:hover:not(.active) {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.jcard-action-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.jcard-action-row .jcard-cta-btn {
+    flex: 1;
+    padding: 10px 14px;
+}
+
+.jcard-orbit-shortcut {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(107, 181, 203, 0.35);
+    color: #6BB5CB;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+}
+
+.jcard-orbit-shortcut:hover {
+    background: rgba(74, 144, 164, 0.25);
+    color: #fff;
+    border-color: #6BB5CB;
+    transform: translateY(-2px);
 }
 
 /* Land Layout Interactive District Switcher */
@@ -3823,12 +3921,37 @@ body.dark-mode .district-search::placeholder {
         padding: 2.5px 7px;
     }
 
+    .int-view-selector {
+        gap: 3px;
+        margin-bottom: 7px;
+        padding: 2px;
+    }
+
+    .int-view-btn {
+        font-size: 9px;
+        padding: 5px 3px;
+        gap: 3px;
+    }
+
+    .int-view-btn i {
+        font-size: 8.5px;
+    }
+
+    .jcard-action-row {
+        gap: 6px;
+    }
+
+    .jcard-orbit-shortcut {
+        padding: 8px 10px;
+        font-size: 10.5px;
+    }
+
     .journey-stage-stepper {
         display: none;
     }
 
     .journey-top-hud {
-        top: 66px;
+        top: 76px;
         left: 10px;
         right: 10px;
         gap: 6px;

@@ -240,7 +240,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Three.js 3D Engine -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -703,13 +705,15 @@
                     </div>
 
                     <div class="float-card float-card-2">
-                        <div class="card-icon">ðŸ“</div>
+                        <div class="card-icon"><i class="fas fa-map-marker-alt"
+                                style="color:#6BB5CB;font-size:20px;"></i><!-- ðŸ“--></div>
                         <div class="card-value">All 38 Districts</div>
                         <div style="font-size:11px;opacity:0.7;margin-top:2px;">Across Bihar</div>
                     </div>
 
                     <div class="float-card float-card-3">
-                        <div class="card-icon">â­</div>
+                        <div class="card-icon"><i class="fas fa-star"
+                                style="color:#f59e0b;font-size:20px;"></i><!-- â­--></div>
                         <div class="card-value">4.9 / 5.0</div>
                         <div style="font-size:11px;opacity:0.7;margin-top:2px;">Google Play Rating</div>
                     </div>
@@ -817,20 +821,28 @@
                     <div class="journey-card active" id="jcard-0">
                         <div class="jcard-badge"><i class="fas fa-map-marked-alt"></i> Stage 01 · Land Layout</div>
                         <h3 class="jcard-title">100% Verified Bihar Land Plots</h3>
-                        <p class="jcard-desc">Demarcated boundaries with laser surveyed precision across all 38 districts of Bihar.</p>
+                        <p class="jcard-desc">Demarcated boundaries with laser surveyed precision across all 38
+                            districts of Bihar.</p>
 
                         <!-- District Selection Pills -->
                         <div class="land-district-selector">
-                            <button type="button" class="land-pill-btn active" data-area="2,400 Sq. Ft" data-dim="60 Ft" data-kattha="3.3 Kattha">Patna</button>
-                            <button type="button" class="land-pill-btn" data-area="1,800 Sq. Ft" data-dim="45 Ft" data-kattha="2.5 Kattha">Muzaffarpur</button>
-                            <button type="button" class="land-pill-btn" data-area="2,160 Sq. Ft" data-dim="50 Ft" data-kattha="3.0 Kattha">Gaya</button>
-                            <button type="button" class="land-pill-btn" data-area="3,200 Sq. Ft" data-dim="70 Ft" data-kattha="4.4 Kattha">Bhagalpur</button>
+                            <button type="button" class="land-pill-btn active" data-area="2,400 Sq. Ft" data-dim="60 Ft" data-depth="40 Ft"
+                                data-kattha="3.3 Kattha">Patna</button>
+                            <button type="button" class="land-pill-btn" data-area="1,800 Sq. Ft" data-dim="45 Ft" data-depth="40 Ft"
+                                data-kattha="2.5 Kattha">Muzaffarpur</button>
+                            <button type="button" class="land-pill-btn" data-area="2,160 Sq. Ft" data-dim="50 Ft" data-depth="43 Ft"
+                                data-kattha="3.0 Kattha">Gaya</button>
+                            <button type="button" class="land-pill-btn" data-area="3,200 Sq. Ft" data-dim="70 Ft" data-depth="46 Ft"
+                                data-kattha="4.4 Kattha">Bhagalpur</button>
                         </div>
 
                         <div class="jcard-specs">
-                            <div class="jspec-item"><span class="jspec-val" id="land-stat-area">2,400 Sq. Ft</span><span class="jspec-lbl">Plot Area</span></div>
-                            <div class="jspec-item"><span class="jspec-val" id="land-stat-dim">60 Ft Frontage</span><span class="jspec-lbl">Road Access</span></div>
-                            <div class="jspec-item"><span class="jspec-val" id="land-stat-kattha">3.3 Kattha Clean</span><span class="jspec-lbl">Govt. Mutation</span></div>
+                            <div class="jspec-item"><span class="jspec-val" id="land-stat-area">2,400 Sq. Ft</span><span
+                                    class="jspec-lbl">Plot Area</span></div>
+                            <div class="jspec-item"><span class="jspec-val" id="land-stat-dim">60 Ft
+                                    Frontage</span><span class="jspec-lbl">Road Access</span></div>
+                            <div class="jspec-item"><span class="jspec-val" id="land-stat-kattha">3.3 Kattha
+                                    Clean</span><span class="jspec-lbl">Govt. Mutation</span></div>
                         </div>
                         <div class="jcard-tip"><i class="fas fa-mouse"></i> Scroll down or click below</div>
                         <button type="button" class="jcard-next-btn" data-stage-target="1">
@@ -882,8 +894,21 @@
                     <div class="journey-card" id="jcard-3">
                         <div class="jcard-badge"><i class="fas fa-couch"></i> Stage 04 · Ready-to-Move Living</div>
                         <h3 class="jcard-title">Smart Spatial Interior Living</h3>
-                        <p class="jcard-desc">Designer lighting ambiance, modular Italian kitchen, and smart home
-                            climate automation.</p>
+                        <p class="jcard-desc">Designer lighting ambiance, modular Italian kitchen, and smart home climate automation.</p>
+
+                        <!-- Interactive Interior Perspective Switcher -->
+                        <div class="int-view-selector" title="Switch 3D Room Camera View">
+                            <button type="button" class="int-view-btn active" data-int-view="wide">
+                                <i class="fas fa-expand"></i> Panoramic
+                            </button>
+                            <button type="button" class="int-view-btn" data-int-view="lounge">
+                                <i class="fas fa-couch"></i> Lounge
+                            </button>
+                            <button type="button" class="int-view-btn" data-int-view="kitchen">
+                                <i class="fas fa-utensils"></i> Kitchen
+                            </button>
+                        </div>
+
                         <div class="jcard-specs">
                             <div class="jspec-item"><span class="jspec-val">3 BHK</span><span
                                     class="jspec-lbl">Furnished</span></div>
@@ -892,10 +917,16 @@
                             <div class="jspec-item"><span class="jspec-val">Instant</span><span class="jspec-lbl">App
                                     Booking</span></div>
                         </div>
-                        <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="jcard-cta-btn"
-                            target="_blank" rel="noopener">
-                            <i class="fab fa-google-play"></i> Book on Zorario App
-                        </a>
+
+                        <div class="jcard-action-row">
+                            <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="jcard-cta-btn"
+                                target="_blank" rel="noopener">
+                                <i class="fab fa-google-play"></i> Book on App
+                            </a>
+                            <button type="button" class="jcard-orbit-shortcut" id="btn-interior-orbit" title="Freely rotate and inspect the room in 3D">
+                                <i class="fas fa-arrows-rotate"></i> 360° Room
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1153,8 +1184,8 @@
                 <!-- Searchable district filter -->
                 <div class="district-search-wrap reveal reveal-delay-1">
                     <input type="search" class="district-search" id="district-search"
-                        placeholder="ðŸ”  Search your city in Bihar..." aria-label="Search Bihar districts"
-                        autocomplete="off">
+                        placeholder="Search your city in Bihar..." data-legacy="ðŸ”"
+                        aria-label="Search Bihar districts" autocomplete="off">
                 </div>
 
                 <div class="districts-cloud" id="districts-cloud" role="list"
@@ -1701,10 +1732,12 @@
                     <!-- Project 1: Gaya -->
                     <article class="fp-card reveal reveal-delay-1">
                         <div class="fp-card-img fp-img-gradient-1">
-                            <i class="fas fa-home" style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
+                            <i class="fas fa-home"
+                                style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
                             <div class="fp-card-badges">
                                 <span class="fp-badge-zorario"><i class="fas fa-star"></i> Zorario Project</span>
-                                <span class="fp-status-badge fp-status-live"><i class="fas fa-circle" style="font-size:7px;vertical-align:middle;margin-right:4px;"></i> Live</span>
+                                <span class="fp-status-badge fp-status-live"><i class="fas fa-circle"
+                                        style="font-size:7px;vertical-align:middle;margin-right:4px;"></i> Live</span>
                             </div>
                         </div>
                         <div class="fp-card-body">
@@ -1735,10 +1768,12 @@
                     <!-- Project 2: Patna -->
                     <article class="fp-card reveal reveal-delay-2">
                         <div class="fp-card-img fp-img-gradient-2">
-                            <i class="fas fa-layer-group" style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
+                            <i class="fas fa-layer-group"
+                                style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
                             <div class="fp-card-badges">
                                 <span class="fp-badge-zorario"><i class="fas fa-star"></i> Zorario Project</span>
-                                <span class="fp-status-badge fp-status-live"><i class="fas fa-circle" style="font-size:7px;vertical-align:middle;margin-right:4px;"></i> Live</span>
+                                <span class="fp-status-badge fp-status-live"><i class="fas fa-circle"
+                                        style="font-size:7px;vertical-align:middle;margin-right:4px;"></i> Live</span>
                             </div>
                         </div>
                         <div class="fp-card-body">
@@ -1752,7 +1787,8 @@
                                 <span class="fp-price-note">onwards per plot</span>
                             </div>
                             <div class="fp-card-meta">
-                                <span class="fp-meta-item"><i class="fas fa-vector-square"></i> 800–2,400 sq ft plots</span>
+                                <span class="fp-meta-item"><i class="fas fa-vector-square"></i> 800–2,400 sq ft
+                                    plots</span>
                                 <span class="fp-meta-item"><i class="fas fa-road"></i> 40ft Main Road</span>
                                 <span class="fp-meta-item"><i class="fas fa-file-alt"></i> Clear Title</span>
                             </div>
@@ -1769,10 +1805,12 @@
                     <!-- Project 3: Begusarai -->
                     <article class="fp-card reveal reveal-delay-3">
                         <div class="fp-card-img fp-img-gradient-3">
-                            <i class="fas fa-building" style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
+                            <i class="fas fa-building"
+                                style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
                             <div class="fp-card-badges">
                                 <span class="fp-badge-zorario"><i class="fas fa-star"></i> Zorario Project</span>
-                                <span class="fp-status-badge fp-status-launching"><i class="fas fa-bolt" style="font-size:9px;margin-right:4px;"></i> Launching Soon</span>
+                                <span class="fp-status-badge fp-status-launching"><i class="fas fa-bolt"
+                                        style="font-size:9px;margin-right:4px;"></i> Launching Soon</span>
                             </div>
                         </div>
                         <div class="fp-card-body">
@@ -1803,72 +1841,13 @@
                     <!-- Project 4: Munger -->
                     <article class="fp-card reveal reveal-delay-4">
                         <div class="fp-card-img fp-img-gradient-4">
-                            <i class="fas fa-tree" style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
+                            <i class="fas fa-tree"
+                                style="font-size:54px;color:rgba(255,255,255,0.9);position:relative;z-index:1;"></i>
                             <div class="fp-card-badges">
                                 <span class="fp-badge-zorario"><i class="fas fa-star"></i> Zorario Project</span>
-                                <span class="fp-status-badge fp-status-live"><i class="fas fa-circle" style="font-size:7px;vertical-align:middle;margin-right:4px;"></i> Live</span>
-                            </div>
-                        </div>
-                        <div class="fp-card-body">
-                            <div class="fp-card-type">Residential · For Sale</div>
-                            <h3 class="fp-card-title">Zorario Heritage Homes, Munger</h3>
-                            <div class="fp-card-location">
-                                <i class="fas fa-map-marker-alt"></i> Main Market Area, Munger, Bihar
-                            </div>
-                            <div class="fp-price-row">
-                                <span class="fp-price">₹18 Lakh</span>
-                                <span class="fp-price-note">onwards per unit</span>
-                            </div>
-                            <div class="fp-card-meta">
-                                <span class="fp-meta-item"><i class="fas fa-bed"></i> 2 &amp; 3 BHK</span>
-                                <span class="fp-meta-item"><i class="fas fa-university"></i> Loan Available</span>
-                                <span class="fp-meta-item"><i class="fas fa-leaf"></i> Vastu Compliant</span>
-                            </div>
-                            <div class="fp-card-footer">
-                                <span class="fp-card-tag"><i class="fas fa-mobile-alt"></i> View on app</span>
-                                <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
-                                    class="fp-app-cta" rel="noopener" target="_blank" id="fp-card4-btn">
-                                    <i class="fab fa-google-play"></i> View on App
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                </div>            <!-- Bottom CTA -->us-badge fp-status-launching">⚡ Launching Soon</span>
-                            </div>
-                        </div>
-                        <div class="fp-card-body">
-                            <div class="fp-card-type">Commercial · For Rent</div>
-                            <h3 class="fp-card-title">Zorario Business Hub, Begusarai</h3>
-                            <div class="fp-card-location">
-                                <i class="fas fa-map-marker-alt"></i> Barauni Industrial Area, Begusarai
-                            </div>
-                            <div class="fp-price-row">
-                                <span class="fp-price">₹8,000</span>
-                                <span class="fp-price-note">/ month onwards</span>
-                            </div>
-                            <div class="fp-card-meta">
-                                <span class="fp-meta-item"><i class="fas fa-store"></i> Shops &amp; Offices</span>
-                                <span class="fp-meta-item"><i class="fas fa-parking"></i> Parking Included</span>
-                                <span class="fp-meta-item"><i class="fas fa-wifi"></i> High-Speed Net</span>
-                            </div>
-                            <div class="fp-card-footer">
-                                <span class="fp-card-tag"><i class="fas fa-mobile-alt"></i> Pre-register on app</span>
-                                <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
-                                    class="fp-app-cta" rel="noopener" target="_blank" id="fp-card3-btn">
-                                    <i class="fab fa-google-play"></i> View on App
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Project 4: Munger -->
-                    <article class="fp-card reveal reveal-delay-4">
-                        <div class="fp-card-img fp-img-gradient-4">
-                            🏡
-                            <div class="fp-card-badges">
-                                <span class="fp-badge-zorario"><i class="fas fa-star"></i> Zorario Project</span>
-                                <span class="fp-status-badge fp-status-live">â— Live</span>
+                                <!-- â—  -->
+                                <span class="fp-status-badge fp-status-live"><i class="fas fa-circle"
+                                        style="font-size:7px;vertical-align:middle;margin-right:4px;"></i> Live</span>
                             </div>
                         </div>
                         <div class="fp-card-body">
@@ -2836,11 +2815,11 @@
         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
         const toastData = [
             { name: 'Rahul from Gaya', action: 'just booked a 2 BHK 🏠', avatar: 'R', time: '2m ago' },
-            { name: 'Priya from Patna', action: 'listed a property âœ…', avatar: 'P', time: '5m ago' },
+            { name: 'Priya from Patna', action: 'listed a verified property', avatar: 'P', time: '5m ago' },
             { name: 'Amit from Begusarai', action: 'found a room 🚪', avatar: 'A', time: '9m ago' },
-            { name: 'Sita from Munger', action: 'downloaded the app ðŸ“²', avatar: 'S', time: '12m ago' },
+            { name: 'Sita from Munger', action: 'downloaded the Zorario app', avatar: 'S', time: '12m ago' },
             { name: 'Deepak from Bhagalpur', action: 'rented a flat ✨', avatar: 'D', time: '18m ago' },
-            { name: 'Ananya from Darbhanga', action: 'saved 3 favourites â¤ï¸', avatar: 'A', time: '22m ago' },
+            { name: 'Ananya from Darbhanga', action: 'saved 3 favourite listings', avatar: 'A', time: '22m ago' }, // â¤ï¸', avatar: 'A', time: '22m ago' },
         ];
         const toast = document.getElementById('social-proof-toast');
         if (toast) {
@@ -3386,18 +3365,26 @@
             const surveyDimGroup = new THREE.Group();
             plotGroup.add(surveyDimGroup);
 
-            function makeTextSprite(message, subtext = '', color = '#38bdf8') {
-                const spCanvas = document.createElement('canvas');
-                spCanvas.width = 512;
-                spCanvas.height = 140;
+            function drawSpriteCanvas(spCanvas, message, subtext = '', color = '#38bdf8') {
                 const spCtx = spCanvas.getContext('2d');
+                spCtx.clearRect(0, 0, spCanvas.width, spCanvas.height);
 
-                // Translucent blueprint container
-                spCtx.fillStyle = 'rgba(10, 22, 40, 0.85)';
+                // Translucent high-contrast glassmorphic container
+                spCtx.fillStyle = 'rgba(8, 20, 36, 0.92)';
                 spCtx.strokeStyle = color;
                 spCtx.lineWidth = 4;
                 spCtx.beginPath();
-                spCtx.roundRect(8, 8, 496, 124, 20);
+                const r = 20, w = 496, h = 124, x = 8, y = 8;
+                spCtx.moveTo(x + r, y);
+                spCtx.lineTo(x + w - r, y);
+                spCtx.quadraticCurveTo(x + w, y, x + w, y + r);
+                spCtx.lineTo(x + w, y + h - r);
+                spCtx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                spCtx.lineTo(x + r, y + h);
+                spCtx.quadraticCurveTo(x, y + h, x, y + h - r);
+                spCtx.lineTo(x, y + r);
+                spCtx.quadraticCurveTo(x, y, x + r, y);
+                spCtx.closePath();
                 spCtx.fill();
                 spCtx.stroke();
 
@@ -3418,15 +3405,30 @@
                     spCtx.font = 'bold 22px monospace';
                     spCtx.fillText(subtext, 65, 106);
                 }
+            }
+
+            function makeTextSprite(message, subtext = '', color = '#38bdf8') {
+                const spCanvas = document.createElement('canvas');
+                spCanvas.width = 512;
+                spCanvas.height = 140;
+                drawSpriteCanvas(spCanvas, message, subtext, color);
 
                 const texture = new THREE.CanvasTexture(spCanvas);
                 const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true }));
                 sprite.scale.set(6.8, 1.85, 1);
+                sprite.userData.canvas = spCanvas;
                 return sprite;
             }
 
+            function updateSurveySprite(sprite, message, subtext, color = '#38bdf8') {
+                if (!sprite || !sprite.userData || !sprite.userData.canvas) return;
+                drawSpriteCanvas(sprite.userData.canvas, message, subtext, color);
+                sprite.material.map.needsUpdate = true;
+            }
+
+            // Position front sprite clearly along front perimeter, clear of the floating HUD card
             const spriteFront = makeTextSprite('↔ 60 FT FRONTAGE', '40 FT WIDE BLACKTOP ACCESS');
-            spriteFront.position.set(-0.5, 1.5, 15.5);
+            spriteFront.position.set(3.8, 1.4, 7.8);
             surveyDimGroup.add(spriteFront);
 
             const spriteSide = makeTextSprite('↕ 40 FT DEPTH', 'LASER SURVEYED BOUNDARY');
@@ -3543,18 +3545,17 @@
                     canopy.add(leafCluster);
                 });
 
-                // Optional blossoms (Royal imperial violet / coral flowers)
+                // Optional blossoms (Delicate flowering canopy clusters)
                 if (blossomHex) {
-                    const blossomMat = new THREE.MeshStandardMaterial({ color: blossomHex, roughness: 0.75, flatShading: true });
-                    const blossomHighlight = new THREE.MeshStandardMaterial({ color: 0x9333ea, roughness: 0.7, flatShading: true });
+                    const blossomMat = new THREE.MeshStandardMaterial({ color: blossomHex, roughness: 0.72, flatShading: true });
                     [
-                        { x: 0.55, y: 3.9, z: 0.55, r: 0.8, mat: blossomMat },
-                        { x: -0.65, y: 3.7, z: 0.25, r: 0.75, mat: blossomHighlight },
-                        { x: 0.25, y: 4.4, z: -0.3, r: 0.7, mat: blossomMat },
-                        { x: -0.45, y: 4.2, z: -0.5, r: 0.75, mat: blossomHighlight },
-                        { x: 0.85, y: 3.3, z: -0.4, r: 0.65, mat: blossomMat }
+                        { x: 0.75, y: 3.9, z: 0.65, r: 0.35 },
+                        { x: -0.75, y: 3.7, z: 0.45, r: 0.32 },
+                        { x: 0.35, y: 4.4, z: -0.4, r: 0.30 },
+                        { x: -0.55, y: 4.2, z: -0.6, r: 0.32 },
+                        { x: 0.95, y: 3.3, z: -0.5, r: 0.28 }
                     ].forEach(bl => {
-                        const bMesh = new THREE.Mesh(icoGeo, bl.mat);
+                        const bMesh = new THREE.Mesh(icoGeo, blossomMat);
                         bMesh.scale.setScalar(bl.r * scale);
                         bMesh.position.set(bl.x * scale, bl.y * scale, bl.z * scale);
                         bMesh.castShadow = true;
@@ -4048,116 +4049,409 @@
             // STAGE 4: ULTRA-LUXURY FURNISHED INTERIOR
             // ═══════════════════════════════════════════════════════════════════
 
-            // Polished marble floor
-            const intMarbleMat = new THREE.MeshStandardMaterial({ color: 0xfaf5eb, roughness: 0.06, metalness: 0.25 });
-            const intFloor = new THREE.Mesh(new THREE.PlaneGeometry(20, 13), intMarbleMat);
+            // ── PROCEDURAL HIGH-DEFINITION TEXTURE GENERATORS ──────────────
+            function createMarbleFloorTexture() {
+                const cv = document.createElement('canvas');
+                cv.width = 1024; cv.height = 1024;
+                const ctx = cv.getContext('2d');
+                ctx.fillStyle = '#faf6f0';
+                ctx.fillRect(0, 0, 1024, 1024);
+
+                // Organic marble veining
+                ctx.strokeStyle = 'rgba(180, 165, 145, 0.28)';
+                ctx.lineWidth = 3;
+                for (let i = 0; i < 22; i++) {
+                    ctx.beginPath();
+                    let sx = Math.random() * 1024, sy = Math.random() * 1024;
+                    ctx.moveTo(sx, sy);
+                    for (let j = 0; j < 5; j++) {
+                        sx += (Math.random() - 0.5) * 280;
+                        sy += (Math.random() - 0.2) * 220;
+                        ctx.lineTo(sx, sy);
+                    }
+                    ctx.stroke();
+                }
+
+                // Large porcelain architectural tile grout grid (256x256)
+                ctx.strokeStyle = 'rgba(120, 110, 95, 0.5)';
+                ctx.lineWidth = 2.5;
+                for (let x = 0; x <= 1024; x += 256) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 1024); ctx.stroke();
+                }
+                for (let y = 0; y <= 1024; y += 256) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1024, y); ctx.stroke();
+                }
+
+                const tex = new THREE.CanvasTexture(cv);
+                tex.wrapS = THREE.RepeatWrapping;
+                tex.wrapT = THREE.RepeatWrapping;
+                tex.repeat.set(5, 3.5);
+                return tex;
+            }
+
+            function createTVCanvasTexture() {
+                const cv = document.createElement('canvas');
+                cv.width = 1024; cv.height = 576;
+                const ctx = cv.getContext('2d');
+
+                const bgGrad = ctx.createLinearGradient(0, 0, 1024, 576);
+                bgGrad.addColorStop(0, '#060d17');
+                bgGrad.addColorStop(0.5, '#0b1c33');
+                bgGrad.addColorStop(1, '#030810');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, 1024, 576);
+
+                // Subtle high-tech grid
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < 1024; x += 48) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 576); ctx.stroke();
+                }
+                for (let y = 0; y < 576; y += 48) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1024, y); ctx.stroke();
+                }
+
+                // Top Header Bar
+                ctx.fillStyle = 'rgba(15, 32, 54, 0.88)';
+                ctx.fillRect(40, 32, 944, 60);
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+                ctx.strokeRect(40, 32, 944, 60);
+
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 22px system-ui, sans-serif';
+                ctx.fillText('⚡ ZORARIO SMART VILLA OS', 64, 70);
+
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath(); ctx.arc(870, 62, 8, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#f1f5f9';
+                ctx.font = 'bold 15px monospace';
+                ctx.fillText('LIVE ONLINE', 890, 68);
+
+                // Card 1: Climate
+                ctx.fillStyle = 'rgba(15, 30, 52, 0.92)';
+                ctx.fillRect(48, 120, 280, 260);
+                ctx.strokeStyle = 'rgba(107, 181, 203, 0.35)';
+                ctx.strokeRect(48, 120, 280, 260);
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('CLIMATE CONTROL', 72, 160);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 50px sans-serif';
+                ctx.fillText('23.5°C', 72, 226);
+                ctx.fillStyle = '#10b981';
+                ctx.font = '15px sans-serif';
+                ctx.fillText('✓ Purifier Active · AQI 22', 72, 270);
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('Humidity: 48% Optimal', 72, 305);
+                ctx.fillText('Daikin VRV Climate Sync', 72, 335);
+
+                // Card 2: Center Feature (Zorario Penthouse)
+                ctx.fillStyle = 'rgba(15, 30, 52, 0.92)';
+                ctx.fillRect(352, 120, 320, 260);
+                ctx.strokeStyle = 'rgba(245, 158, 11, 0.45)';
+                ctx.strokeRect(352, 120, 320, 260);
+
+                ctx.fillStyle = '#f59e0b';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.fillText('BIHAR LUXURY LIVING', 376, 160);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 24px sans-serif';
+                ctx.fillText('PATNA RESIDENCY', 376, 202);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('3,200 Sq. Ft Turnkey Furnished', 376, 238);
+                ctx.fillText('Private Swimming Pool & Sun Deck', 376, 268);
+                ctx.fillText('Fe-550D Seismic Zone IV Certified', 376, 298);
+                ctx.fillStyle = '#ca8a04';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.fillText('★ Verified Mutation & Registry', 376, 338);
+
+                // Card 3: Ambiance
+                ctx.fillStyle = 'rgba(15, 30, 52, 0.92)';
+                ctx.fillRect(696, 120, 280, 260);
+                ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)';
+                ctx.strokeRect(696, 120, 280, 260);
+
+                ctx.fillStyle = '#c084fc';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.fillText('AMBIANCE & SCENE', 720, 160);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 24px sans-serif';
+                ctx.fillText('Evening Luxe', 720, 202);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('Chandelier: 2700K Warm', 720, 240);
+                ctx.fillText('Cove LED: Amber Glow', 720, 272);
+                ctx.fillText('Biometric Gate: Secured', 720, 304);
+                ctx.fillStyle = '#10b981';
+                ctx.fillText('All 8 Zones Active', 720, 338);
+
+                // Footer Ticker
+                ctx.fillStyle = 'rgba(8, 20, 36, 0.96)';
+                ctx.fillRect(40, 412, 944, 96);
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+                ctx.strokeRect(40, 412, 944, 96);
+
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 18px sans-serif';
+                ctx.fillText('ZORARIO EXCLUSIVE:', 64, 452);
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = '16px sans-serif';
+                ctx.fillText('Zero Brokerage Direct Landowner Deals across Patna, Muzaffarpur, Gaya & Bhagalpur.', 280, 452);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '13px monospace';
+                ctx.fillText('Download Zorario on Google Play Store  ·  com.akash.prop8  ·  Bihar\'s Trusted Real Estate Network', 64, 484);
+
+                const tex = new THREE.CanvasTexture(cv);
+                tex.needsUpdate = true;
+                return tex;
+            }
+
+            // Polished Italian Calacatta marble floor
+            const intMarbleMat = new THREE.MeshStandardMaterial({
+                map: createMarbleFloorTexture(),
+                roughness: 0.08,
+                metalness: 0.18
+            });
+            const intFloor = new THREE.Mesh(new THREE.PlaneGeometry(22, 14), intMarbleMat);
             intFloor.rotation.x = -Math.PI / 2;
             intFloor.position.set(-0.5, 0.66, 0);
             intFloor.receiveShadow = true;
             interiorGroup.add(intFloor);
 
-            // Ceiling
-            const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(20, 13),
-                new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.5 }));
+            // Recessed drop ceiling
+            const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(22, 14),
+                new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.6 }));
             ceiling.rotation.x = Math.PI / 2;
             ceiling.position.set(-0.5, 4.5, 0);
             interiorGroup.add(ceiling);
 
-            // Feature wall
-            const featureWall = new THREE.Mesh(new THREE.BoxGeometry(20, 4.5, 0.2),
-                new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.4 }));
+            // Ceiling perimeter warm LED cove lighting strips
+            const coveMat = new THREE.MeshBasicMaterial({ color: 0xfef08a });
+            [
+                [-0.5, 4.38, 6.2, 20, 0.08, 0.12],
+                [-0.5, 4.38, -6.5, 20, 0.08, 0.12],
+                [-10.2, 4.38, -0.15, 0.12, 0.08, 12.8],
+                [9.2, 4.38, -0.15, 0.12, 0.08, 12.8]
+            ].forEach(([cx, cy, cz, gw, gh, gd]) => {
+                const cove = new THREE.Mesh(new THREE.BoxGeometry(gw, gh, gd), coveMat);
+                cove.position.set(cx, cy, cz);
+                interiorGroup.add(cove);
+            });
+
+            // Feature wall (Dark architectural acoustic paneling)
+            const featureWall = new THREE.Mesh(new THREE.BoxGeometry(22, 4.5, 0.2),
+                new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.45 }));
             featureWall.position.set(-0.5, 2.5, -6.9);
             interiorGroup.add(featureWall);
 
-            // Floating TV console
+            // Fluted vertical timber slats flanking the media center
+            for (let wx = -10.2; wx <= -3.6; wx += 0.38) {
+                const slat = new THREE.Mesh(new THREE.BoxGeometry(0.16, 4.3, 0.18), warmWoodMat);
+                slat.position.set(wx, 2.5, -6.78);
+                interiorGroup.add(slat);
+            }
+            for (let wx = 5.6; wx <= 10.2; wx += 0.38) {
+                const slat = new THREE.Mesh(new THREE.BoxGeometry(0.16, 4.3, 0.18), warmWoodMat);
+                slat.position.set(wx, 2.5, -6.78);
+                interiorGroup.add(slat);
+            }
+
+            // Statuario marble center backer panel
+            const marbleBacker = new THREE.Mesh(new THREE.BoxGeometry(8.8, 4.3, 0.08), marbleMat);
+            marbleBacker.position.set(1.0, 2.5, -6.82);
+            interiorGroup.add(marbleBacker);
+
+            // Floating TV media console with Calacatta top and dark oak body
             const consoleMat = new THREE.MeshStandardMaterial({ color: 0xf0ece4, roughness: 0.14, metalness: 0.1 });
-            const tvConsole = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.5, 0.55), consoleMat);
-            tvConsole.position.set(1, 1.0, -6.7); tvConsole.castShadow = true;
+            const tvConsole = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.52, 0.65), consoleMat);
+            tvConsole.position.set(1.0, 0.98, -6.55);
+            tvConsole.castShadow = true;
             interiorGroup.add(tvConsole);
 
-            // 85" OLED TV
-            const tvScreen = new THREE.Mesh(new THREE.BoxGeometry(3.5, 2.0, 0.06),
-                new THREE.MeshBasicMaterial({ color: 0x0f172a }));
-            tvScreen.position.set(1, 2.75, -6.82);
+            // Console under-glow LED
+            const consoleGlow = new THREE.Mesh(new THREE.BoxGeometry(5.0, 0.02, 0.4), new THREE.MeshBasicMaterial({ color: 0xfef08a }));
+            consoleGlow.position.set(1.0, 0.71, -6.55);
+            interiorGroup.add(consoleGlow);
+
+            // 85" OLED Smart TV with dynamic dashboard texture
+            const tvScreen = new THREE.Mesh(new THREE.BoxGeometry(3.8, 2.14, 0.06), blackSteelMat);
+            tvScreen.position.set(1.0, 2.75, -6.78);
             interiorGroup.add(tvScreen);
-            const tvGlow = new THREE.Mesh(new THREE.PlaneGeometry(3.3, 1.85),
-                new THREE.MeshBasicMaterial({ color: 0x1d4ed8, transparent: true, opacity: 0.85 }));
-            tvGlow.position.set(1, 2.75, -6.78);
+
+            const tvGlow = new THREE.Mesh(
+                new THREE.PlaneGeometry(3.68, 2.02),
+                new THREE.MeshBasicMaterial({ map: createTVCanvasTexture() })
+            );
+            tvGlow.position.set(1.0, 2.75, -6.74);
             interiorGroup.add(tvGlow);
 
-            // Premium cloud sofa
-            const sofaFrameMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.6 });
-            const sofaCushMat = new THREE.MeshStandardMaterial({ color: 0x374151, roughness: 0.85 });
-            const sofaBase = new THREE.Mesh(new THREE.BoxGeometry(5, 0.6, 1.8), sofaFrameMat);
-            sofaBase.position.set(1.5, 0.96, 1.2); sofaBase.castShadow = true;
+            // TV ambient cyan bias backlight
+            const tvBiasLight = new THREE.PointLight(0x38bdf8, 2.5, 7, 1.8);
+            tvBiasLight.position.set(1.0, 2.75, -6.6);
+            interiorGroup.add(tvBiasLight);
+
+            // Luxury Cloud Sectional Sofa (Ivory Boucle upholstery)
+            const sofaFrameMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.6 });
+            const sofaCushMat = new THREE.MeshStandardMaterial({ color: 0xede6db, roughness: 0.88 });
+
+            const sofaBase = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.55, 1.8), sofaFrameMat);
+            sofaBase.position.set(1.5, 0.94, 1.2); sofaBase.castShadow = true;
             interiorGroup.add(sofaBase);
-            const sofaSeat = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.28, 1.6), sofaCushMat);
-            sofaSeat.position.set(1.5, 1.4, 1.2); interiorGroup.add(sofaSeat);
-            const sofaBack = new THREE.Mesh(new THREE.BoxGeometry(5, 0.9, 0.38), sofaCushMat);
+
+            const sofaSeat = new THREE.Mesh(new THREE.BoxGeometry(5.0, 0.32, 1.65), sofaCushMat);
+            sofaSeat.position.set(1.5, 1.38, 1.2); interiorGroup.add(sofaSeat);
+
+            const sofaBack = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.88, 0.38), sofaCushMat);
             sofaBack.position.set(1.5, 1.7, 2.0); interiorGroup.add(sofaBack);
-            const sofaArm = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.85, 1.8), sofaCushMat);
-            sofaArm.position.set(4.1, 1.12, 1.2); interiorGroup.add(sofaArm);
-            const sofaArm2 = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.85, 1.8), sofaCushMat);
-            sofaArm2.position.set(-1.1, 1.12, 1.2); interiorGroup.add(sofaArm2);
 
-            // L-section extension
-            const sofaL = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.6, 3.5), sofaFrameMat);
-            sofaL.position.set(4, 0.96, -0.65); interiorGroup.add(sofaL);
-            const sofaLSeat = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.28, 3.3), sofaCushMat);
-            sofaLSeat.position.set(4, 1.4, -0.65); interiorGroup.add(sofaLSeat);
+            const sofaArm = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.85, 1.8), sofaCushMat);
+            sofaArm.position.set(4.2, 1.12, 1.2); interiorGroup.add(sofaArm);
 
-            // Accent cushions
-            [[0, 0xef4444], [0.7, 0xf59e0b], [-0.7, 0x06b6d4]].forEach(([ox, col]) => {
-                const cushion = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.38, 0.5),
-                    new THREE.MeshStandardMaterial({ color: col, roughness: 0.8 }));
-                cushion.position.set(1.5 + ox, 1.72, 1.9);
+            const sofaArm2 = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.85, 1.8), sofaCushMat);
+            sofaArm2.position.set(-1.2, 1.12, 1.2); interiorGroup.add(sofaArm2);
+
+            // L-section chaise extension
+            const sofaL = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.55, 3.6), sofaFrameMat);
+            sofaL.position.set(4.1, 0.94, -0.65); interiorGroup.add(sofaL);
+
+            const sofaLSeat = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.32, 3.4), sofaCushMat);
+            sofaLSeat.position.set(4.1, 1.38, -0.65); interiorGroup.add(sofaLSeat);
+
+            // Contrasting designer accent cushions
+            [
+                [-0.8, 0x059669], // Emerald
+                [0.0, 0xd97706],  // Saffron Gold
+                [0.8, 0x1e3a8a],  // Navy Velvet
+                [1.6, 0xc2410c]   // Terracotta
+            ].forEach(([ox, col]) => {
+                const cushion = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.42, 0.42),
+                    new THREE.MeshStandardMaterial({ color: col, roughness: 0.82 }));
+                cushion.position.set(1.5 + ox, 1.72, 1.88);
+                cushion.rotation.z = (Math.random() - 0.5) * 0.15;
                 interiorGroup.add(cushion);
             });
 
-            // Marble coffee table
-            const ctTop = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.1, 1.2), consoleMat);
-            ctTop.position.set(1.5, 1.08, -0.3); ctTop.castShadow = true; interiorGroup.add(ctTop);
-            [[-0.9, -0.45], [0.9, -0.45], [-0.9, 0.45], [0.9, 0.45]].forEach(([lx, lz]) => {
-                const ctLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.42, 8), brushedSteelMat);
-                ctLeg.position.set(1.5 + lx, 0.87, -0.3 + lz); interiorGroup.add(ctLeg);
+            // Two-Tier Architectural Coffee Table
+            const ctTop = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.08, 1.3), consoleMat);
+            ctTop.position.set(1.5, 1.08, -0.3); ctTop.castShadow = true;
+            interiorGroup.add(ctTop);
+
+            const ctLower = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.04, 1.0), darkGlassMat);
+            ctLower.position.set(1.5, 0.72, -0.3);
+            interiorGroup.add(ctLower);
+
+            [[-1.0, -0.5], [1.0, -0.5], [-1.0, 0.5], [1.0, 0.5]].forEach(([lx, lz]) => {
+                const ctLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.46, 8), brushedSteelMat);
+                ctLeg.position.set(1.5 + lx, 0.86, -0.3 + lz);
+                interiorGroup.add(ctLeg);
             });
-            const vase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.09, 0.42, 12),
-                new THREE.MeshStandardMaterial({ color: 0x7e22ce, roughness: 0.15, metalness: 0.4 }));
-            vase.position.set(1.5, 1.35, -0.3); interiorGroup.add(vase);
 
-            // Kitchen island
-            const kitchenMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3, metalness: 0.4 });
-            const island = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.95, 1.4), kitchenMat);
-            island.position.set(-5.5, 1.14, -1.5); island.castShadow = true; interiorGroup.add(island);
-            const islandTop = new THREE.Mesh(new THREE.BoxGeometry(3.38, 0.09, 1.58), consoleMat);
-            islandTop.position.set(-5.5, 1.62, -1.5); interiorGroup.add(islandTop);
+            // Decor on coffee table: Art books & blooming glass vase
+            const book1 = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.05, 0.42),
+                new THREE.MeshStandardMaterial({ color: 0xb91c1c, roughness: 0.7 }));
+            book1.position.set(1.0, 1.15, -0.2); interiorGroup.add(book1);
+            const book2 = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.04, 0.38),
+                new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.7 }));
+            book2.position.set(1.02, 1.2, -0.19); book2.rotation.y = 0.18; interiorGroup.add(book2);
 
-            // Bar stools
+            const vase = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.08, 0.48, 12),
+                new THREE.MeshPhysicalMaterial({ color: 0x7c3aed, roughness: 0.1, transmission: 0.6, transparent: true, opacity: 0.85 }));
+            vase.position.set(1.8, 1.38, -0.3); interiorGroup.add(vase);
+
+            // Luxury plush area rug with midnight blue & cream geometric pattern
+            const rugMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.95 });
+            const rug = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 4.2), rugMat);
+            rug.rotation.x = -Math.PI / 2;
+            rug.position.set(1.5, 0.67, 0.6);
+            interiorGroup.add(rug);
+
+            const rugBorder = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 4.4),
+                new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.9 }));
+            rugBorder.rotation.x = -Math.PI / 2;
+            rugBorder.position.set(1.5, 0.665, 0.6);
+            interiorGroup.add(rugBorder);
+
+            // Open Modular Italian Kitchen
+            const kitchenMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.35, metalness: 0.3 });
+            const island = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.96, 1.5), kitchenMat);
+            island.position.set(-5.5, 1.14, -1.5); island.castShadow = true;
+            interiorGroup.add(island);
+
+            const islandTop = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.1, 1.68), consoleMat);
+            islandTop.position.set(-5.5, 1.64, -1.5);
+            interiorGroup.add(islandTop);
+
+            // Waterfall marble sides
+            const waterfallL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.98, 1.68), consoleMat);
+            waterfallL.position.set(-7.35, 1.14, -1.5); interiorGroup.add(waterfallL);
+            const waterfallR = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.98, 1.68), consoleMat);
+            waterfallR.position.set(-3.65, 1.14, -1.5); interiorGroup.add(waterfallR);
+
+            // Matte black gooseneck arch faucet
+            const faucet = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.025, 8, 16, Math.PI), blackSteelMat);
+            faucet.position.set(-5.5, 1.95, -1.5); interiorGroup.add(faucet);
+
+            // Bar Stools
             [-6.8, -5.5, -4.2].forEach(sx => {
-                const seat = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.22, 0.1, 16), sofaCushMat);
-                seat.position.set(sx, 1.55, -3.4); interiorGroup.add(seat);
-                const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.85, 8), brushedSteelMat);
-                stem.position.set(sx, 1.1, -3.4); interiorGroup.add(stem);
+                const seat = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.23, 0.1, 16), sofaCushMat);
+                seat.position.set(sx, 1.58, -3.2); interiorGroup.add(seat);
+                const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.88, 8), brushedSteelMat);
+                stem.position.set(sx, 1.12, -3.2); interiorGroup.add(stem);
             });
 
-            // Pendant chandelier cluster
+            // Pendant Chandelier Cluster with Warm Glow
             const pendantMat = new THREE.MeshStandardMaterial({ color: 0xca8a04, roughness: 0.1, metalness: 0.95 });
             const pendantGlowMat = new THREE.MeshBasicMaterial({ color: 0xfde68a, transparent: true, opacity: 0.95 });
-            [[-1.5, 4.45, 0.5], [1.5, 4.35, 0.5], [0, 4.5, -0.3]].forEach(([px, py, pz]) => {
+            [[-1.2, 4.4, 0.4], [1.2, 4.3, 0.4], [0, 4.45, -0.4]].forEach(([px, py, pz]) => {
                 const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.8, 8), pendantMat);
                 rod.position.set(px, py + 0.4, pz); interiorGroup.add(rod);
-                const shade = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.38, 16, 1, true), pendantMat);
+                const shade = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.4, 16, 1, true), pendantMat);
                 shade.rotation.x = Math.PI; shade.position.set(px, py, pz); interiorGroup.add(shade);
                 const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.1, 12, 8), pendantGlowMat);
                 bulb.position.set(px, py, pz); interiorGroup.add(bulb);
             });
-            const haloGeo = new THREE.TorusGeometry(0.65, 0.045, 16, 48);
+
+            const haloGeo = new THREE.TorusGeometry(0.75, 0.05, 16, 48);
             const halo = new THREE.Mesh(haloGeo, new THREE.MeshBasicMaterial({ color: 0xfbbf24 }));
             halo.rotation.x = Math.PI / 2;
-            halo.position.set(0, 4.4, 0);
+            halo.position.set(0, 4.38, 0);
             interiorGroup.add(halo);
 
-            // Bookshelf wall
+            // Dedicated Interior Architectural Lighting
+            const livingDownlight = new THREE.SpotLight(0xffedd5, 4.5, 18, Math.PI / 3.2, 0.45);
+            livingDownlight.position.set(1.5, 4.35, 0);
+            livingDownlight.target.position.set(1.5, 0.8, -0.2);
+            interiorGroup.add(livingDownlight);
+            interiorGroup.add(livingDownlight.target);
+
+            const kitchenDownlight = new THREE.SpotLight(0xfff8ee, 3.8, 16, Math.PI / 3.2, 0.45);
+            kitchenDownlight.position.set(-5.5, 4.35, -1.5);
+            kitchenDownlight.target.position.set(-5.5, 1.2, -1.5);
+            interiorGroup.add(kitchenDownlight);
+            interiorGroup.add(kitchenDownlight.target);
+
+            const tvAccentSpot = new THREE.SpotLight(0x60a5fa, 2.5, 12, Math.PI / 3, 0.55);
+            tvAccentSpot.position.set(1.0, 4.25, -4.5);
+            tvAccentSpot.target.position.set(1.0, 2.0, -6.8);
+            interiorGroup.add(tvAccentSpot);
+            interiorGroup.add(tvAccentSpot.target);
+
+            const interiorAmbient = new THREE.PointLight(0xffeedd, 3.5, 24, 1.2);
+            interiorAmbient.position.set(0, 3.8, 0);
+            interiorGroup.add(interiorAmbient);
+
+            const pendantGlow = new THREE.PointLight(0xfbbf24, 2.6, 10, 1.4);
+            pendantGlow.position.set(0, 4.1, 0);
+            interiorGroup.add(pendantGlow);
+
+            const kitchenPendantGlow = new THREE.PointLight(0xfef3c7, 2.2, 8, 1.4);
+            kitchenPendantGlow.position.set(-5.5, 3.4, -1.5);
+            interiorGroup.add(kitchenPendantGlow);
+
+            // Bookshelf wall with colorful collection
             const shelfMat = new THREE.MeshStandardMaterial({ color: 0x292524, roughness: 0.55 });
             const shelfUnit = new THREE.Mesh(new THREE.BoxGeometry(0.28, 4.4, 3.5), shelfMat);
             shelfUnit.position.set(-10.8, 2.55, -4.2); interiorGroup.add(shelfUnit);
@@ -4174,18 +4468,13 @@
                 }
             }
 
-            // Luxury rug
-            const rugMat = new THREE.MeshStandardMaterial({ color: 0x1e3a5f, roughness: 0.95 });
-            const rug = new THREE.Mesh(new THREE.PlaneGeometry(4.5, 3.5), rugMat);
-            rug.rotation.x = -Math.PI / 2; rug.position.set(1.5, 0.67, 0.8); interiorGroup.add(rug);
-
-            // Abstract art panel
+            // Abstract wall art
             const art = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 1.5), new THREE.MeshBasicMaterial({ color: 0x7c3aed }));
             art.position.set(-4.5, 2.5, -6.8); interiorGroup.add(art);
             const artFrame = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.7, 0.08), blackSteelMat);
             artFrame.position.set(-4.5, 2.5, -6.82); interiorGroup.add(artFrame);
 
-            // Indoor plant
+            // Potted fiddle leaf fig plant
             const plantPot = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.24, 0.6, 12),
                 new THREE.MeshStandardMaterial({ color: 0x57534e, roughness: 0.7 }));
             plantPot.position.set(-9.5, 0.97, 6); interiorGroup.add(plantPot);
@@ -4193,9 +4482,9 @@
                 new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.88 }));
             plantLeaf.position.set(-9.5, 2.0, 6); interiorGroup.add(plantLeaf);
 
-            // Floor LED strips
-            const ledMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.7 });
-            const ledStrip = new THREE.Mesh(new THREE.BoxGeometry(20, 0.04, 0.1), ledMat);
+            // Floor ambient LED strip along feature wall base
+            const ledMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85 });
+            const ledStrip = new THREE.Mesh(new THREE.BoxGeometry(22, 0.04, 0.1), ledMat);
             ledStrip.position.set(-0.5, 0.68, -6.75); interiorGroup.add(ledStrip);
 
             // ── GRAND SLIDING ENTRANCE PORTAL ──────────────────────────────
@@ -4312,11 +4601,28 @@
                     target: new THREE.Vector3(-0.5, 2.5, 0)
                 },
                 {
-                    // Stage 3: Walk-In Interior Living
-                    cam: new THREE.Vector3(0.5, 2.1, 4.2),
-                    target: new THREE.Vector3(1.0, 2.0, -1.8)
+                    // Stage 3: Walk-In Interior Living (Architectural Panoramic Perspective)
+                    cam: new THREE.Vector3(-2.6, 2.5, 4.8),
+                    target: new THREE.Vector3(0.6, 1.7, -1.6)
                 }
             ];
+
+            // Interior camera viewpoints for interactive tour
+            const interiorViews = {
+                wide: {
+                    cam: new THREE.Vector3(-2.6, 2.5, 4.8),
+                    target: new THREE.Vector3(0.6, 1.7, -1.6)
+                },
+                lounge: {
+                    cam: new THREE.Vector3(-0.4, 2.0, 3.2),
+                    target: new THREE.Vector3(1.5, 1.4, -0.6)
+                },
+                kitchen: {
+                    cam: new THREE.Vector3(-1.8, 2.2, 2.4),
+                    target: new THREE.Vector3(-5.5, 1.4, -1.5)
+                }
+            };
+            let activeInteriorView = 'wide';
 
             let scrollProgress = 0;
             let targetProgress = 0;
@@ -4331,44 +4637,26 @@
             const scrollHint = document.getElementById('journey-scroll-hint');
 
             const viewport = section.querySelector('.journey-sticky-viewport');
+            if (viewport) {
+                viewport.style.position = '';
+                viewport.style.top = '';
+                viewport.style.bottom = '';
+                viewport.style.left = '';
+                viewport.style.width = '';
+                viewport.style.height = '';
+                viewport.style.zIndex = '';
+            }
 
+            let wasInSection = false;
             function updateScrollProgress() {
                 const rect = section.getBoundingClientRect();
                 const totalDist = section.offsetHeight - window.innerHeight;
 
-                // Bulletproof viewport pinning engine across all browsers
-                if (viewport) {
-                    if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
-                        // Inside section: PINNED to viewport
-                        viewport.style.position = 'fixed';
-                        viewport.style.top = '0px';
-                        viewport.style.bottom = 'auto';
-                        viewport.style.left = '0px';
-                        viewport.style.width = '100%';
-                        viewport.style.height = '100vh';
-                        viewport.style.zIndex = '25';
-                        document.body.classList.add('in-3d-journey');
-                    } else if (rect.bottom < window.innerHeight) {
-                        // Past section: parked at bottom of section
-                        viewport.style.position = 'absolute';
-                        viewport.style.top = 'auto';
-                        viewport.style.bottom = '0px';
-                        viewport.style.left = '0px';
-                        viewport.style.width = '100%';
-                        viewport.style.height = '100vh';
-                        viewport.style.zIndex = '25';
-                        document.body.classList.remove('in-3d-journey');
-                    } else {
-                        // Above section: parked at top of section
-                        viewport.style.position = 'absolute';
-                        viewport.style.top = '0px';
-                        viewport.style.bottom = 'auto';
-                        viewport.style.left = '0px';
-                        viewport.style.width = '100%';
-                        viewport.style.height = '100vh';
-                        viewport.style.zIndex = '25';
-                        document.body.classList.remove('in-3d-journey');
-                    }
+                // Sync body class for floating action buttons and HUD controls
+                const inSection = rect.top <= 20 && rect.bottom >= window.innerHeight - 20;
+                if (inSection !== wasInSection) {
+                    wasInSection = inSection;
+                    document.body.classList.toggle('in-3d-journey', inSection);
                 }
 
                 if (totalDist > 0) {
@@ -4404,28 +4692,52 @@
             }
 
             function getInterpolatedCamera(prog) {
-                // prog from 0 to 1 across 3 segments
-                let seg = prog * 3;
-                let idx = Math.min(2, Math.floor(seg));
-                let localT = hermite(seg - idx);
+                // Calibrated piecewise cinematic path with comfortable stage resting zones
+                let pos = new THREE.Vector3();
+                let look = new THREE.Vector3();
 
-                const c0 = stages[idx].cam;
-                const c1 = stages[idx + 1].cam;
-                const t0 = stages[idx].target;
-                const t1 = stages[idx + 1].target;
+                if (prog <= 0.08) {
+                    pos.copy(stages[0].cam);
+                    look.copy(stages[0].target);
+                } else if (prog < 0.36) {
+                    const t = hermite((prog - 0.08) / (0.36 - 0.08));
+                    pos.lerpVectors(stages[0].cam, stages[1].cam, t);
+                    look.lerpVectors(stages[0].target, stages[1].target, t);
+                } else if (prog <= 0.42) {
+                    pos.copy(stages[1].cam);
+                    look.copy(stages[1].target);
+                } else if (prog < 0.68) {
+                    const t = hermite((prog - 0.42) / (0.68 - 0.42));
+                    pos.lerpVectors(stages[1].cam, stages[2].cam, t);
+                    look.lerpVectors(stages[1].target, stages[2].target, t);
+                } else if (prog <= 0.74) {
+                    pos.copy(stages[2].cam);
+                    look.copy(stages[2].target);
+                } else if (prog < 0.88) {
+                    const targetView = interiorViews[activeInteriorView] || stages[3];
+                    const t = hermite((prog - 0.74) / (0.88 - 0.74));
+                    pos.lerpVectors(stages[2].cam, targetView.cam, t);
+                    look.lerpVectors(stages[2].target, targetView.target, t);
+                } else {
+                    const targetView = interiorViews[activeInteriorView] || stages[3];
+                    pos.copy(targetView.cam);
+                    look.copy(targetView.target);
+                }
 
-                const pos = new THREE.Vector3().lerpVectors(c0, c1, localT);
-                const look = new THREE.Vector3().lerpVectors(t0, t1, localT);
-
-                // Portrait mobile adaptive framing: back up camera slightly on outdoor stages
+                // Portrait mobile adaptive framing: back up camera slightly on outdoor stages & interior
                 const aspect = camera.aspect || (canvas.clientWidth / canvas.clientHeight);
-                if (aspect < 0.95 && idx < 3) {
-                    const dir = pos.clone().sub(look).normalize();
-                    const distMultiplier = (idx === 2) ? 1.32 : 1.22;
-                    const curDist = pos.distanceTo(look);
-                    pos.copy(look).add(dir.multiplyScalar(curDist * distMultiplier));
-                    if (idx < 2) {
-                        pos.y += 2.0;
+                if (aspect < 0.95) {
+                    if (prog >= 0.75) {
+                        pos.z += 1.4;
+                        pos.y += 0.35;
+                    } else {
+                        const dir = pos.clone().sub(look).normalize();
+                        const distMultiplier = (prog >= 0.42) ? 1.30 : 1.22;
+                        const curDist = pos.distanceTo(look);
+                        pos.copy(look).add(dir.multiplyScalar(curDist * distMultiplier));
+                        if (prog < 0.42) {
+                            pos.y += 2.0;
+                        }
                     }
                 }
 
@@ -4436,9 +4748,9 @@
             let activeStageIdx = 0;
             function updateHUD(prog) {
                 let stageIdx = 0;
-                if (prog >= 0.80) stageIdx = 3;
-                else if (prog >= 0.55) stageIdx = 2;
-                else if (prog >= 0.25) stageIdx = 1;
+                if (prog >= 0.74) stageIdx = 3;
+                else if (prog >= 0.48) stageIdx = 2;
+                else if (prog >= 0.20) stageIdx = 1;
                 else stageIdx = 0;
 
                 if (stageIdx !== activeStageIdx) {
@@ -4461,12 +4773,23 @@
             }
 
             function jumpToStage(idx) {
-                const stageTargets = [0.02, 0.35, 0.65, 0.96];
+                const stageTargets = [0.02, 0.38, 0.70, 0.92];
                 const targetP = stageTargets[idx];
                 targetProgress = targetP;
                 updateHUD(targetP);
 
-                const sectionTop = section.getBoundingClientRect().top + window.pageYOffset;
+                if (isOrbitMode && controls) {
+                    isOrbitMode = false;
+                    controls.enabled = false;
+                    canvas.classList.remove('orbit-active');
+                    canvas.style.touchAction = 'pan-y';
+                    canvas.style.cursor = 'default';
+                    if (orbitBtn) orbitBtn.classList.remove('active');
+                    if (orbitText) orbitText.textContent = 'Free 3D Orbit';
+                }
+
+                const sectionRect = section.getBoundingClientRect();
+                const sectionTop = sectionRect.top + window.scrollY;
                 const totalDist = section.offsetHeight - window.innerHeight;
                 const destY = sectionTop + targetP * totalDist;
                 window.scrollTo({ top: destY, behavior: 'smooth' });
@@ -4499,7 +4822,16 @@
                     const p = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
                     targetProgress = p;
                     updateHUD(p);
-                    const sectionTop = section.getBoundingClientRect().top + window.pageYOffset;
+                    if (isOrbitMode && controls) {
+                        isOrbitMode = false;
+                        controls.enabled = false;
+                        canvas.classList.remove('orbit-active');
+                        canvas.style.touchAction = 'pan-y';
+                        canvas.style.cursor = 'default';
+                        if (orbitBtn) orbitBtn.classList.remove('active');
+                        if (orbitText) orbitText.textContent = 'Free 3D Orbit';
+                    }
+                    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
                     const totalDist = section.offsetHeight - window.innerHeight;
                     window.scrollTo({ top: sectionTop + p * totalDist, behavior: 'smooth' });
                 });
@@ -4514,13 +4846,16 @@
                 orbitBtn.addEventListener('click', () => {
                     isOrbitMode = !isOrbitMode;
                     controls.enabled = isOrbitMode;
+                    canvas.classList.toggle('orbit-active', isOrbitMode);
                     canvas.style.touchAction = isOrbitMode ? 'none' : 'pan-y';
+                    canvas.style.cursor = isOrbitMode ? 'grab' : 'default';
                     orbitBtn.classList.toggle('active', isOrbitMode);
                     if (orbitText) {
                         orbitText.textContent = isOrbitMode ? 'Exit Free Orbit' : 'Free 3D Orbit';
                     }
                     if (isOrbitMode) {
                         controls.target.copy(currentLookAt);
+                        controls.update();
                     }
                 });
             }
@@ -4529,9 +4864,55 @@
                 resetBtn.addEventListener('click', () => {
                     isOrbitMode = false;
                     controls.enabled = false;
+                    canvas.classList.remove('orbit-active');
                     canvas.style.touchAction = 'pan-y';
+                    canvas.style.cursor = 'default';
                     if (orbitBtn) orbitBtn.classList.remove('active');
                     if (orbitText) orbitText.textContent = 'Free 3D Orbit';
+                });
+            }
+
+            // Interactive Interior Viewpoint Switcher
+            const intViewBtns = document.querySelectorAll('.int-view-btn');
+            intViewBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    intViewBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const vName = btn.dataset.intView;
+                    if (interiorViews[vName]) {
+                        activeInteriorView = vName;
+                        if (isOrbitMode && controls) {
+                            isOrbitMode = false;
+                            controls.enabled = false;
+                            canvas.classList.remove('orbit-active');
+                            canvas.style.touchAction = 'pan-y';
+                            canvas.style.cursor = 'default';
+                            if (orbitBtn) orbitBtn.classList.remove('active');
+                            if (orbitText) orbitText.textContent = 'Free 3D Orbit';
+                        }
+                    }
+                });
+            });
+
+            // Stage 4 Card 360° Walkaround shortcut button
+            const intOrbitBtn = document.getElementById('btn-interior-orbit');
+            if (intOrbitBtn && controls) {
+                intOrbitBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isOrbitMode = !isOrbitMode;
+                    controls.enabled = isOrbitMode;
+                    canvas.classList.toggle('orbit-active', isOrbitMode);
+                    canvas.style.touchAction = isOrbitMode ? 'none' : 'pan-y';
+                    canvas.style.cursor = isOrbitMode ? 'grab' : 'default';
+                    if (orbitBtn) orbitBtn.classList.toggle('active', isOrbitMode);
+                    if (orbitText) {
+                        orbitText.textContent = isOrbitMode ? 'Exit Free Orbit' : 'Free 3D Orbit';
+                    }
+                    if (isOrbitMode) {
+                        controls.target.copy(currentLookAt);
+                        controls.update();
+                    }
                 });
             }
 
@@ -4548,15 +4929,25 @@
                     pill.classList.add('active');
                     const area = pill.dataset.area;
                     const dim = pill.dataset.dim;
+                    const depth = pill.dataset.depth || '40 Ft';
                     const kattha = pill.dataset.kattha;
                     if (landStatArea) landStatArea.textContent = area;
                     if (landStatDim) landStatDim.textContent = dim + ' Frontage';
                     if (landStatKattha) landStatKattha.textContent = kattha + ' Clean';
 
-                    // Laser pulse feedback on 3D boundary beacons
+                    // Real-time synchronization of 3D spatial dimension callouts!
+                    updateSurveySprite(spriteArea, `📍 ${area} PLOT`, `${kattha} · 100% CLEAR TITLE`, '#10b981');
+                    updateSurveySprite(spriteFront, `↔ ${dim} FRONTAGE`, '40 FT WIDE BLACKTOP ACCESS', '#38bdf8');
+                    updateSurveySprite(spriteSide, `↕ ${depth} DEPTH`, 'LASER SURVEYED BOUNDARY', '#38bdf8');
+
+                    // Laser pulse feedback on 3D boundary beacons & survey grid
                     beaconRings.forEach(r => {
-                        r.scale.setScalar(2.2);
+                        r.scale.setScalar(2.4);
                     });
+                    if (plotGrid) {
+                        plotGrid.material.opacity = 0.85;
+                        setTimeout(() => { if (plotGrid) plotGrid.material.opacity = 0.45; }, 450);
+                    }
                 });
             });
 
@@ -4593,7 +4984,10 @@
                     ambientLight.color.setHex(0xffedd5);
                     ambientLight.intensity = 0.35;
                     scene.fog.color.setHex(0x07111e);
+                    scene.background.setHex(0x07111e);
+                    if (starMat) starMat.opacity = 0.0;
                     interiorLight.intensity = scrollProgress > 0.7 ? 2.5 : 0;
+                    poolLight.intensity = 1.4;
                 } else if (mode === 'sunset') {
                     sunLight.color.setHex(0xf97316);
                     sunLight.intensity = 2.4;
@@ -4601,15 +4995,20 @@
                     ambientLight.color.setHex(0x4338ca);
                     ambientLight.intensity = 0.6;
                     scene.fog.color.setHex(0x1e1b4b);
+                    scene.background.setHex(0x1e1b4b);
+                    if (starMat) starMat.opacity = 0.3;
                     interiorLight.intensity = 2.8;
+                    poolLight.intensity = 2.0;
                 } else if (mode === 'night') {
                     sunLight.color.setHex(0x38bdf8);
-                    sunLight.intensity = 0.45;
+                    sunLight.intensity = 0.35;
                     ambientLight.color.setHex(0x0f172a);
                     ambientLight.intensity = 0.4;
                     scene.fog.color.setHex(0x030712);
-                    interiorLight.intensity = 3.5;
-                    poolLight.intensity = 2.5;
+                    scene.background.setHex(0x030712);
+                    if (starMat) starMat.opacity = 0.85;
+                    interiorLight.intensity = 3.8;
+                    poolLight.intensity = 3.0;
                 }
             }
 
@@ -4623,13 +5022,23 @@
 
                 const rect = section.getBoundingClientRect();
                 const inView = rect.bottom > -100 && rect.top < window.innerHeight + 100;
-                if (!inView) return;
+                if (!inView) {
+                    // Instantly snap stage state when scrolled outside so returning has zero lag or ghost morph
+                    if (rect.top >= window.innerHeight) {
+                        targetProgress = 0;
+                        scrollProgress = 0;
+                    } else if (rect.bottom <= 0) {
+                        targetProgress = 1;
+                        scrollProgress = 1;
+                    }
+                    return;
+                }
 
                 const delta = clock.getDelta();
                 const time = clock.getElapsedTime();
 
-                // Smooth scroll lerp
-                scrollProgress += (targetProgress - scrollProgress) * 0.07;
+                // Smooth responsive scroll lerp (0.14 rate eliminates rubber-banding)
+                scrollProgress += (targetProgress - scrollProgress) * 0.14;
                 updateHUD(scrollProgress);
 
                 // Animate Beacon Rings
@@ -4651,54 +5060,59 @@
                     f.frond.rotation.z = f.baseZ + Math.sin(time * f.speed + f.phase) * 0.06;
                 });
 
-                // Dynamically show 3D dimension callouts in Stage 0
-                if (surveyDimGroup) {
-                    surveyDimGroup.visible = isSurveyVisible && (scrollProgress < 0.28);
-                }
-
-                // Stage Morphing based on scrollProgress
-                // 1. Structure Rise (Progress 0.12 to 0.50)
-                if (scrollProgress < 0.12) {
+                // ── SYNCHRONIZED STAGE MORPHING ──
+                // 1. Structure Rise (Progress 0.08 to 0.36)
+                if (scrollProgress < 0.08) {
                     structureGroup.visible = false;
                     plotGrid.material.opacity = 0.45;
                     plotGrid.visible = isSurveyVisible;
+                    if (surveyDimGroup) surveyDimGroup.visible = isSurveyVisible;
                 } else {
-                    structureGroup.visible = true;
-                    const structT = Math.max(0, Math.min(1, (scrollProgress - 0.12) / 0.35));
+                    structureGroup.visible = scrollProgress < 0.68;
+                    const structT = Math.max(0, Math.min(1, (scrollProgress - 0.08) / 0.28));
                     const smoothT = hermite(structT);
                     columnsGroup.scale.y = THREE.MathUtils.lerp(0.02, 1.0, smoothT);
                     framingBeamsGroup.position.y = THREE.MathUtils.lerp(-3.8, 0, smoothT);
-                    framingBeamsGroup.visible = structT > 0.12;
-                    plotGrid.material.opacity = THREE.MathUtils.lerp(0.45, 0.0, Math.min(1, structT * 2.5));
-                    plotGrid.visible = isSurveyVisible && (structT < 0.4);
+                    framingBeamsGroup.visible = structT > 0.10;
+                    plotGrid.material.opacity = THREE.MathUtils.lerp(0.45, 0.0, Math.min(1, structT * 2.0));
+                    plotGrid.visible = isSurveyVisible && (structT < 0.5);
+                    if (surveyDimGroup) surveyDimGroup.visible = isSurveyVisible && (scrollProgress < 0.22);
                 }
 
-                // 2. Villa Exterior Solidify (Progress 0.48 to 0.76)
-                if (scrollProgress < 0.48) {
+                // 2. Villa Exterior Solidify (Progress 0.42 to 0.68)
+                if (scrollProgress < 0.42) {
                     villaGroup.visible = false;
                 } else {
                     villaGroup.visible = true;
-                    const villaT = Math.max(0, Math.min(1, (scrollProgress - 0.48) / 0.28));
-                    villaGroup.position.y = THREE.MathUtils.lerp(-2.0, 0, hermite(villaT));
-                    villaGroup.scale.setScalar(THREE.MathUtils.lerp(0.1, 1.0, hermite(villaT)));
-                    if (scrollProgress > 0.68) {
+                    const villaT = Math.max(0, Math.min(1, (scrollProgress - 0.42) / 0.26));
+                    const smoothVilla = hermite(villaT);
+                    villaGroup.position.y = THREE.MathUtils.lerp(-1.8, 0, smoothVilla);
+                    villaGroup.scale.setScalar(THREE.MathUtils.lerp(0.3, 1.0, smoothVilla));
+                    if (scrollProgress >= 0.64) {
                         structureGroup.visible = false;
                     }
                 }
 
-                // 3. Sliding Doors Open for Interior Walk-In (Progress 0.75 to 1.0)
-                if (scrollProgress < 0.75) {
+                // 3. Sliding Doors Open for Interior Walk-In (Progress 0.72 to 0.86)
+                if (scrollProgress < 0.72) {
                     interiorGroup.visible = false;
+                    lowerVol.visible = true;
                     slidingDoorL.position.x = -1.25;
                     slidingDoorR.position.x = 1.25;
-                    if (!isOrbitMode) interiorLight.intensity = 0;
+                    if (!isOrbitMode) {
+                        interiorLight.intensity = 0;
+                        if (interiorLight2) interiorLight2.intensity = 0;
+                    }
                 } else {
                     interiorGroup.visible = true;
-                    const doorT = Math.max(0, Math.min(1, (scrollProgress - 0.75) / 0.25));
-                    slidingDoorL.position.x = THREE.MathUtils.lerp(-1.25, -3.7, hermite(doorT));
-                    slidingDoorR.position.x = THREE.MathUtils.lerp(1.25, 3.7, hermite(doorT));
+                    lowerVol.visible = false; // Open up interior view!
+                    const doorT = Math.max(0, Math.min(1, (scrollProgress - 0.72) / 0.14));
+                    const smoothDoor = hermite(doorT);
+                    slidingDoorL.position.x = THREE.MathUtils.lerp(-1.25, -3.7, smoothDoor);
+                    slidingDoorR.position.x = THREE.MathUtils.lerp(1.25, 3.7, smoothDoor);
                     if (!isOrbitMode) {
-                        interiorLight.intensity = THREE.MathUtils.lerp(0.5, 3.5, hermite(doorT));
+                        interiorLight.intensity = THREE.MathUtils.lerp(0.5, 3.5, smoothDoor);
+                        if (interiorLight2) interiorLight2.intensity = THREE.MathUtils.lerp(0.5, 3.0, smoothDoor);
                     }
                 }
 
@@ -4708,8 +5122,8 @@
                     camTargetPos.copy(camState.pos);
                     targetLookAt.copy(camState.look);
 
-                    camera.position.lerp(camTargetPos, 0.06);
-                    currentLookAt.lerp(targetLookAt, 0.06);
+                    camera.position.lerp(camTargetPos, 0.18);
+                    currentLookAt.lerp(targetLookAt, 0.18);
                     camera.lookAt(currentLookAt);
                 } else if (controls) {
                     controls.update();
@@ -4718,7 +5132,16 @@
                 renderer.render(scene, camera);
             }
 
+            // Clean initialization synced to current page scroll
             updateScrollProgress();
+            scrollProgress = targetProgress;
+            updateHUD(scrollProgress);
+            const initCam = getInterpolatedCamera(scrollProgress);
+            camera.position.copy(initCam.pos);
+            camTargetPos.copy(initCam.pos);
+            currentLookAt.copy(initCam.look);
+            targetLookAt.copy(initCam.look);
+            camera.lookAt(currentLookAt);
             animate();
         })();
     </script>

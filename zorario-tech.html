@@ -2122,6 +2122,10 @@
                     ONE: THREE.TOUCH.ROTATE,
                     TWO: THREE.TOUCH.DOLLY_PAN
                 };
+                controls.addEventListener('start', () => {
+                    camTargetPos.copy(camera.position);
+                    lookTarget.copy(controls.target);
+                });
             }
 
             // ── LIGHTING SETUP ─────────────────────────────────────────
@@ -2702,17 +2706,21 @@
 
                 // Smooth camera animation towards target
                 if (controls) {
-                    if (controls.target.distanceTo(lookTarget) > 0.05) {
-                        controls.target.lerp(lookTarget, 0.05);
-                    }
-                    if (camera.position.distanceTo(camTargetPos) > 0.08 && !controls.state) {
-                        camera.position.lerp(camTargetPos, 0.05);
+                    const isUserInteracting = controls.state !== -1 && controls.state !== undefined;
+                    if (!isUserInteracting) {
+                        if (controls.target.distanceTo(lookTarget) > 0.05) {
+                            controls.target.lerp(lookTarget, 0.05);
+                        }
+                        if (camera.position.distanceTo(camTargetPos) > 0.08) {
+                            camera.position.lerp(camTargetPos, 0.05);
+                        }
                     }
                     controls.update();
                 }
 
                 renderer.render(scene, camera);
                 updateHotspots();
+            }
             animate();
 
             // Clean icon badges

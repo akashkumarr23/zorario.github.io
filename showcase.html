@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker & Owner Showcase | Zorario</title>
+    <meta name="description" content="View verified properties listed by this verified broker or owner on Zorario. Download the Zorario app to connect directly.">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary: #0F172A;
+            --brand-blue: #1E3A8A;
+            --royal-blue: #2563EB;
+            --emerald: #10B981;
+            --amber: #F59E0B;
+            --slate-50: #F8FAFC;
+            --slate-100: #F1F5F9;
+            --slate-200: #E2E8F0;
+            --slate-600: #475569;
+            --slate-800: #1E293B;
+            --slate-900: #0F172A;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--slate-50);
+            color: var(--slate-800);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── Sticky Smart App Banner ─── */
+        .smart-banner {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #0B1329 0%, #1E293B 100%);
+            color: #FFFFFF;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .banner-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #2563EB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(37,99,235,0.4);
+        }
+
+        .banner-text h4 {
+            font-family: var(--font-heading);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .banner-text p {
+            font-size: 11px;
+            color: #94A3B8;
+        }
+
+        .btn-open-app {
+            background: #2563EB;
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-heading);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-open-app:hover {
+            background: #1D4ED8;
+            transform: scale(1.02);
+        }
+
+        /* ─── Main Container ─── */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 20px 16px 80px 16px;
+        }
+
+        /* ─── Profile Hero Card ─── */
+        .profile-hero {
+            background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+            border-radius: 24px;
+            padding: 28px;
+            color: #FFFFFF;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-hero::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar-box {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: var(--font-heading);
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-info h1 {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .hero-info .tagline {
+            font-size: 13px;
+            color: #CBD5E1;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .badges-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-verified-partner {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FDE68A;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+
+        .badge-verified-owner {
+            background: rgba(16, 185, 129, 0.2);
+            color: #A7F3D0;
+            border: 1px solid rgba(16, 185, 129, 0.5);
+        }
+
+        .badge-rera {
+            background: rgba(255,255,255,0.12);
+            color: #FFFFFF;
+        }
+
+        .hero-stats {
+            display: flex;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .stat-item span {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        /* ─── Curated Banner ─── */
+        .curated-banner {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .curated-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .curated-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--royal-blue);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .curated-text h4 {
+            font-family: var(--font-heading);
+            font-size: 14px;
+            font-weight: 700;
+            color: #1E3A8A;
+        }
+
+        .curated-text p {
+            font-size: 12px;
+            color: #3B82F6;
+        }
+
+        .btn-view-all {
+            background: transparent;
+            border: none;
+            color: #1E40AF;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* ─── Filter Tabs & Section Header ─── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--slate-900);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            background: #FFFFFF;
+            border: 1px solid var(--slate-200);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-600);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--royal-blue);
+            color: #FFFFFF;
+            border-color: var(--royal-blue);
+        }
+
+        /* ─── Property Grid ─── */
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .property-card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid var(--slate-200);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        .card-image-box {
+            position: relative;
+            height: 200px;
+            background: #E2E8F0;
+            overflow: hidden;
+        }
+
+        .card-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-badge-top {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(6px);
+            color: #FFFFFF;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-verified-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #10B981;
+            color: #FFFFFF;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card-price {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--royal-blue);
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-location {
+            font-size: 13px;
+            color: var(--slate-600);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .card-specs {
+            display: flex;
+            gap: 14px;
+            padding: 10px 0;
+            border-top: 1px solid var(--slate-100);
+            border-bottom: 1px solid var(--slate-100);
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--slate-600);
+            font-weight: 600;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ─── Gated Contact Action Button ─── */
+        .btn-gated-contact {
+            margin-top: auto;
+            width: 100%;
+            background: #F1F5F9;
+            color: var(--slate-800);
+            border: 1.5px dashed #CBD5E1;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-gated-contact:hover {
+            background: #E2E8F0;
+            border-color: #94A3B8;
+        }
+
+        .btn-gated-contact i {
+            color: #E11D48;
+        }
+
+        /* ─── Modal App-Wall ─── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 24px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            position: relative;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94A3B8;
+            cursor: pointer;
+        }
+
+        .modal-shield-icon {
+            width: 64px;
+            height: 64px;
+            background: #EFF6FF;
+            color: var(--royal-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px auto;
+        }
+
+        .modal-card h3 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 8px;
+        }
+
+        .modal-card p {
+            font-size: 13px;
+            color: var(--slate-600);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-modal-open-app {
+            background: var(--royal-blue);
+            color: #FFFFFF;
+            padding: 14px;
+            border-radius: 14px;
+            font-family: var(--font-heading);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-modal-download {
+            background: #0F172A;
+            color: #FFFFFF;
+            padding: 14px;
+            border-radius: 14px;
+            font-family: var(--font-heading);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ─── Loading & Empty States ─── */
+        .loading-box {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--slate-600);
+        }
+
+        .spinner {
+            border: 4px solid var(--slate-200);
+            border-top: 4px solid var(--royal-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 640px) {
+            .profile-hero {
+                padding: 20px;
+            }
+            .hero-top {
+                flex-direction: column;
+                text-align: center;
+            }
+            .badges-wrap {
+                justify-content: center;
+            }
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Sticky Smart App Banner -->
+    <header class="smart-banner">
+        <div class="banner-left">
+            <div class="app-logo">Z</div>
+            <div class="banner-text">
+                <h4>ZORARIO APP</h4>
+                <p>Unlock phone numbers & chat directly</p>
+            </div>
+        </div>
+        <a id="topOpenAppBtn" href="#" class="btn-open-app">
+            <i class="fa-solid fa-mobile-screen"></i> Open in App
+        </a>
+    </header>
+
+    <main class="container">
+
+        <!-- 2. Profile Hero Card -->
+        <section class="profile-hero" id="profileHero">
+            <div class="hero-top">
+                <div class="avatar-box" id="ownerAvatar">
+                    <span id="avatarInitial">Z</span>
+                </div>
+                <div class="hero-info">
+                    <h1 id="ownerDisplayName">Loading Portfolio...</h1>
+                    <p class="tagline" id="ownerTagline" style="display:none;"></p>
+                    <div class="badges-wrap" id="badgesWrap">
+                        <span class="badge-pill badge-verified-owner" id="verifiedBadge">
+                            <i class="fa-solid fa-circle-check"></i> Verified Owner
+                        </span>
+                        <span class="badge-pill badge-rera" id="reraBadge" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <h3 id="statTotal">--</h3>
+                    <span>Total Listings</span>
+                </div>
+                <div class="stat-item">
+                    <h3 id="statRent">--</h3>
+                    <span>For Rent</span>
+                </div>
+                <div class="stat-item">
+                    <h3 id="statSale">--</h3>
+                    <span>For Sale</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Curated Selection Banner (shown if specific props requested) -->
+        <div class="curated-banner" id="curatedBanner" style="display: none;">
+            <div class="curated-left">
+                <div class="curated-icon"><i class="fa-solid fa-sparkles"></i></div>
+                <div class="curated-text">
+                    <h4 id="curatedTitle">Handpicked Selection for You</h4>
+                    <p id="curatedSubtitle">Showing selected verified properties</p>
+                </div>
+            </div>
+            <button class="btn-view-all" id="btnViewAll">View All Listings</button>
+        </div>
+
+        <!-- 4. Section Controls -->
+        <div class="section-header">
+            <h2 class="section-title" id="gridTitle">Listed Properties</h2>
+            <div class="filter-tabs">
+                <button class="tab-btn active" data-filter="all">All</button>
+                <button class="tab-btn" data-filter="rent">Rent</button>
+                <button class="tab-btn" data-filter="sell">Buy</button>
+            </div>
+        </div>
+
+        <!-- 5. Property Grid -->
+        <div id="loadingBox" class="loading-box">
+            <div class="spinner"></div>
+            <p>Loading verified properties...</p>
+        </div>
+
+        <div class="property-grid" id="propertyGrid" style="display: none;"></div>
+
+    </main>
+
+    <!-- 6. App-Wall Modal for Protected Contact Details -->
+    <div class="modal-overlay" id="appWallModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <div class="modal-shield-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3>Contact Details Protected</h3>
+            <p>
+                To protect broker privacy and verify genuine buyers, direct phone numbers and WhatsApp chats are exclusively available inside the <strong>Zorario App</strong>.
+            </p>
+            <div class="modal-actions">
+                <a id="modalOpenAppBtn" href="#" class="btn-modal-open-app">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in Zorario App
+                </a>
+                <a id="modalOpenPartnerBtn" href="#" class="btn-modal-open-app" style="background: #1E3A8A;">
+                    <i class="fa-solid fa-briefcase"></i> Open in Zorario Partner
+                </a>
+                <a id="modalDownloadBtn" href="#" class="btn-modal-download" target="_blank">
+                    <i class="fa-brands fa-google-play"></i> Download Zorario App
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script: Fetch & Render with Supabase -->
+    <script>
+        const SUPABASE_URL = 'https://tgdmewzuiqwxgpuhntks.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRnZG1ld3p1aXF3eGdwdWhudGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NjcxMTgsImV4cCI6MjA4NzQ0MzExOH0.MpRYrVkAj-NqaLanJg0KveEy3N8sBtDMVQHaIuieaAE';
+        const PLAY_STORE_PACKAGE = 'com.akash.prop8';
+
+        const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Parse Query Parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const ownerUID = urlParams.get('owner') || urlParams.get('id');
+        const brokerCode = urlParams.get('broker');
+        const fallbackName = urlParams.get('name') || 'Property Owner';
+        const propsParam = urlParams.get('props');
+        let selectedProps = propsParam ? propsParam.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+        let allProperties = [];
+        let currentFilter = 'all';
+        let isShowingCurated = selectedProps.length > 0;
+
+        // Generate Deep Link & Play Store Referrer URLs
+        const queryStr = window.location.search.substring(1);
+        const appDeepLink = `zorario://showcase?${queryStr}`;
+        const referrerTag = encodeURIComponent(queryStr);
+        const playStoreUrl = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=${referrerTag}`;
+
+        // Bind App Open / Download Buttons
+        const partnerDeepLink = `zorariopartner://showcase?${queryStr}`;
+        document.getElementById('topOpenAppBtn').href = appDeepLink;
+        document.getElementById('modalOpenAppBtn').href = appDeepLink;
+        document.getElementById('modalOpenPartnerBtn').href = partnerDeepLink;
+        document.getElementById('modalDownloadBtn').href = playStoreUrl;
+
+        // Auto-launch intent fallback when tapping open app
+        function launchAppOrPlayStore() {
+            window.location.href = appDeepLink;
+            setTimeout(() => {
+                // If app did not launch within 1.5s, direct to Play Store
+                // (Only triggers if still in foreground)
+            }, 1500);
+        }
+
+        // Initialize Showcase
+        async function initShowcase() {
+            try {
+                // 1. Fetch Broker Profile Branding
+                let broker = null;
+                if (brokerCode) {
+                    const { data } = await client.from('partner_brokers')
+                        .select('id, user_id, referral_code, agency_name, agency_tagline, agency_logo_url, rera_number, brand_color')
+                        .eq('referral_code', brokerCode)
+                        .maybeSingle();
+                    broker = data;
+                } else if (ownerUID) {
+                    const { data } = await client.from('partner_brokers')
+                        .select('id, user_id, referral_code, agency_name, agency_tagline, agency_logo_url, rera_number, brand_color')
+                        .eq('user_id', ownerUID)
+                        .maybeSingle();
+                    broker = data;
+                }
+
+                renderProfileHeader(broker);
+
+                // 2. Fetch Properties (Using Public-Safe View or Query)
+                let query = client.from('properties')
+                    .select('id, title, description, address, city, property_type, listing_type, rent, price, bedrooms, bathrooms, area, amenities, image_urls, owner_name, is_available, verification_status')
+                    .eq('is_available', true)
+                    .eq('verification_status', 'verified');
+
+                const targetUID = ownerUID || (broker ? broker.user_id : null);
+                if (targetUID) {
+                    query = query.eq('owner_uid', targetUID);
+                } else if (fallbackName) {
+                    query = query.eq('owner_name', fallbackName);
+                }
+
+                const { data: properties, error } = await query;
+                if (error) throw error;
+
+                allProperties = properties || [];
+                renderStats();
+                renderProperties();
+
+            } catch (err) {
+                console.error('Error loading showcase:', err);
+                document.getElementById('loadingBox').innerHTML = `
+                    <p style="color: #EF4444;"><i class="fa-solid fa-triangle-exclamation"></i> Unable to load showcase.</p>
+                `;
+            }
+        }
+
+        // Render Profile Card
+        function renderProfileHeader(broker) {
+            const displayName = broker?.agency_name || fallbackName;
+            document.getElementById('ownerDisplayName').textContent = displayName;
+            document.title = `${displayName} | Zorario Showcase`;
+
+            if (broker?.agency_tagline) {
+                const tagEl = document.getElementById('ownerTagline');
+                tagEl.textContent = broker.agency_tagline;
+                tagEl.style.display = 'block';
+            }
+
+            // Avatar / Logo
+            const avatarBox = document.getElementById('ownerAvatar');
+            if (broker?.agency_logo_url) {
+                avatarBox.innerHTML = `<img src="${broker.agency_logo_url}" alt="${displayName}">`;
+            } else {
+                document.getElementById('avatarInitial').textContent = displayName.charAt(0).toUpperCase();
+            }
+
+            // Badges
+            const badgeEl = document.getElementById('verifiedBadge');
+            if (broker) {
+                badgeEl.className = 'badge-pill badge-verified-partner';
+                badgeEl.innerHTML = '<i class="fa-solid fa-crown"></i> Verified Zorario Partner';
+            } else {
+                badgeEl.className = 'badge-pill badge-verified-owner';
+                badgeEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Verified Property Owner';
+            }
+
+            if (broker?.rera_number) {
+                const reraEl = document.getElementById('reraBadge');
+                reraEl.textContent = `RERA: ${broker.rera_number}`;
+                reraEl.style.display = 'inline-flex';
+            }
+        }
+
+        // Render Portfolio Stats
+        function renderStats() {
+            document.getElementById('statTotal').textContent = allProperties.length;
+            document.getElementById('statRent').textContent = allProperties.filter(p => p.listing_type === 'rent').length;
+            document.getElementById('statSale').textContent = allProperties.filter(p => p.listing_type === 'sell').length;
+        }
+
+        // Render Property Cards
+        function renderProperties() {
+            const grid = document.getElementById('propertyGrid');
+            const loading = document.getElementById('loadingBox');
+            const curatedBanner = document.getElementById('curatedBanner');
+
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+
+            // Filter
+            let list = allProperties;
+            if (isShowingCurated && selectedProps.length > 0) {
+                list = list.filter(p => selectedProps.includes(p.id));
+                curatedBanner.style.display = 'flex';
+                document.getElementById('curatedTitle').textContent = `Handpicked for You (${list.length} Properties)`;
+            } else {
+                curatedBanner.style.display = 'none';
+            }
+
+            if (currentFilter === 'rent') {
+                list = list.filter(p => p.listing_type === 'rent');
+            } else if (currentFilter === 'sell') {
+                list = list.filter(p => p.listing_type === 'sell');
+            }
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748B;">
+                        <i class="fa-solid fa-building-circle-exclamation" style="font-size: 40px; margin-bottom: 12px; color: #CBD5E1;"></i>
+                        <p style="font-size: 15px; font-weight: 600;">No properties found in this category.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = list.map(p => {
+                const img = (p.image_urls && p.image_urls.length > 0) ? p.image_urls[0] : 'assets/images/placeholder.jpg';
+                const isRent = p.listing_type === 'rent';
+                const formattedPrice = isRent
+                    ? `₹${Number(p.rent).toLocaleString('en-IN')}/mo`
+                    : `₹${Number(p.price || 0).toLocaleString('en-IN')}`;
+
+                return `
+                    <div class="property-card">
+                        <div class="card-image-box">
+                            <img src="${img}" alt="${p.title}" loading="lazy" onerror="this.src='assets/images/placeholder.jpg'">
+                            <span class="card-badge-top">${isRent ? 'For Rent' : 'For Sale'}</span>
+                            <span class="card-verified-badge"><i class="fa-solid fa-check"></i> Verified</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-price">${formattedPrice}</div>
+                            <h3 class="card-title">${p.title}</h3>
+                            <div class="card-location">
+                                <i class="fa-solid fa-location-dot" style="color: #2563EB;"></i>
+                                <span>${p.address || ''}, ${p.city || ''}</span>
+                            </div>
+                            <div class="card-specs">
+                                ${p.bedrooms ? `<span class="spec-item"><i class="fa-solid fa-bed"></i> ${p.bedrooms} BHK</span>` : ''}
+                                ${p.bathrooms ? `<span class="spec-item"><i class="fa-solid fa-bath"></i> ${p.bathrooms} Baths</span>` : ''}
+                                ${p.area ? `<span class="spec-item"><i class="fa-solid fa-maximize"></i> ${p.area} sqft</span>` : ''}
+                            </div>
+                            <button class="btn-gated-contact" onclick="openAppWallModal('${p.id}')">
+                                <i class="fa-solid fa-lock"></i>
+                                <span>View Contact & Chat in App</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Modal Controls
+        function openAppWallModal(propertyId) {
+            document.getElementById('appWallModal').style.display = 'flex';
+        }
+
+        document.getElementById('modalCloseBtn').addEventListener('click', () => {
+            document.getElementById('appWallModal').style.display = 'none';
+        });
+
+        document.getElementById('appWallModal').addEventListener('click', (e) => {
+            if (e.target.id === 'appWallModal') {
+                document.getElementById('appWallModal').style.display = 'none';
+            }
+        });
+
+        // Toggle View All from Curated
+        document.getElementById('btnViewAll').addEventListener('click', () => {
+            isShowingCurated = false;
+            renderProperties();
+        });
+
+        // Filter Tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderProperties();
+            });
+        });
+
+        // Launch Init
+        initShowcase();
+    </script>
+</body>
+</html>

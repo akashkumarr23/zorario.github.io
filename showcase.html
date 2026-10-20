@@ -3,645 +3,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Broker & Owner Showcase | Zorario</title>
-    <meta name="description" content="View verified properties listed by this verified broker or owner on Zorario. Download the Zorario app to connect directly.">
+    <title>Verified Broker & Owner Showcase | Zorario</title>
+    <meta name="description" content="View verified properties listed by this verified broker or owner on Zorario — Bihar's No.1 real estate platform.">
+    <meta name="keywords" content="Zorario showcase, verified properties Bihar, broker portfolio, Zorario real estate">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Zorario">
+    <meta name="theme-color" content="#1B3A57">
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 
-    <!-- Zorario Brand Typography: Inter (Matches AppTheme.dart & style.css) -->
+    <!-- Fonts: Inter & FontAwesome (ITCBauhaus loaded via style.css) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Official Zorario Global Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
 
     <!-- Supabase JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         /* ═══════════════════════════════════════════════════════════════ */
-        /* ZORARIO BRAND COLOR SYSTEM (Deep Navy × Teal × Light Gray)      */
+        /* ZORARIO SHOWCASE & DETAIL ENHANCEMENTS                          */
         /* ═══════════════════════════════════════════════════════════════ */
-        :root {
-            /* Brand Colors (Exact match with AppTheme & web_landing/style.css) */
-            --navy: #1B3A57;
-            --navy-deep: #0F2237;
-            --navy-mid: #2B5278;
-            --teal: #4A90A4;
-            --teal-light: #6BB5CB;
-            --teal-glow: rgba(74, 144, 164, 0.35);
-
-            /* Neutrals & Backgrounds */
-            --bg: #F5F7FA;
-            --bg-dark: #0F2237;
-            --white: #FFFFFF;
-            --card-bg: #FFFFFF;
-            --border-color: #E2E8F0;
-            --border-light: #EEF2F6;
-
-            /* Text */
-            --text-primary: #1A1A1A;
-            --text-secondary: #6B7280;
-            --text-light: #9CA3AF;
-            --text-white: #FFFFFF;
-
-            /* Status Colors */
-            --green: #10B981;
-            --yellow: #FFB800;
-            --red: #EF4444;
-
-            /* Typography */
-            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        #main-nav {
+            background: rgba(15, 34, 55, 0.97) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 32px rgba(0,0,0,0.3);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--font-family);
-            background-color: var(--bg);
-            color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ─── Sticky Smart App Banner ─── */
-        .smart-banner {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
-            color: #FFFFFF;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 16px rgba(15, 34, 55, 0.25);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .banner-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .app-logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 9px;
-            background: linear-gradient(135deg, var(--teal) 0%, #3B7C8E 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #FFFFFF;
-            font-size: 19px;
-            font-weight: 800;
-            box-shadow: 0 2px 8px var(--teal-glow);
-        }
-
-        .banner-text h4 {
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.2px;
-            text-transform: uppercase;
-        }
-
-        .banner-text p {
-            font-size: 11px;
-            color: var(--teal-light);
-        }
-
-        .btn-open-app {
-            background: var(--teal);
-            color: #FFFFFF;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s var(--ease);
-            white-space: nowrap;
-            box-shadow: 0 2px 10px rgba(74, 144, 164, 0.35);
-        }
-
-        .btn-open-app:hover {
-            background: #3B7C8E;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(74, 144, 164, 0.5);
-        }
-
-        /* ─── Main Container ─── */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 24px 16px 80px 16px;
-        }
-
-        /* ─── Profile Hero Card (Signature Zorario Navy & Teal) ─── */
-        .profile-hero {
-            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 55%, var(--navy-mid) 100%);
-            border-radius: 24px;
-            padding: 30px;
-            color: #FFFFFF;
-            margin-bottom: 24px;
-            box-shadow: 0 12px 30px -5px rgba(27, 58, 87, 0.35);
+        /* Hero Showcase Section */
+        .page-hero {
+            background: linear-gradient(135deg, #0F2237 0%, #1B3A57 55%, #2B5278 100%);
+            padding: 130px 5% 60px;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .profile-hero::after {
+        .page-hero::before {
             content: '';
             position: absolute;
-            top: -60px;
-            right: -60px;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
-            border-radius: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74,144,164,0.25) 0%, transparent 70%);
+            top: -200px;
+            right: -100px;
             pointer-events: none;
         }
 
-        .hero-top {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        .page-hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(74,144,164,0.06) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(74,144,164,0.06) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
         }
 
-        .avatar-box {
-            width: 76px;
-            height: 76px;
+        .page-hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: rgba(255,255,255,0.5);
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #6BB5CB;
+        }
+
+        .breadcrumb i {
+            font-size: 10px;
+        }
+
+        .breadcrumb span {
+            color: #6BB5CB;
+        }
+
+        /* Profile Showcase Box Inside Hero */
+        .showcase-profile-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 28px;
+            margin-top: 24px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            color: #FFFFFF;
+        }
+
+        .profile-card-top {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .showcase-avatar-box {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid var(--teal-light);
+            background: linear-gradient(135deg, #1B3A57, #4A90A4);
+            border: 3px solid #6BB5CB;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             flex-shrink: 0;
-            font-size: 30px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 700;
             color: #FFFFFF;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
         }
 
-        .avatar-box img {
+        .showcase-avatar-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .hero-info h1 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 4px;
-            letter-spacing: -0.3px;
+        .profile-card-info h1 {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: clamp(26px, 4vw, 40px);
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.2;
+            margin-bottom: 6px;
         }
 
-        .hero-info .tagline {
-            font-size: 13px;
-            color: var(--teal-light);
-            margin-bottom: 10px;
+        .profile-card-tagline {
+            font-size: 14px;
+            color: #A2DBEA;
+            margin-bottom: 12px;
             font-weight: 500;
         }
 
-        .badges-wrap {
+        .profile-badges-wrap {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
         }
 
-        .badge-pill {
+        .profile-badge-pill {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 100px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .badge-verified-partner {
+        .badge-verified-gold {
             background: rgba(255, 184, 0, 0.18);
-            color: #FCD34D;
+            color: #FFD056;
             border: 1px solid rgba(255, 184, 0, 0.4);
         }
 
-        .badge-verified-owner {
-            background: rgba(74, 144, 164, 0.22);
+        .badge-verified-teal {
+            background: rgba(74, 144, 164, 0.25);
             color: #A2DBEA;
-            border: 1px solid rgba(74, 144, 164, 0.45);
+            border: 1px solid rgba(74, 144, 164, 0.5);
         }
 
-        .badge-rera {
-            background: rgba(255,255,255,0.12);
+        .badge-rera-chip {
+            background: rgba(255, 255, 255, 0.12);
             color: #FFFFFF;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .hero-stats {
+        .showcase-stats-row {
             display: flex;
             margin-top: 24px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
             justify-content: space-around;
             text-align: center;
         }
 
-        .stat-item h3 {
-            font-size: 24px;
-            font-weight: 800;
+        .showcase-stat h3 {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
             color: #FFFFFF;
         }
 
-        .stat-item span {
+        .showcase-stat span {
             font-size: 12px;
-            color: var(--teal-light);
-            font-weight: 500;
+            color: #A2DBEA;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* ─── Curated Banner ─── */
-        .curated-banner {
+        /* Curated Handpicked Banner */
+        .curated-notice-box {
             background: #EBF5F8;
-            border: 1px solid #C4E2EB;
+            border: 1.5px solid #C4E2EB;
             border-radius: 16px;
-            padding: 14px 18px;
-            margin-bottom: 24px;
+            padding: 14px 20px;
+            margin: 24px auto 0 auto;
+            max-width: 1200px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .curated-left {
+        .curated-notice-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .curated-icon {
+        .curated-notice-icon {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: var(--navy);
-            color: var(--teal-light);
+            background: #1B3A57;
+            color: #6BB5CB;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 15px;
         }
 
-        .curated-text h4 {
+        .curated-notice-text h4 {
             font-size: 14px;
             font-weight: 700;
-            color: var(--navy);
+            color: #1B3A57;
         }
 
-        .curated-text p {
+        .curated-notice-text p {
             font-size: 12px;
-            color: var(--teal);
+            color: #4A90A4;
         }
 
-        .btn-view-all {
+        .btn-view-all-curated {
             background: transparent;
             border: none;
-            color: var(--navy);
+            color: #1B3A57;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
             text-decoration: underline;
         }
 
-        /* ─── Filter Tabs & Section Header ─── */
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 18px;
-        }
-
-        .section-title {
-            font-size: 19px;
-            font-weight: 800;
-            color: var(--navy);
-            letter-spacing: -0.2px;
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-        }
-
-        .tab-btn {
+        /* Filter Bar */
+        .filter-bar {
             background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            padding: 7px 16px;
+            border-bottom: 1px solid rgba(27, 58, 87, 0.08);
+            padding: 18px 5%;
+            position: sticky;
+            top: 70px;
+            z-index: 95;
+            box-shadow: 0 4px 16px rgba(27, 58, 87, 0.04);
+        }
+
+        .filter-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
             border-radius: 100px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-secondary);
+            border: 1.5px solid rgba(27, 58, 87, 0.12);
+            background: #F5F7FA;
+            color: #1B3A57;
             cursor: pointer;
-            transition: all 0.2s var(--ease);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Inter', sans-serif;
         }
 
-        .tab-btn.active {
-            background: var(--navy);
+        .filter-btn:hover, .filter-btn.active {
+            background: #1B3A57;
             color: #FFFFFF;
-            border-color: var(--navy);
-            box-shadow: 0 2px 8px rgba(27, 58, 87, 0.2);
+            border-color: #1B3A57;
+            box-shadow: 0 4px 12px rgba(27, 58, 87, 0.2);
         }
 
-        /* ─── Property Grid ─── */
-        .property-grid {
+        .filter-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1B3A57;
+            margin-right: 4px;
+        }
+
+        /* Projects Section & Grid */
+        .showcase-properties-section {
+            padding: 50px 5% 80px;
+            background: #F5F7FA;
+        }
+
+        .showcase-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
         }
 
-        .property-card {
+        /* Project Card Styling (Exact style.css match) */
+        .project-card {
             background: #FFFFFF;
             border-radius: 20px;
+            border: 1px solid rgba(27, 58, 87, 0.08);
+            box-shadow: 0 4px 20px rgba(27, 58, 87, 0.05);
             overflow: hidden;
-            box-shadow: 0 4px 18px rgba(27, 58, 87, 0.06);
-            border: 1px solid var(--border-color);
-            transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
             cursor: pointer;
         }
 
-        .property-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 28px rgba(27, 58, 87, 0.12);
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 48px rgba(27, 58, 87, 0.14);
             border-color: #CBD5E1;
         }
 
-        .card-image-box {
-            position: relative;
+        .project-card-img-wrap {
             height: 200px;
+            position: relative;
             background: #E2E8F0;
             overflow: hidden;
         }
 
-        .card-image-box img {
+        .project-card-img-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.35s var(--ease);
+            transition: transform 0.35s ease;
         }
 
-        .property-card:hover .card-image-box img {
-            transform: scale(1.04);
+        .project-card:hover .project-card-img-wrap img {
+            transform: scale(1.05);
         }
 
-        .card-badge-top {
+        .project-badge-type {
             position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(15, 34, 55, 0.9);
-            backdrop-filter: blur(6px);
+            top: 14px;
+            left: 14px;
+            background: rgba(15, 34, 55, 0.88);
+            backdrop-filter: blur(8px);
             color: #FFFFFF;
-            padding: 4px 10px;
-            border-radius: 8px;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 100px;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .card-verified-badge {
+        .project-badge-verified {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--green);
+            top: 14px;
+            right: 14px;
+            background: rgba(16, 185, 129, 0.92);
             color: #FFFFFF;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 100px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
         }
 
-        .card-content {
-            padding: 18px;
+        .project-card-body {
+            padding: 22px;
             display: flex;
             flex-direction: column;
             flex: 1;
         }
 
-        .card-price {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--navy);
-            margin-bottom: 4px;
-            letter-spacing: -0.3px;
+        .project-type-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: #4A90A4;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
         }
 
-        .card-title {
-            font-size: 15px;
+        .project-title-text {
+            font-size: 17px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #1B3A57;
             margin-bottom: 6px;
+            letter-spacing: -0.2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .card-location {
-            font-size: 12px;
-            color: var(--text-secondary);
+        .project-location-text {
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-bottom: 12px;
-        }
-
-        .card-specs {
-            display: flex;
-            gap: 14px;
-            padding: 10px 0;
-            border-top: 1px solid var(--border-light);
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 16px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .spec-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .spec-item i {
-            color: var(--teal);
-        }
-
-        .card-actions-row {
-            display: flex;
-            gap: 10px;
-            margin-top: auto;
-        }
-
-        .btn-view-details {
-            flex: 1;
-            background: var(--navy);
-            color: #FFFFFF;
-            border: none;
-            padding: 10px 14px;
-            border-radius: 10px;
             font-size: 13px;
+            color: #6B7280;
+            margin-bottom: 14px;
+        }
+
+        .project-price-amount {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 22px;
             font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s var(--ease);
-            box-shadow: 0 2px 8px rgba(27, 58, 87, 0.15);
+            color: #1B3A57;
+            margin-bottom: 4px;
         }
 
-        .btn-view-details:hover {
-            background: var(--navy-mid);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(27, 58, 87, 0.25);
+        .project-price-subtext {
+            font-size: 12px;
+            color: #9CA3AF;
         }
 
-        .btn-gated-lock-icon {
-            background: #FFF1F2;
-            color: #E11D48;
-            border: 1px solid #FFE4E6;
-            padding: 10px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .btn-gated-lock-icon:hover {
-            background: #FFE4E6;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════════ */
-        /* ─── PROPERTY DETAIL SCREEN (Zorario Design System) ─────────────── */
-        /* ═══════════════════════════════════════════════════════════════════ */
-        .property-detail-view {
-            display: none;
-            animation: fadeIn 0.25s var(--ease);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Top Navigation Header */
-        .detail-top-nav {
+        .project-card-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border-color);
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(27, 58, 87, 0.07);
+        }
+
+        .project-features-list {
+            display: flex;
             gap: 12px;
+        }
+
+        .project-feat-item {
+            font-size: 12px;
+            color: #6B7280;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+
+        .project-feat-item i {
+            color: #4A90A4;
+        }
+
+        .project-view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #FFFFFF !important;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 100px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(74, 144, 164, 0.25);
+        }
+
+        .project-view-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 18px rgba(74, 144, 164, 0.4);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* PROPERTY DETAIL SCREEN (Matches Zorario projects.html)         */
+        /* ═══════════════════════════════════════════════════════════════ */
+        .showcase-detail-screen {
+            display: none;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(27, 58, 87, 0.1);
         }
 
         .btn-back-portfolio {
             background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 12px;
-            color: var(--navy);
+            border: 1.5px solid rgba(27, 58, 87, 0.15);
+            padding: 9px 20px;
+            border-radius: 100px;
+            color: #1B3A57;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s var(--ease);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .btn-back-portfolio:hover {
-            background: var(--navy);
-            color: #FFFFFF;
-            border-color: var(--navy);
-            transform: translateX(-2px);
-        }
-
-        .detail-top-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-share-property {
-            background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 13px;
-            color: var(--navy);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
             transition: all 0.2s;
         }
 
-        .btn-share-property:hover {
-            background: #F1F5F9;
-            color: var(--navy-deep);
+        .btn-back-portfolio:hover {
+            background: #1B3A57;
+            color: #FFFFFF;
+            border-color: #1B3A57;
+            transform: translateX(-2px);
         }
 
-        /* Image Gallery */
-        .detail-gallery-container {
+        /* Gallery Viewer */
+        .detail-gallery-box {
             position: relative;
-            background: var(--navy-deep);
-            border-radius: 20px;
+            background: #0F2237;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(15, 34, 55, 0.15);
-            margin-bottom: 24px;
+            box-shadow: 0 12px 36px rgba(15, 34, 55, 0.18);
+            margin-bottom: 30px;
         }
 
-        .detail-main-image-wrap {
+        .detail-main-img-box {
             position: relative;
             width: 100%;
-            height: 440px;
-            background: var(--navy-deep);
+            height: 460px;
+            background: #0F2237;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
 
-        .detail-main-img {
+        .detail-main-img-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: opacity 0.2s ease;
         }
 
-        .gallery-nav-btn {
+        .gallery-arrow-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: rgba(15, 34, 55, 0.75);
             backdrop-filter: blur(8px);
@@ -652,30 +583,29 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            transition: all 0.2s var(--ease);
+            transition: all 0.2s;
             z-index: 5;
         }
 
-        .gallery-nav-btn:hover {
-            background: var(--teal);
+        .gallery-arrow-btn:hover {
+            background: #4A90A4;
             transform: translateY(-50%) scale(1.08);
         }
 
-        .gallery-nav-btn.prev { left: 16px; }
-        .gallery-nav-btn.next { right: 16px; }
+        .gallery-arrow-btn.prev { left: 16px; }
+        .gallery-arrow-btn.next { right: 16px; }
 
-        .gallery-counter-badge {
+        .gallery-counter-pill {
             position: absolute;
             bottom: 16px;
             right: 16px;
             background: rgba(15, 34, 55, 0.85);
             backdrop-filter: blur(8px);
             color: #FFFFFF;
-            padding: 6px 14px;
+            padding: 6px 16px;
             border-radius: 100px;
             font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.5px;
             z-index: 5;
             display: flex;
             align-items: center;
@@ -691,46 +621,39 @@
             z-index: 5;
         }
 
-        .gallery-badge-item {
-            padding: 6px 12px;
-            border-radius: 10px;
+        .gallery-badge {
+            padding: 6px 14px;
+            border-radius: 100px;
             font-size: 12px;
             font-weight: 700;
             color: #FFFFFF;
             backdrop-filter: blur(8px);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .badge-type-rent { background: rgba(27, 58, 87, 0.9); }
-        .badge-type-sell { background: rgba(16, 185, 129, 0.9); }
-        .badge-verified-glow {
-            background: rgba(16, 185, 129, 0.9);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+        .gallery-badge.rent { background: rgba(27, 58, 87, 0.9); }
+        .gallery-badge.sell { background: rgba(16, 185, 129, 0.9); }
+        .gallery-badge.verified { background: rgba(16, 185, 129, 0.9); display: flex; align-items: center; gap: 5px; }
 
-        /* Thumbnail Strip */
         .detail-thumbnails-strip {
             display: flex;
-            gap: 10px;
-            padding: 12px 16px;
+            gap: 12px;
+            padding: 14px 20px;
             background: #0B1928;
             overflow-x: auto;
             scrollbar-width: thin;
         }
 
         .detail-thumb-item {
-            width: 72px;
-            height: 52px;
+            width: 76px;
+            height: 54px;
             border-radius: 10px;
             overflow: hidden;
             flex-shrink: 0;
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.55;
             border: 2px solid transparent;
-            transition: all 0.2s var(--ease);
+            transition: all 0.2s;
         }
 
         .detail-thumb-item img {
@@ -741,55 +664,54 @@
 
         .detail-thumb-item.active, .detail-thumb-item:hover {
             opacity: 1;
-            border-color: var(--teal);
+            border-color: #6BB5CB;
             transform: scale(1.05);
         }
 
-        /* Detail Content Layout (2 Columns on Desktop) */
-        .detail-layout-grid {
+        /* 2 Column Details Layout */
+        .detail-content-columns {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 28px;
+            gap: 32px;
             align-items: start;
         }
 
-        /* Left Column: Property Overview & Specs */
-        .detail-main-card {
+        .detail-specs-card {
             background: #FFFFFF;
             border-radius: 24px;
-            padding: 28px;
-            border: 1px solid var(--border-color);
+            padding: 32px;
+            border: 1px solid rgba(27, 58, 87, 0.08);
             box-shadow: 0 4px 20px rgba(27, 58, 87, 0.04);
             margin-bottom: 24px;
         }
 
-        .detail-price-row {
+        .detail-price-line {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 14px;
         }
 
-        .detail-price-tag {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--navy);
-            letter-spacing: -0.5px;
+        .detail-price-main {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 34px;
+            font-weight: 700;
+            color: #1B3A57;
         }
 
-        .detail-price-period {
+        .detail-price-term {
             font-size: 15px;
-            color: var(--text-secondary);
+            color: #6B7280;
             font-weight: 500;
         }
 
-        .detail-status-pill {
+        .detail-available-pill {
             background: #ECFDF5;
             color: #065F46;
             border: 1px solid #A7F3D0;
-            padding: 5px 12px;
+            padding: 5px 14px;
             border-radius: 100px;
             font-size: 12px;
             font-weight: 700;
@@ -798,65 +720,62 @@
             gap: 6px;
         }
 
-        .detail-property-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--navy-deep);
+        .detail-title-main {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1B3A57;
             line-height: 1.3;
             margin-bottom: 12px;
-            letter-spacing: -0.3px;
         }
 
-        .detail-location-row {
+        .detail-location-line {
             display: flex;
             align-items: flex-start;
             gap: 8px;
             font-size: 14px;
-            color: var(--text-secondary);
+            color: #6B7280;
             margin-bottom: 24px;
         }
 
-        .detail-location-row i {
-            color: var(--teal);
+        .detail-location-line i {
+            color: #4A90A4;
             margin-top: 3px;
         }
 
-        .detail-plus-code-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #F1F5F9;
-            color: var(--navy);
-            padding: 4px 10px;
+        .detail-pluscode-chip {
+            background: #E8F2F6;
+            color: #1B3A57;
+            padding: 3px 10px;
             border-radius: 8px;
             font-size: 12px;
             font-family: monospace;
-            font-weight: 600;
+            font-weight: 700;
             margin-left: 8px;
         }
 
-        /* Key Overview Highlights Grid */
-        .specs-grid {
+        /* 6 Key Overview Feature Chips */
+        .detail-specs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 14px;
-            margin-bottom: 28px;
-            padding: 18px;
-            background: var(--bg);
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #F5F7FA;
             border-radius: 16px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(27, 58, 87, 0.08);
         }
 
-        .spec-box {
+        .spec-item-box {
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
 
-        .spec-box-label {
+        .spec-item-label {
             font-size: 11px;
-            color: var(--text-secondary);
-            font-weight: 600;
+            color: #6B7280;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: flex;
@@ -864,148 +783,146 @@
             gap: 6px;
         }
 
-        .spec-box-label i {
-            color: var(--teal);
+        .spec-item-label i {
+            color: #4A90A4;
         }
 
-        .spec-box-value {
+        .spec-item-val {
             font-size: 16px;
             font-weight: 700;
-            color: var(--navy-deep);
+            color: #1B3A57;
         }
 
-        /* Description Section */
-        .detail-section-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--navy);
+        .detail-subheading {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1B3A57;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .detail-section-title i {
-            color: var(--teal);
+        .detail-subheading i {
+            color: #4A90A4;
             font-size: 16px;
         }
 
-        .detail-description-text {
+        .detail-desc-text {
             font-size: 14px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 28px;
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 30px;
             white-space: pre-line;
         }
 
-        /* Amenities Grid */
-        .amenities-chips-wrap {
+        .amenities-badges-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
-        .amenity-chip {
+        .amenity-chip-item {
             background: #FFFFFF;
-            border: 1px solid var(--border-color);
-            padding: 8px 14px;
-            border-radius: 12px;
+            border: 1px solid rgba(27, 58, 87, 0.1);
+            padding: 8px 16px;
+            border-radius: 100px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-primary);
+            color: #1B3A57;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             box-shadow: 0 2px 6px rgba(27, 58, 87, 0.03);
         }
 
-        .amenity-chip i {
-            color: var(--teal);
+        .amenity-chip-item i {
+            color: #4A90A4;
             font-size: 14px;
         }
 
-        /* Right Column: Protected Broker Contact Box */
-        .broker-sticky-card {
+        /* Broker Sidebar Card */
+        .broker-sidebar-box {
             background: #FFFFFF;
             border-radius: 24px;
-            border: 1px solid var(--border-color);
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(27, 58, 87, 0.06);
+            border: 1px solid rgba(27, 58, 87, 0.08);
+            padding: 26px;
+            box-shadow: 0 10px 30px rgba(27, 58, 87, 0.06);
             position: sticky;
-            top: 76px;
+            top: 86px;
         }
 
-        .broker-card-header {
+        .broker-sidebar-header {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(27, 58, 87, 0.08);
             margin-bottom: 18px;
         }
 
-        .broker-card-avatar {
-            width: 56px;
-            height: 56px;
+        .broker-sidebar-avatar {
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--navy-deep), var(--navy));
+            background: linear-gradient(135deg, #0F2237, #1B3A57);
             color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
-            font-weight: 800;
+            font-weight: 700;
             overflow: hidden;
             flex-shrink: 0;
-            border: 2px solid var(--teal-light);
+            border: 2px solid #6BB5CB;
         }
 
-        .broker-card-avatar img {
+        .broker-sidebar-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .broker-card-names h4 {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--navy);
+        .broker-sidebar-meta h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1B3A57;
             margin-bottom: 2px;
         }
 
-        .broker-card-names p {
+        .broker-sidebar-meta p {
             font-size: 12px;
-            color: var(--text-secondary);
+            color: #6B7280;
         }
 
-        .broker-card-rera {
+        .broker-sidebar-rera {
             font-size: 11px;
-            color: var(--navy);
+            color: #1B3A57;
             background: #E8F2F6;
             padding: 2px 8px;
             border-radius: 6px;
             display: inline-block;
             margin-top: 4px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-        /* Shield Lock Notice Box */
-        .contact-shield-box {
+        .contact-protected-callout {
             background: #F8FAFC;
             border: 1px solid #E2E8F0;
             border-radius: 16px;
-            padding: 16px;
+            padding: 18px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
-        .shield-icon-circle {
+        .contact-protected-icon {
             width: 44px;
             height: 44px;
             border-radius: 50%;
             background: #E8F2F6;
-            color: var(--teal);
+            color: #1B3A57;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1013,46 +930,45 @@
             margin: 0 auto 10px auto;
         }
 
-        .contact-shield-box h5 {
+        .contact-protected-callout h5 {
             font-size: 14px;
-            font-weight: 800;
-            color: var(--navy);
+            font-weight: 700;
+            color: #1B3A57;
             margin-bottom: 4px;
         }
 
-        .contact-shield-box p {
+        .contact-protected-callout p {
             font-size: 12px;
-            color: var(--text-secondary);
+            color: #6B7280;
             line-height: 1.5;
             margin-bottom: 12px;
         }
 
-        .masked-phone-display {
+        .masked-phone-badge {
             background: #FFFFFF;
-            border: 1.5px dashed var(--teal);
-            padding: 8px 12px;
-            border-radius: 10px;
+            border: 1.5px dashed #4A90A4;
+            padding: 8px 14px;
+            border-radius: 100px;
             font-family: monospace;
             font-size: 14px;
             font-weight: 700;
-            color: var(--navy);
+            color: #1B3A57;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Action Buttons */
-        .broker-action-buttons {
+        .sidebar-actions-wrap {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .btn-action-primary {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-            color: #FFFFFF;
-            padding: 13px;
-            border-radius: 14px;
+        .btn-sidebar-primary {
+            background: linear-gradient(135deg, #1B3A57, #2B5278);
+            color: #FFFFFF !important;
+            padding: 14px;
+            border-radius: 100px;
             font-size: 14px;
             font-weight: 700;
             text-decoration: none;
@@ -1060,21 +976,20 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 14px rgba(27, 58, 87, 0.25);
-            transition: all 0.2s var(--ease);
+            box-shadow: 0 4px 16px rgba(27, 58, 87, 0.25);
+            transition: all 0.2s;
         }
 
-        .btn-action-primary:hover {
-            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+        .btn-sidebar-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(27, 58, 87, 0.35);
+            box-shadow: 0 8px 24px rgba(27, 58, 87, 0.35);
         }
 
-        .btn-action-partner {
-            background: var(--teal);
-            color: #FFFFFF;
-            padding: 12px;
-            border-radius: 14px;
+        .btn-sidebar-partner {
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #FFFFFF !important;
+            padding: 13px;
+            border-radius: 100px;
             font-size: 13px;
             font-weight: 700;
             text-decoration: none;
@@ -1082,18 +997,13 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.2s;
         }
 
-        .btn-action-partner:hover {
-            background: #3B7C8E;
-        }
-
-        .btn-action-download {
-            background: var(--navy-deep);
-            color: #FFFFFF;
-            padding: 12px;
-            border-radius: 14px;
+        .btn-sidebar-download {
+            background: #0F2237;
+            color: #FFFFFF !important;
+            padding: 13px;
+            border-radius: 100px;
             font-size: 13px;
             font-weight: 700;
             text-decoration: none;
@@ -1101,61 +1011,34 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.2s;
         }
 
-        .btn-action-download:hover {
-            background: #000000;
+        /* Loading Spinner */
+        .showcase-spinner-box {
+            text-align: center;
+            padding: 70px 20px;
+            color: #6B7280;
         }
 
-        /* Mobile Sticky Footer */
-        .mobile-sticky-bottom-bar {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 12px 16px;
-            border-top: 1px solid var(--border-color);
-            box-shadow: 0 -4px 15px rgba(27, 58, 87, 0.08);
-            z-index: 90;
-            align-items: center;
-            justify-content: space-between;
+        .showcase-spinner {
+            border: 4px solid #E2E8F0;
+            border-top: 4px solid #4A90A4;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px auto;
         }
 
-        .mobile-bottom-price h4 {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--navy);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .mobile-bottom-price span {
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-
-        .btn-mobile-bottom-cta {
-            background: var(--navy);
-            color: #FFFFFF;
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* ─── Modal App-Wall ─── */
+        /* Contact Protected Modal */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(15, 34, 55, 0.7);
             backdrop-filter: blur(8px);
             z-index: 1000;
@@ -1170,35 +1053,35 @@
             width: 100%;
             max-width: 440px;
             border-radius: 24px;
-            padding: 28px;
+            padding: 32px 28px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(15, 34, 55, 0.25);
+            box-shadow: 0 24px 60px rgba(15, 34, 55, 0.3);
             position: relative;
-            animation: modalPop 0.3s var(--ease);
+            animation: popIn 0.3s ease;
         }
 
-        @keyframes modalPop {
-            from { transform: scale(0.9); opacity: 0; }
+        @keyframes popIn {
+            from { transform: scale(0.92); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
-        .modal-close {
+        .modal-close-btn {
             position: absolute;
             top: 16px;
             right: 16px;
             background: none;
             border: none;
             font-size: 20px;
-            color: var(--text-light);
+            color: #9CA3AF;
             cursor: pointer;
         }
 
         .modal-shield-icon {
             width: 64px;
             height: 64px;
-            background: #E8F2F6;
-            color: var(--navy);
             border-radius: 50%;
+            background: #E8F2F6;
+            color: #1B3A57;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1207,417 +1090,409 @@
         }
 
         .modal-card h3 {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--navy);
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1B3A57;
             margin-bottom: 8px;
         }
 
         .modal-card p {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: #6B7280;
             line-height: 1.6;
             margin-bottom: 24px;
         }
 
-        .modal-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-modal-open-app {
-            background: var(--navy);
-            color: #FFFFFF;
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(27, 58, 87, 0.25);
-        }
-
-        .btn-modal-download {
-            background: var(--navy-deep);
-            color: #FFFFFF;
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        /* ─── Loading & Empty States ─── */
-        .loading-box {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-        }
-
-        .spinner {
-            border: 4px solid var(--border-color);
-            border-top: 4px solid var(--teal);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 860px) {
-            .detail-layout-grid {
-                grid-template-columns: 1fr;
-            }
-            .broker-sticky-card {
-                position: static;
-            }
-            .mobile-sticky-bottom-bar {
-                display: flex;
-            }
-            .detail-main-image-wrap {
-                height: 320px;
-            }
+        @media (max-width: 992px) {
+            .projects-grid { grid-template-columns: 1fr 1fr; }
+            .detail-content-columns { grid-template-columns: 1fr; }
+            .broker-sidebar-box { position: static; }
         }
 
         @media (max-width: 640px) {
-            .profile-hero {
-                padding: 20px;
-            }
-            .hero-top {
-                flex-direction: column;
-                text-align: center;
-            }
-            .badges-wrap {
-                justify-content: center;
-            }
-            .property-grid {
-                grid-template-columns: 1fr;
-            }
-            .detail-main-image-wrap {
-                height: 240px;
-            }
-            .detail-property-title {
-                font-size: 20px;
-            }
-            .detail-price-tag {
-                font-size: 26px;
-            }
-            .specs-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .projects-grid { grid-template-columns: 1fr; }
+            .profile-card-top { flex-direction: column; text-align: center; }
+            .profile-badges-wrap { justify-content: center; }
+            .detail-main-img-box { height: 260px; }
+            .detail-specs-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. Sticky Smart App Banner -->
-    <header class="smart-banner">
-        <div class="banner-left">
-            <div class="app-logo">Z</div>
-            <div class="banner-text">
-                <h4>ZORARIO APP</h4>
-                <p>Unlock verified contacts & chat directly</p>
-            </div>
-        </div>
-        <a id="topOpenAppBtn" href="#" class="btn-open-app">
-            <i class="fa-solid fa-mobile-screen"></i> Open in App
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 1. OFFICIAL ZORARIO NAVIGATION BAR (Identical to all pages)     -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <nav id="main-nav" role="navigation" aria-label="Main navigation">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40">
+            <span class="nav-logo-text">ZORARIO</span>
         </a>
-    </header>
+        <ul class="nav-links" role="list">
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="plotter.html"><i class="fas fa-cube" style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>
+                <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="nav-cta" id="nav-download-btn" rel="noopener" target="_blank">
+                    <i class="fab fa-google-play"></i> Download App
+                </a>
+            </li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
 
-    <main class="container">
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 2. OFFICIAL ZORARIO PAGE HERO (With Broker Profile Card)        -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="page-hero" aria-label="Broker Showcase">
+        <div class="page-hero-grid" aria-hidden="true"></div>
+        <div class="page-hero-inner">
+            <nav class="breadcrumb">
+                <a href="index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="projects.html">Projects</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Broker Showcase</span>
+            </nav>
 
-        <!-- ═══════════════════════════════════════════════════════════════ -->
-        <!-- VIEW 1: PORTFOLIO SHOWCASE GRID                                -->
-        <!-- ═══════════════════════════════════════════════════════════════ -->
-        <div id="showcaseView">
+            <div class="page-eyebrow">
+                <i class="fas fa-certificate"></i> Verified Partner Portfolio
+            </div>
 
-            <!-- Profile Hero Card -->
-            <section class="profile-hero" id="profileHero">
-                <div class="hero-top">
-                    <div class="avatar-box" id="ownerAvatar">
+            <!-- Profile Hero Box -->
+            <div class="showcase-profile-card">
+                <div class="profile-card-top">
+                    <div class="showcase-avatar-box" id="showcaseAvatar">
                         <span id="avatarInitial">Z</span>
                     </div>
-                    <div class="hero-info">
+                    <div class="profile-card-info">
                         <h1 id="ownerDisplayName">Loading Portfolio...</h1>
-                        <p class="tagline" id="ownerTagline" style="display:none;"></p>
-                        <div class="badges-wrap" id="badgesWrap">
-                            <span class="badge-pill badge-verified-owner" id="verifiedBadge">
-                                <i class="fa-solid fa-circle-check"></i> Verified Partner
+                        <p class="profile-card-tagline" id="ownerTagline" style="display:none;"></p>
+                        <div class="profile-badges-wrap">
+                            <span class="profile-badge-pill badge-verified-gold" id="verifiedBadge">
+                                <i class="fas fa-check-circle"></i> Verified Partner
                             </span>
-                            <span class="badge-pill badge-rera" id="reraBadge" style="display:none;"></span>
+                            <span class="profile-badge-pill badge-rera-chip" id="reraBadge" style="display:none;"></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="hero-stats">
-                    <div class="stat-item">
+                <div class="showcase-stats-row">
+                    <div class="showcase-stat">
                         <h3 id="statTotal">--</h3>
                         <span>Total Listings</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="showcase-stat">
                         <h3 id="statRent">--</h3>
                         <span>For Rent</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="showcase-stat">
                         <h3 id="statSale">--</h3>
                         <span>For Sale</span>
                     </div>
                 </div>
-            </section>
-
-            <!-- Curated Selection Banner (shown if specific props requested) -->
-            <div class="curated-banner" id="curatedBanner" style="display: none;">
-                <div class="curated-left">
-                    <div class="curated-icon"><i class="fa-solid fa-sparkles"></i></div>
-                    <div class="curated-text">
-                        <h4 id="curatedTitle">Handpicked Selection for You</h4>
-                        <p id="curatedSubtitle">Showing selected verified properties</p>
-                    </div>
-                </div>
-                <button class="btn-view-all" id="btnViewAll">View All Listings</button>
-            </div>
-
-            <!-- Section Controls -->
-            <div class="section-header">
-                <h2 class="section-title" id="gridTitle">Listed Properties</h2>
-                <div class="filter-tabs">
-                    <button class="tab-btn active" data-filter="all">All</button>
-                    <button class="tab-btn" data-filter="rent">Rent</button>
-                    <button class="tab-btn" data-filter="sell">Buy</button>
-                </div>
-            </div>
-
-            <!-- Loading Spinner -->
-            <div id="loadingBox" class="loading-box">
-                <div class="spinner"></div>
-                <p>Loading verified properties...</p>
-            </div>
-
-            <!-- Property Grid -->
-            <div class="property-grid" id="propertyGrid" style="display: none;"></div>
-
-        </div>
-
-        <!-- ═══════════════════════════════════════════════════════════════ -->
-        <!-- VIEW 2: PROPERTY DETAIL SCREEN                                 -->
-        <!-- ═══════════════════════════════════════════════════════════════ -->
-        <div id="propertyDetailView" class="property-detail-view">
-
-            <!-- Top Back Navigation Bar -->
-            <div class="detail-top-nav">
-                <button class="btn-back-portfolio" id="btnBackToPortfolio" onclick="closePropertyDetail()">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>Back to Portfolio</span>
-                </button>
-                <div class="detail-top-actions">
-                    <button class="btn-share-property" id="btnShareProperty" onclick="shareCurrentProperty()">
-                        <i class="fa-solid fa-share-nodes"></i>
-                        <span>Share</span>
-                    </button>
-                    <a id="detailTopOpenApp" href="#" class="btn-open-app">
-                        <i class="fa-solid fa-mobile-screen"></i>
-                        <span>Open in App</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Image Gallery Viewer -->
-            <div class="detail-gallery-container">
-                <div class="detail-main-image-wrap">
-                    <img id="detailMainImg" src="" alt="Property Photo" class="detail-main-img" onerror="this.src='assets/images/placeholder.jpg'">
-                    
-                    <!-- Badges Overlay -->
-                    <div class="gallery-badges-overlay">
-                        <span id="detailBadgeType" class="gallery-badge-item badge-type-rent">For Rent</span>
-                        <span class="gallery-badge-item badge-verified-glow"><i class="fa-solid fa-circle-check"></i> Verified</span>
-                    </div>
-
-                    <!-- Navigation Arrows -->
-                    <button class="gallery-nav-btn prev" onclick="navigateGallery(-1)" aria-label="Previous Photo">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button class="gallery-nav-btn next" onclick="navigateGallery(1)" aria-label="Next Photo">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-
-                    <!-- Counter -->
-                    <div class="gallery-counter-badge" id="detailGalleryCounter">
-                        <i class="fa-solid fa-camera"></i> <span id="galleryCounterText">1 / 1</span>
-                    </div>
-                </div>
-
-                <!-- Thumbnails Strip -->
-                <div class="detail-thumbnails-strip" id="detailThumbnailsStrip"></div>
-            </div>
-
-            <!-- Two-Column Layout -->
-            <div class="detail-layout-grid">
-                
-                <!-- Left: Property Details & Features -->
-                <div class="detail-main-card">
-                    <div class="detail-price-row">
-                        <div>
-                            <span class="detail-price-tag" id="detailPrice">₹0</span>
-                            <span class="detail-price-period" id="detailPricePeriod">/ month</span>
-                        </div>
-                        <span class="detail-status-pill">
-                            <i class="fa-solid fa-bolt"></i> Verified & Available
-                        </span>
-                    </div>
-
-                    <h1 class="detail-property-title" id="detailTitle">Property Title</h1>
-
-                    <div class="detail-location-row">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span id="detailFullAddress">Address</span>
-                        <span class="detail-plus-code-badge" id="detailPlusCode" style="display:none;"></span>
-                    </div>
-
-                    <!-- Key Specs Highlights Grid -->
-                    <div class="specs-grid">
-                        <div class="spec-box">
-                            <span class="spec-box-label"><i class="fa-solid fa-bed"></i> Bedrooms</span>
-                            <span class="spec-box-value" id="specBedrooms">-- BHK</span>
-                        </div>
-                        <div class="spec-box">
-                            <span class="spec-box-label"><i class="fa-solid fa-bath"></i> Bathrooms</span>
-                            <span class="spec-box-value" id="specBathrooms">-- Baths</span>
-                        </div>
-                        <div class="spec-box">
-                            <span class="spec-box-label"><i class="fa-solid fa-maximize"></i> Super Area</span>
-                            <span class="spec-box-value" id="specArea">-- sqft</span>
-                        </div>
-                        <div class="spec-box">
-                            <span class="spec-box-label"><i class="fa-solid fa-building"></i> Type</span>
-                            <span class="spec-box-value" id="specType">Apartment</span>
-                        </div>
-                        <div class="spec-box">
-                            <span class="spec-box-label"><i class="fa-solid fa-tag"></i> Listing</span>
-                            <span class="spec-box-value" id="specListingType">Rent</span>
-                        </div>
-                        <div class="spec-box">
-                            <span class="spec-box-label"><i class="fa-solid fa-calendar-check"></i> Listed</span>
-                            <span class="spec-box-value" id="specListedDate">Recent</span>
-                        </div>
-                    </div>
-
-                    <!-- Description -->
-                    <h3 class="detail-section-title"><i class="fa-solid fa-align-left"></i> About This Property</h3>
-                    <div class="detail-description-text" id="detailDescription">No detailed description provided.</div>
-
-                    <!-- Amenities & Features -->
-                    <h3 class="detail-section-title"><i class="fa-solid fa-sparkles"></i> Amenities & Facilities</h3>
-                    <div class="amenities-chips-wrap" id="detailAmenitiesWrap"></div>
-                </div>
-
-                <!-- Right: Broker Card & Contact Protection -->
-                <aside class="broker-sticky-card">
-                    <div class="broker-card-header">
-                        <div class="broker-card-avatar" id="detailBrokerAvatar">
-                            <span id="detailBrokerInitial">Z</span>
-                        </div>
-                        <div class="broker-card-names">
-                            <h4 id="detailBrokerName">Broker Name</h4>
-                            <p id="detailBrokerSubtitle">Verified Zorario Partner</p>
-                            <span class="broker-card-rera" id="detailBrokerRera" style="display:none;"></span>
-                        </div>
-                    </div>
-
-                    <!-- Shield Gated Notice -->
-                    <div class="contact-shield-box">
-                        <div class="shield-icon-circle">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <h5>Direct Contact Protected</h5>
-                        <p>To protect broker privacy & eliminate spam, owner and broker contact numbers are exclusively unlocked in the <strong>Zorario App</strong>.</p>
-                        <div class="masked-phone-display">
-                            <i class="fa-solid fa-lock"></i>
-                            <span>+91 98•••• ••21</span>
-                        </div>
-                    </div>
-
-                    <!-- Direct App CTAs -->
-                    <div class="broker-action-buttons">
-                        <a id="detailBtnOpenApp" href="#" class="btn-action-primary">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span>Open in Zorario App</span>
-                        </a>
-                        <a id="detailBtnOpenPartner" href="#" class="btn-action-partner">
-                            <i class="fa-solid fa-briefcase"></i>
-                            <span>Open in Zorario Partner</span>
-                        </a>
-                        <a id="detailBtnDownload" href="#" class="btn-action-download" target="_blank">
-                            <i class="fa-brands fa-google-play"></i>
-                            <span>Download Zorario App</span>
-                        </a>
-                    </div>
-                </aside>
-
             </div>
 
         </div>
+    </section>
 
-    </main>
-
-    <!-- Mobile Floating Bottom Action Bar -->
-    <div class="mobile-sticky-bottom-bar" id="mobileStickyBar" style="display: none;">
-        <div class="mobile-bottom-price">
-            <h4 id="mobilePriceText">₹0</h4>
-            <span id="mobileListingLabel">For Rent</span>
+    <!-- Curated Handpicked Banner -->
+    <div class="curated-notice-box" id="curatedNoticeBox" style="display: none;">
+        <div class="curated-notice-left">
+            <div class="curated-notice-icon"><i class="fas fa-sparkles"></i></div>
+            <div class="curated-notice-text">
+                <h4 id="curatedTitle">Handpicked Selection for You</h4>
+                <p id="curatedSubtitle">Showing selected verified properties</p>
+            </div>
         </div>
-        <a id="mobileBottomOpenBtn" href="#" class="btn-mobile-bottom-cta">
-            <i class="fa-solid fa-lock-open"></i>
-            <span>Contact in App</span>
-        </a>
+        <button class="btn-view-all-curated" id="btnViewAllCurated">View All Listings</button>
     </div>
 
-    <!-- App-Wall Modal for Protected Contact Details -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 3. OFFICIAL ZORARIO FILTER BAR                                  -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="filter-bar" role="navigation" aria-label="Property type filters" id="showcaseFilterBar">
+        <div class="filter-inner">
+            <span class="filter-label">Filter by:</span>
+            <button class="filter-btn active" data-filter="all">All Properties</button>
+            <button class="filter-btn" data-filter="rent">For Rent</button>
+            <button class="filter-btn" data-filter="sell">For Sale</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 4. PROPERTIES GRID & DETAIL SCREEN                              -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="showcase-properties-section">
+        <div class="showcase-container">
+
+            <!-- VIEW A: PORTFOLIO GRID -->
+            <div id="showcaseGridView">
+                <div id="loadingBox" class="showcase-spinner-box">
+                    <div class="showcase-spinner"></div>
+                    <p>Loading verified listings...</p>
+                </div>
+
+                <div class="projects-grid" id="propertiesGrid" style="display: none;"></div>
+            </div>
+
+            <!-- VIEW B: PROPERTY DETAIL SCREEN -->
+            <div id="propertyDetailView" class="showcase-detail-screen">
+                
+                <div class="detail-top-bar">
+                    <button class="btn-back-portfolio" onclick="closePropertyDetail()">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to All Listings</span>
+                    </button>
+                    <a id="detailHeaderOpenApp" href="#" class="project-view-btn" style="padding: 10px 22px;">
+                        <i class="fas fa-mobile-alt"></i> Open in Zorario App
+                    </a>
+                </div>
+
+                <!-- Gallery Viewer -->
+                <div class="detail-gallery-box">
+                    <div class="detail-main-img-box">
+                        <img id="detailMainImg" src="" alt="Property Image" onerror="this.src='assets/images/placeholder.jpg'">
+                        
+                        <div class="gallery-badges-overlay">
+                            <span id="detailBadgeType" class="gallery-badge rent">For Rent</span>
+                            <span class="gallery-badge verified"><i class="fas fa-check-circle"></i> Verified</span>
+                        </div>
+
+                        <button class="gallery-arrow-btn prev" onclick="navigateGallery(-1)" aria-label="Previous image">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="gallery-arrow-btn next" onclick="navigateGallery(1)" aria-label="Next image">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+
+                        <div class="gallery-counter-pill" id="detailGalleryCounter">
+                            <i class="fas fa-camera"></i> <span id="galleryCounterText">1 / 1</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-thumbnails-strip" id="detailThumbnailsStrip"></div>
+                </div>
+
+                <!-- Content Columns -->
+                <div class="detail-content-columns">
+                    
+                    <!-- Left: Details & Features -->
+                    <div class="detail-specs-card">
+                        <div class="detail-price-line">
+                            <div>
+                                <span class="detail-price-main" id="detailPrice">₹0</span>
+                                <span class="detail-price-term" id="detailPricePeriod">/ month</span>
+                            </div>
+                            <span class="detail-available-pill">
+                                <i class="fas fa-bolt"></i> Ready & Verified
+                            </span>
+                        </div>
+
+                        <h2 class="detail-title-main" id="detailTitle">Property Title</h2>
+
+                        <div class="detail-location-line">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="detailFullAddress">Address, City</span>
+                            <span class="detail-pluscode-chip" id="detailPlusCode" style="display:none;"></span>
+                        </div>
+
+                        <!-- 6 Key Highlights -->
+                        <div class="detail-specs-grid">
+                            <div class="spec-item-box">
+                                <span class="spec-item-label"><i class="fas fa-bed"></i> Bedrooms</span>
+                                <span class="spec-item-val" id="specBedrooms">-- BHK</span>
+                            </div>
+                            <div class="spec-item-box">
+                                <span class="spec-item-label"><i class="fas fa-bath"></i> Bathrooms</span>
+                                <span class="spec-item-val" id="specBathrooms">-- Baths</span>
+                            </div>
+                            <div class="spec-item-box">
+                                <span class="spec-item-label"><i class="fas fa-vector-square"></i> Area</span>
+                                <span class="spec-item-val" id="specArea">-- sq ft</span>
+                            </div>
+                            <div class="spec-item-box">
+                                <span class="spec-item-label"><i class="fas fa-home"></i> Type</span>
+                                <span class="spec-item-val" id="specType">Apartment</span>
+                            </div>
+                            <div class="spec-item-box">
+                                <span class="spec-item-label"><i class="fas fa-tag"></i> Agreement</span>
+                                <span class="spec-item-val" id="specListingType">Rent</span>
+                            </div>
+                            <div class="spec-item-box">
+                                <span class="spec-item-label"><i class="fas fa-calendar-alt"></i> Listed</span>
+                                <span class="spec-item-val" id="specListedDate">Verified</span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <h3 class="detail-subheading"><i class="fas fa-align-left"></i> About This Property</h3>
+                        <div class="detail-desc-text" id="detailDescription">No description available.</div>
+
+                        <!-- Amenities -->
+                        <h3 class="detail-subheading"><i class="fas fa-check-double"></i> Amenities & Facilities</h3>
+                        <div class="amenities-badges-container" id="detailAmenitiesWrap"></div>
+                    </div>
+
+                    <!-- Right Sidebar: Broker Info & App Contact Lock -->
+                    <aside class="broker-sidebar-box">
+                        <div class="broker-sidebar-header">
+                            <div class="broker-sidebar-avatar" id="detailBrokerAvatar">
+                                <span id="detailBrokerInitial">Z</span>
+                            </div>
+                            <div class="broker-sidebar-meta">
+                                <h4 id="detailBrokerName">Broker Name</h4>
+                                <p id="detailBrokerSubtitle">Verified Zorario Partner</p>
+                                <span class="broker-sidebar-rera" id="detailBrokerRera" style="display:none;"></span>
+                            </div>
+                        </div>
+
+                        <div class="contact-protected-callout">
+                            <div class="contact-protected-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h5>Contact Details Protected</h5>
+                            <p>To eliminate spam and verify genuine buyers, direct phone numbers and WhatsApp chats are strictly unlocked in the <strong>Zorario App</strong>.</p>
+                            <div class="masked-phone-badge">
+                                <i class="fas fa-lock"></i>
+                                <span>+91 98•••• ••21</span>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-actions-wrap">
+                            <a id="detailBtnOpenApp" href="#" class="btn-sidebar-primary">
+                                <i class="fas fa-external-link-alt"></i> Open in Zorario App
+                            </a>
+                            <a id="detailBtnOpenPartner" href="#" class="btn-sidebar-partner">
+                                <i class="fas fa-briefcase"></i> Open in Zorario Partner
+                            </a>
+                            <a id="detailBtnDownload" href="#" class="btn-sidebar-download" target="_blank">
+                                <i class="fab fa-google-play"></i> Download Zorario App
+                            </a>
+                        </div>
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 5. CONTACT PROTECTED POPUP MODAL                                -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <div class="modal-overlay" id="appWallModal">
         <div class="modal-card">
-            <button class="modal-close" id="modalCloseBtn">&times;</button>
+            <button class="modal-close-btn" id="modalCloseBtn">&times;</button>
             <div class="modal-shield-icon">
-                <i class="fa-solid fa-shield-halved"></i>
+                <i class="fas fa-shield-alt"></i>
             </div>
             <h3>Contact Details Protected</h3>
             <p>
                 To protect partner privacy and guarantee verified communication, phone numbers and direct chats are exclusively unlocked inside the <strong>Zorario App</strong>.
             </p>
-            <div class="modal-actions">
-                <a id="modalOpenAppBtn" href="#" class="btn-modal-open-app">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in Zorario App
+            <div class="sidebar-actions-wrap">
+                <a id="modalOpenAppBtn" href="#" class="btn-sidebar-primary">
+                    <i class="fas fa-external-link-alt"></i> Open in Zorario App
                 </a>
-                <a id="modalOpenPartnerBtn" href="#" class="btn-modal-open-app" style="background: var(--teal);">
-                    <i class="fa-solid fa-briefcase"></i> Open in Zorario Partner
+                <a id="modalOpenPartnerBtn" href="#" class="btn-sidebar-partner">
+                    <i class="fas fa-briefcase"></i> Open in Zorario Partner
                 </a>
-                <a id="modalDownloadBtn" href="#" class="btn-modal-download" target="_blank">
-                    <i class="fa-brands fa-google-play"></i> Download Zorario App
+                <a id="modalDownloadBtn" href="#" class="btn-sidebar-download" target="_blank">
+                    <i class="fab fa-google-play"></i> Download Zorario App
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Script: Logic, Navigation, & Supabase Integration -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 6. OFFICIAL ZORARIO FOOTER (Identical to all pages)             -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <footer role="contentinfo">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/images/logo.gif" alt="Zorario" width="36" height="36" loading="lazy">
+                    <span class="nav-logo-text">ZORARIO</span>
+                </a>
+                <p>Bihar's No.1 real estate platform. All 38 districts.</p>
+                <div class="footer-socials">
+                    <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="social-link" rel="noopener" target="_blank"><i class="fab fa-google-play"></i></a>
+                    <a href="https://wa.me/919334298441" class="social-link" rel="noopener" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://medium.com/@akashkumarr1406" class="social-link" rel="noopener" target="_blank"><i class="fab fa-medium"></i></a>
+                </div>
+            </div>
+            <nav class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="zorario-tech.html">Zorario Tech</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="associate-partner.html">Associate Partner</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                </ul>
+            </nav>
+            <nav class="footer-col">
+                <h4>Properties</h4>
+                <ul>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#testimonials">Reviews</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                </ul>
+            </nav>
+            <nav class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="tel:+919334298441">+91 93342 98441</a></li>
+                    <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li>
+                    <li><a href="download-app.html">Download App</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copy">&copy; 2025 Zorario. All rights reserved.</p>
+            <p class="footer-tagline">Built with <span>♥</span> for Bihar</p>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- 7. APPLICATION & SUPABASE LOGIC                                 -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <script>
+        // Zorario Navbar Scrolled State & Mobile Hamburger
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
+        }, { passive: true });
+
+        const hamburgerBtn = document.getElementById('nav-hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        if (hamburgerBtn && navLinks) {
+            hamburgerBtn.addEventListener('click', () => {
+                const expanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+                hamburgerBtn.setAttribute('aria-expanded', !expanded);
+                navLinks.classList.toggle('open');
+            });
+        }
+
+        // Supabase Initialization
         const SUPABASE_URL = 'https://tgdmewzuiqwxgpuhntks.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRnZG1ld3p1aXF3eGdwdWhudGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NjcxMTgsImV4cCI6MjA4NzQ0MzExOH0.MpRYrVkAj-NqaLanJg0KveEy3N8sBtDMVQHaIuieaAE';
         const PLAY_STORE_PACKAGE = 'com.akash.prop8';
 
         const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Parse Query Parameters
+        // URL Parameters
         const urlParams = new URLSearchParams(window.location.search);
         const ownerUID = urlParams.get('owner') || urlParams.get('id');
         const brokerCode = urlParams.get('broker');
@@ -1634,15 +1509,13 @@
         let currentImageIndex = 0;
         let cachedBroker = null;
 
-        // Generate Deep Link & Play Store Referrer URLs
+        // Generate Deep Links
         const queryStr = window.location.search.substring(1);
         const appDeepLink = `zorario://showcase?${queryStr}`;
         const partnerDeepLink = `zorariopartner://showcase?${queryStr}`;
         const referrerTag = encodeURIComponent(queryStr);
         const playStoreUrl = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=${referrerTag}`;
 
-        // Bind Global Top and Modal Buttons
-        document.getElementById('topOpenAppBtn').href = appDeepLink;
         document.getElementById('modalOpenAppBtn').href = appDeepLink;
         document.getElementById('modalOpenPartnerBtn').href = partnerDeepLink;
         document.getElementById('modalDownloadBtn').href = playStoreUrl;
@@ -1687,7 +1560,7 @@
                 renderStats();
                 renderProperties();
 
-                // Check for Direct Property in Hash or Query
+                // Direct Property in Hash or Query
                 const hash = window.location.hash;
                 if (hash && hash.startsWith('#property-')) {
                     const propId = hash.replace('#property-', '');
@@ -1699,16 +1572,16 @@
             } catch (err) {
                 console.error('Error loading showcase:', err);
                 document.getElementById('loadingBox').innerHTML = `
-                    <p style="color: #EF4444;"><i class="fa-solid fa-triangle-exclamation"></i> Unable to load showcase.</p>
+                    <p style="color: #EF4444;"><i class="fas fa-exclamation-triangle"></i> Unable to load showcase listings.</p>
                 `;
             }
         }
 
-        // Render Profile Hero Card
+        // Render Hero Profile
         function renderProfileHeader(broker) {
             const displayName = broker?.agency_name || fallbackName;
             document.getElementById('ownerDisplayName').textContent = displayName;
-            document.title = `${displayName} | Zorario Portfolio Showcase`;
+            document.title = `${displayName} | Zorario Showcase`;
 
             if (broker?.agency_tagline) {
                 const tagEl = document.getElementById('ownerTagline');
@@ -1716,8 +1589,7 @@
                 tagEl.style.display = 'block';
             }
 
-            // Avatar / Logo
-            const avatarBox = document.getElementById('ownerAvatar');
+            const avatarBox = document.getElementById('showcaseAvatar');
             if (broker?.agency_logo_url) {
                 avatarBox.innerHTML = `<img src="${broker.agency_logo_url}" alt="${displayName}">`;
             } else {
@@ -1738,7 +1610,7 @@
             document.getElementById('statSale').textContent = allProperties.filter(p => p.listing_type === 'sell').length;
         }
 
-        // Format Indian Currency
+        // Format Currency
         function formatPrice(num) {
             if (!num) return '₹0';
             const val = Number(num);
@@ -1750,11 +1622,11 @@
             return `₹${val.toLocaleString('en-IN')}`;
         }
 
-        // Render Grid of Properties
+        // Render Properties in Zorario Project Card Format
         function renderProperties() {
-            const grid = document.getElementById('propertyGrid');
+            const grid = document.getElementById('propertiesGrid');
             const loading = document.getElementById('loadingBox');
-            const curatedBanner = document.getElementById('curatedBanner');
+            const curatedBanner = document.getElementById('curatedNoticeBox');
 
             loading.style.display = 'none';
             grid.style.display = 'grid';
@@ -1776,9 +1648,9 @@
 
             if (list.length === 0) {
                 grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 50px 20px; color: #64748B;">
-                        <i class="fa-solid fa-building-circle-exclamation" style="font-size: 44px; margin-bottom: 12px; color: #CBD5E1;"></i>
-                        <p style="font-size: 16px; font-weight: 700; color: var(--navy);">No properties found in this category.</p>
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #6B7280;">
+                        <i class="fas fa-building" style="font-size: 44px; margin-bottom: 12px; color: #CBD5E1;"></i>
+                        <p style="font-size: 16px; font-weight: 700; color: #1B3A57;">No properties found in this filter.</p>
                     </div>
                 `;
                 return;
@@ -1788,46 +1660,41 @@
                 const img = (p.image_urls && p.image_urls.length > 0) ? p.image_urls[0] : 'assets/images/placeholder.jpg';
                 const isRent = p.listing_type === 'rent';
                 const priceFormatted = isRent
-                    ? `${formatPrice(p.rent)}<span style="font-size: 13px; font-weight: 500; color: #64748B;">/mo</span>`
-                    : formatPrice(p.price);
+                    ? `${formatPrice(p.rent)} <span class="project-price-sub">/ month</span>`
+                    : `${formatPrice(p.price)} <span class="project-price-sub">Total</span>`;
 
                 return `
-                    <div class="property-card" onclick="openPropertyDetail('${p.id}')">
-                        <div class="card-image-box">
+                    <article class="project-card" onclick="openPropertyDetail('${p.id}')">
+                        <div class="project-card-img-wrap">
                             <img src="${img}" alt="${p.title}" loading="lazy" onerror="this.src='assets/images/placeholder.jpg'">
-                            <span class="card-badge-top">${isRent ? 'For Rent' : 'For Sale'}</span>
-                            <span class="card-verified-badge"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                            <span class="project-badge-type">${isRent ? 'For Rent' : 'For Sale'}</span>
+                            <span class="project-badge-verified"><i class="fas fa-check-circle"></i> Verified</span>
                         </div>
-                        <div class="card-content">
-                            <div class="card-price">${priceFormatted}</div>
-                            <h3 class="card-title">${p.title}</h3>
-                            <div class="card-location">
-                                <i class="fa-solid fa-location-dot" style="color: var(--teal);"></i>
+                        <div class="project-card-body">
+                            <div class="project-type-tag">${p.property_type || (isRent ? 'Rental Property' : 'Property For Sale')}</div>
+                            <h3 class="project-title-text">${p.title}</h3>
+                            <div class="project-location-text">
+                                <i class="fas fa-map-marker-alt" style="color: #4A90A4;"></i>
                                 <span>${p.address || ''}, ${p.city || ''}</span>
                             </div>
-                            <div class="card-specs">
-                                ${p.bedrooms ? `<span class="spec-item"><i class="fa-solid fa-bed"></i> ${p.bedrooms} BHK</span>` : ''}
-                                ${p.bathrooms ? `<span class="spec-item"><i class="fa-solid fa-bath"></i> ${p.bathrooms} Baths</span>` : ''}
-                                ${p.area ? `<span class="spec-item"><i class="fa-solid fa-maximize"></i> ${p.area} sqft</span>` : ''}
-                            </div>
-                            <div class="card-actions-row">
-                                <button class="btn-view-details" onclick="event.stopPropagation(); openPropertyDetail('${p.id}')">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                    <span>View Details</span>
-                                </button>
-                                <button class="btn-gated-lock-icon" title="Contact Protected" onclick="event.stopPropagation(); openAppWallModal('${p.id}')">
-                                    <i class="fa-solid fa-lock"></i>
+                            <div class="project-price-amount">${priceFormatted}</div>
+                            <div class="project-card-footer">
+                                <div class="project-features-list">
+                                    ${p.bedrooms ? `<span class="project-feat-item"><i class="fas fa-bed"></i> ${p.bedrooms} BHK</span>` : ''}
+                                    ${p.bathrooms ? `<span class="project-feat-item"><i class="fas fa-bath"></i> ${p.bathrooms} Bath</span>` : ''}
+                                    ${p.area ? `<span class="project-feat-item"><i class="fas fa-vector-square"></i> ${p.area} sq ft</span>` : ''}
+                                </div>
+                                <button class="project-view-btn" onclick="event.stopPropagation(); openPropertyDetail('${p.id}')">
+                                    View <i class="fas fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 `;
             }).join('');
         }
 
-        // ═══════════════════════════════════════════════════════════════════
-        // PROPERTY DETAIL SCREEN LOGIC
-        // ═══════════════════════════════════════════════════════════════════
+        // Open Property Detail Screen
         async function openPropertyDetail(propertyId, pushState = true) {
             let p = allProperties.find(item => item.id === propertyId);
             if (!p) {
@@ -1843,13 +1710,13 @@
             }
 
             if (!p) {
-                alert('Property details could not be found.');
+                alert('Property details not found.');
                 return;
             }
 
             currentProperty = p;
 
-            // Update Gallery
+            // Gallery
             currentGalleryImages = (p.image_urls && p.image_urls.length > 0) ? p.image_urls : ['assets/images/placeholder.jpg'];
             currentImageIndex = 0;
             updateGalleryDisplay();
@@ -1858,31 +1725,26 @@
             const isRent = p.listing_type === 'rent';
             const badgeType = document.getElementById('detailBadgeType');
             badgeType.textContent = isRent ? 'For Rent' : 'For Sale';
-            badgeType.className = `gallery-badge-item ${isRent ? 'badge-type-rent' : 'badge-type-sell'}`;
+            badgeType.className = `gallery-badge ${isRent ? 'rent' : 'sell'}`;
 
             // Price
             if (isRent) {
                 document.getElementById('detailPrice').textContent = formatPrice(p.rent);
                 document.getElementById('detailPricePeriod').textContent = '/ month';
-                document.getElementById('mobileListingLabel').textContent = 'For Rent';
-                document.getElementById('mobilePriceText').textContent = `${formatPrice(p.rent)}/mo`;
             } else {
                 document.getElementById('detailPrice').textContent = formatPrice(p.price);
                 document.getElementById('detailPricePeriod').textContent = '';
-                document.getElementById('mobileListingLabel').textContent = 'For Sale';
-                document.getElementById('mobilePriceText').textContent = formatPrice(p.price);
             }
 
             // Title & Address
             document.getElementById('detailTitle').textContent = p.title;
             document.title = `${p.title} | Zorario`;
             const fullAddr = [p.address, p.city, p.district, p.state, p.pincode].filter(Boolean).join(', ');
-            document.getElementById('detailFullAddress').textContent = fullAddr || `${p.city || 'Verified City'}`;
+            document.getElementById('detailFullAddress').textContent = fullAddr || `${p.city || 'Bihar'}`;
 
-            // Plus Code
             const plusEl = document.getElementById('detailPlusCode');
             if (p.plus_code) {
-                plusEl.innerHTML = `<i class="fa-solid fa-map-pin"></i> ${p.plus_code}`;
+                plusEl.innerHTML = `<i class="fas fa-map-pin"></i> ${p.plus_code}`;
                 plusEl.style.display = 'inline-flex';
             } else {
                 plusEl.style.display = 'none';
@@ -1891,7 +1753,7 @@
             // Specs
             document.getElementById('specBedrooms').textContent = p.bedrooms ? `${p.bedrooms} BHK` : '--';
             document.getElementById('specBathrooms').textContent = p.bathrooms ? `${p.bathrooms} Baths` : '--';
-            document.getElementById('specArea').textContent = p.area ? `${p.area} sq.ft` : '--';
+            document.getElementById('specArea').textContent = p.area ? `${p.area} sq ft` : '--';
             document.getElementById('specType').textContent = p.property_type || p.category || 'Apartment';
             document.getElementById('specListingType').textContent = isRent ? 'Rental Agreement' : 'Outright Sale';
             
@@ -1908,7 +1770,7 @@
             // Amenities
             renderAmenities(p.amenities);
 
-            // Broker Profile Info
+            // Broker Sidebar Info
             const brokerName = cachedBroker?.agency_name || p.owner_name || fallbackName;
             document.getElementById('detailBrokerName').textContent = brokerName;
             document.getElementById('detailBrokerSubtitle').textContent = cachedBroker?.agency_tagline || 'Verified Zorario Partner';
@@ -1928,24 +1790,23 @@
                 reraEl.style.display = 'none';
             }
 
-            // Target Deep Links for Specific Property
+            // Deep Links
             const propDeepLink = `zorario://property?id=${p.id}`;
             const propPartnerLink = `zorariopartner://showcase?owner=${p.owner_uid || ''}&props=${p.id}`;
             const propPlayStore = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=prop%3D${p.id}`;
 
-            document.getElementById('detailTopOpenApp').href = propDeepLink;
+            document.getElementById('detailHeaderOpenApp').href = propDeepLink;
             document.getElementById('detailBtnOpenApp').href = propDeepLink;
             document.getElementById('detailBtnOpenPartner').href = propPartnerLink;
             document.getElementById('detailBtnDownload').href = propPlayStore;
-            document.getElementById('mobileBottomOpenBtn').href = propDeepLink;
 
-            // Switch Views
-            document.getElementById('showcaseView').style.display = 'none';
+            // Switch Screen
+            document.getElementById('showcaseGridView').style.display = 'none';
+            document.getElementById('showcaseFilterBar').style.display = 'none';
             document.getElementById('propertyDetailView').style.display = 'block';
-            document.getElementById('mobileStickyBar').style.display = 'flex';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // History state
+            window.scrollTo({ top: 350, behavior: 'smooth' });
+
             if (pushState) {
                 window.history.pushState({ view: 'property', id: propertyId }, '', `#property-${propertyId}`);
             }
@@ -1954,18 +1815,18 @@
         // Close Property Detail Screen
         function closePropertyDetail(pushState = true) {
             document.getElementById('propertyDetailView').style.display = 'none';
-            document.getElementById('mobileStickyBar').style.display = 'none';
-            document.getElementById('showcaseView').style.display = 'block';
+            document.getElementById('showcaseGridView').style.display = 'block';
+            document.getElementById('showcaseFilterBar').style.display = 'block';
 
             const displayName = cachedBroker?.agency_name || fallbackName;
-            document.title = `${displayName} | Zorario Portfolio Showcase`;
+            document.title = `${displayName} | Zorario Showcase`;
 
             if (pushState) {
                 window.history.pushState({ view: 'portfolio' }, '', window.location.pathname + window.location.search);
             }
         }
 
-        // Handle Browser Back / Forward Navigation
+        // Browser Back / Forward
         window.addEventListener('popstate', (e) => {
             if (e.state && e.state.view === 'property' && e.state.id) {
                 openPropertyDetail(e.state.id, false);
@@ -1980,7 +1841,6 @@
             mainImg.src = currentGalleryImages[currentImageIndex];
             document.getElementById('galleryCounterText').textContent = `${currentImageIndex + 1} / ${currentGalleryImages.length}`;
 
-            // Render Thumbnails
             const strip = document.getElementById('detailThumbnailsStrip');
             strip.innerHTML = currentGalleryImages.map((src, idx) => `
                 <div class="detail-thumb-item ${idx === currentImageIndex ? 'active' : ''}" onclick="selectGalleryImage(${idx})">
@@ -2001,41 +1861,35 @@
             updateGalleryDisplay();
         }
 
-        // Render Amenities Badges
+        // Render Amenities
         function renderAmenities(amenitiesList) {
             const wrap = document.getElementById('detailAmenitiesWrap');
             if (!amenitiesList || amenitiesList.length === 0) {
-                wrap.innerHTML = `<span style="font-size: 13px; color: var(--text-light);">Standard residential amenities available.</span>`;
+                wrap.innerHTML = `<span style="font-size: 13px; color: #9CA3AF;">Standard verified residential amenities available.</span>`;
                 return;
             }
 
             const iconMap = {
-                'parking': 'fa-square-parking',
-                'car parking': 'fa-square-parking',
+                'parking': 'fa-parking',
                 'wifi': 'fa-wifi',
-                'internet': 'fa-wifi',
-                'security': 'fa-shield-halved',
+                'security': 'fa-shield-alt',
                 'cctv': 'fa-video',
                 'lift': 'fa-elevator',
-                'elevator': 'fa-elevator',
                 'power backup': 'fa-bolt',
-                'backup': 'fa-bolt',
                 'gym': 'fa-dumbbell',
-                'swimming pool': 'fa-person-swimming',
-                'pool': 'fa-person-swimming',
+                'swimming pool': 'fa-swimming-pool',
+                'pool': 'fa-swimming-pool',
                 'ac': 'fa-snowflake',
-                'air conditioning': 'fa-snowflake',
                 'balcony': 'fa-sun',
                 'garden': 'fa-tree',
-                'water supply': 'fa-faucet-drip',
-                'water': 'fa-faucet-drip',
-                'furnished': 'fa-couch',
-                'modular kitchen': 'fa-kitchen-set'
+                'water': 'fa-faucet',
+                'water supply': 'fa-faucet',
+                'furnished': 'fa-couch'
             };
 
             wrap.innerHTML = amenitiesList.map(item => {
                 const lower = item.toLowerCase().trim();
-                let iconClass = 'fa-circle-check';
+                let iconClass = 'fa-check-circle';
                 for (const key in iconMap) {
                     if (lower.includes(key)) {
                         iconClass = iconMap[key];
@@ -2043,29 +1897,12 @@
                     }
                 }
                 return `
-                    <div class="amenity-chip">
-                        <i class="fa-solid ${iconClass}"></i>
+                    <div class="amenity-chip-item">
+                        <i class="fas ${iconClass}"></i>
                         <span>${item}</span>
                     </div>
                 `;
             }).join('');
-        }
-
-        // Share Single Property
-        function shareCurrentProperty() {
-            if (!currentProperty) return;
-            const url = `${window.location.origin}${window.location.pathname}${window.location.search}#property-${currentProperty.id}`;
-            if (navigator.share) {
-                navigator.share({
-                    title: currentProperty.title,
-                    text: `Check out this verified property on Zorario: ${currentProperty.title}`,
-                    url: url
-                }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(url).then(() => {
-                    alert('Property link copied to clipboard!');
-                });
-            }
         }
 
         // Modal Controls
@@ -2083,16 +1920,16 @@
             }
         });
 
-        // Toggle View All from Curated
-        document.getElementById('btnViewAll').addEventListener('click', () => {
+        // Curated "View All" Button
+        document.getElementById('btnViewAllCurated').addEventListener('click', () => {
             isShowingCurated = false;
             renderProperties();
         });
 
-        // Filter Tabs
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        // Filter Buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentFilter = btn.dataset.filter;
                 renderProperties();

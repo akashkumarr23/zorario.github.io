@@ -1117,6 +1117,7 @@
             .detail-main-img-box { height: 260px; }
             .detail-specs-grid { grid-template-columns: 1fr 1fr; }
         }
+
     </style>
 </head>
 <body>
@@ -1234,6 +1235,18 @@
 
             <!-- VIEW A: PORTFOLIO GRID -->
             <div id="showcaseGridView">
+                <!-- Curated / Fallback Notice Banner -->
+                <div id="curatedNoticeBox" style="display: none; align-items: center; justify-content: space-between; gap: 16px; background: rgba(74, 144, 164, 0.08); border: 1px solid rgba(74, 144, 164, 0.25); border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; transition: all 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span id="curatedTitle" style="font-weight: 700; font-size: 15px; color: #1B3A57; display: flex; align-items: center;">
+                            <i class="fas fa-sparkles" style="color: #4A90A4; margin-right: 8px;"></i> Handpicked for You
+                        </span>
+                    </div>
+                    <button id="curatedViewAllBtn" onclick="showAllBrokerProperties()" style="background: white; border: 1px solid #CBD5E1; color: #1B3A57; font-weight: 700; font-size: 13px; padding: 7px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap;">
+                        View All Listings
+                    </button>
+                </div>
+
                 <div id="loadingBox" class="showcase-spinner-box">
                     <div class="showcase-spinner"></div>
                     <p>Loading verified listings...</p>
@@ -1415,55 +1428,101 @@
     <!-- ═══════════════════════════════════════════════════════════════ -->
     <!-- 6. OFFICIAL ZORARIO FOOTER (Identical to all pages)             -->
     <!-- ═══════════════════════════════════════════════════════════════ -->
-    <footer role="contentinfo">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <a href="index.html" class="nav-logo">
-                    <img src="assets/images/logo.gif" alt="Zorario" width="36" height="36" loading="lazy">
-                    <span class="nav-logo-text">ZORARIO</span>
-                </a>
-                <p>Bihar's No.1 real estate platform. All 38 districts.</p>
-                <div class="footer-socials">
-                    <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="social-link" rel="noopener" target="_blank"><i class="fab fa-google-play"></i></a>
-                    <a href="https://wa.me/919334298441" class="social-link" rel="noopener" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://medium.com/@akashkumarr1406" class="social-link" rel="noopener" target="_blank"><i class="fab fa-medium"></i></a>
+    <footer role="contentinfo" aria-label="Site footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+                        <img src="assets/images/logo.gif" alt="Zorario Logo" width="36" height="36" loading="lazy">
+                        <span class="nav-logo-text">ZORARIO</span>
+                    </a>
+                    <p>Bihar's No.1 real estate platform. Connecting verified owners with reliable tenants and buyers
+                        across all 38 districts.</p>
+                    <div class="footer-socials" aria-label="Social media links">
+                        <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="social-link"
+                            aria-label="Zorario on Google Play" rel="noopener" target="_blank">
+                            <i class="fab fa-google-play" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://medium.com/@akashkumarr1406/zorario-new-real-estate-platform-in-india-336c77c7d2fd"
+                            class="social-link" aria-label="Zorario on Medium" rel="noopener" target="_blank">
+                            <i class="fab fa-medium" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://wa.me/919334298441" class="social-link" aria-label="Zorario on WhatsApp"
+                            rel="noopener" target="_blank">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
+
+                <!-- Company -->
+                <nav class="footer-col" aria-label="Company links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="zorario-tech.html">Zorario Tech</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="associate-partner.html">Associate Partner</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Properties -->
+                <nav class="footer-col" aria-label="Property links">
+                    <h4>Properties</h4>
+                    <ul>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="plotter.html">3D Master Plotter</a></li>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="index.html#testimonials">Reviews</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Contact -->
+                <nav class="footer-col" aria-label="Contact links">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="tel:+919334298441">+91 93342 98441</a></li>
+                        <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li>
+                        <li><a href="download-app.html">Download App</a></li>
+                        <li>
+                            <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
+                                class="store-btn store-btn-android" id="footer-download-btn"
+                                style="font-size:13px;padding:12px 20px;margin-top:8px;display:inline-flex;"
+                                rel="noopener" target="_blank" aria-label="Download Zorario App">
+                                <i class="fab fa-google-play" aria-hidden="true"></i>
+                                <div class="store-btn-text">
+                                    <span class="small">Download</span>
+                                    <span class="large" style="font-size:14px;">Free App</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <nav class="footer-col">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="zorario-tech.html">Zorario Tech</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="associate-partner.html">Associate Partner</a></li>
-                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                </ul>
-            </nav>
-            <nav class="footer-col">
-                <h4>Properties</h4>
-                <ul>
-                    <li><a href="projects.html">Projects</a></li>
-                    <li><a href="index.html#features">Features</a></li>
-                    <li><a href="index.html#how-it-works">How It Works</a></li>
-                    <li><a href="index.html#testimonials">Reviews</a></li>
-                    <li><a href="index.html#faq">FAQ</a></li>
-                </ul>
-            </nav>
-            <nav class="footer-col">
-                <h4>Contact</h4>
-                <ul>
-                    <li><a href="contact.html">Contact Us</a></li>
-                    <li><a href="tel:+919334298441">+91 93342 98441</a></li>
-                    <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li>
-                    <li><a href="download-app.html">Download App</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="footer-bottom">
-            <p class="footer-copy">&copy; 2025 Zorario. All rights reserved.</p>
-            <p class="footer-tagline">Built with <span>♥</span> for Bihar</p>
+
+            <div class="footer-bottom">
+                <p class="footer-copy">&copy; 2025 Zorario. All rights reserved. Bihar's No.1 Real Estate Platform.</p>
+                <p class="footer-tagline">Built with <span>♥</span> for Bihar</p>
+            </div>
         </div>
     </footer>
+
+    <!-- Floating Support -->
+    <div class="support-container" role="complementary" aria-label="Contact Support">
+        <a href="https://wa.me/919334298441" class="support-btn whatsapp" data-tooltip="Chat on WhatsApp"
+            title="Chat with Zorario on WhatsApp" aria-label="Chat on WhatsApp" target="_blank"
+            rel="noopener noreferrer">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        </a>
+        <a href="tel:+919334298441" class="support-btn call" data-tooltip="Call Us" title="Call Zorario Support"
+            aria-label="Call Zorario support">
+            <i class="fas fa-phone" aria-hidden="true"></i>
+        </a>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════════════════ -->
     <!-- 7. APPLICATION & SUPABASE LOGIC                                 -->
@@ -1492,37 +1551,147 @@
 
         const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // URL Parameters
+        // Helper: Decode compact base36 or standard decimal property ID
+        function decodePropId(str) {
+            if (!str) return str;
+            const clean = str.trim();
+            if (/^\d+$/.test(clean)) return clean;
+            try {
+                let n = 0n;
+                const chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+                const lower = clean.toLowerCase();
+                for (let i = 0; i < lower.length; i++) {
+                    const idx = BigInt(chars.indexOf(lower[i]));
+                    if (idx === -1n) return clean;
+                    n = n * 36n + idx;
+                }
+                return n.toString();
+            } catch (e) {
+                return clean;
+            }
+        }
+
+        // URL Parameters (Supports clean short params 'b', 'o', 'p', 's', 'n' as well as legacy long keys)
         const urlParams = new URLSearchParams(window.location.search);
-        const ownerUID = urlParams.get('owner') || urlParams.get('id');
-        const brokerCode = urlParams.get('broker');
-        const fallbackName = urlParams.get('name') || 'Property Owner';
-        const propsParam = urlParams.get('props');
-        const directPropId = urlParams.get('property') || urlParams.get('p');
-        let selectedProps = propsParam ? propsParam.split(',').map(s => s.trim()).filter(Boolean) : [];
+        let brokerCode = urlParams.get('b') || urlParams.get('broker');
+        let ownerUID = urlParams.get('o') || urlParams.get('owner') || urlParams.get('id') || urlParams.get('u');
+        const fallbackName = urlParams.get('n') || urlParams.get('name') || 'Zorario Partner';
+        const shareToken = urlParams.get('s');
+        const propsParam = urlParams.get('p') || urlParams.get('props') || urlParams.get('property');
+
+        let selectedProps = [];
+        if (propsParam) {
+            selectedProps = propsParam.split(',').map(decodePropId).filter(Boolean);
+        }
+
+        // Direct property ID from hash (#property-123, #p-123, #123) or p=
+        const hash = window.location.hash;
+        let directPropId = null;
+        if (hash) {
+            const raw = hash.replace(/^#property-|^#p-|^#/, '').trim();
+            directPropId = decodePropId(raw);
+        } else if (selectedProps.length === 1) {
+            directPropId = selectedProps[0];
+        }
 
         let allProperties = [];
         let currentFilter = 'all';
-        let isShowingCurated = selectedProps.length > 0;
+        let isShowingCurated = selectedProps.length > 0 || !!shareToken;
+        let isDeletedShareFallback = false;
         let currentProperty = null;
         let currentGalleryImages = [];
         let currentImageIndex = 0;
         let cachedBroker = null;
 
-        // Generate Deep Links
-        const queryStr = window.location.search.substring(1);
-        const appDeepLink = `zorario://showcase?${queryStr}`;
-        const partnerDeepLink = `zorariopartner://showcase?${queryStr}`;
-        const referrerTag = encodeURIComponent(queryStr);
-        const playStoreUrl = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=${referrerTag}`;
+        // Generate Deep Links using short query parameters
+        function getCleanQueryString() {
+            const params = new URLSearchParams();
+            if (brokerCode) params.set('b', brokerCode);
+            else if (ownerUID) params.set('o', ownerUID);
+            if (currentProperty) {
+                params.set('p', currentProperty.id);
+            } else if (shareToken && !isDeletedShareFallback) {
+                params.set('s', shareToken);
+            } else if (isShowingCurated && selectedProps.length > 0) {
+                params.set('p', selectedProps.join(','));
+            }
+            return params.toString();
+        }
 
-        document.getElementById('modalOpenAppBtn').href = appDeepLink;
-        document.getElementById('modalOpenPartnerBtn').href = partnerDeepLink;
-        document.getElementById('modalDownloadBtn').href = playStoreUrl;
+        function updateDeepLinks() {
+            const queryStr = getCleanQueryString();
+            const appDeepLink = `zorario://showcase?${queryStr}`;
+            const partnerDeepLink = `zorariopartner://showcase?${queryStr}`;
+            const referrerTag = encodeURIComponent(queryStr);
+            const playStoreUrl = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=${referrerTag}`;
+
+            const mOpenApp = document.getElementById('modalOpenAppBtn');
+            const mOpenPartner = document.getElementById('modalOpenPartnerBtn');
+            const mDownload = document.getElementById('modalDownloadBtn');
+            if (mOpenApp) mOpenApp.href = appDeepLink;
+            if (mOpenPartner) mOpenPartner.href = partnerDeepLink;
+            if (mDownload) mDownload.href = playStoreUrl;
+        }
+
+        // Clean & Normalize browser address bar to ultra-short URL
+        function normalizeBrowserUrl(push = false) {
+            const qs = getCleanQueryString();
+            const cleanUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+
+            if (push) {
+                window.history.pushState({ view: currentProperty ? 'property' : 'portfolio', id: currentProperty?.id }, '', cleanUrl);
+            } else {
+                window.history.replaceState({ view: currentProperty ? 'property' : 'portfolio', id: currentProperty?.id }, '', cleanUrl);
+            }
+            updateDeepLinks();
+        }
+
+        // Switch to full broker portfolio
+        function showAllBrokerProperties() {
+            isShowingCurated = false;
+            selectedProps = [];
+            isDeletedShareFallback = false;
+            currentFilter = 'all';
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-filter') === 'all');
+            });
+            renderProperties();
+            normalizeBrowserUrl(true);
+        }
 
         // Initialize Showcase
         async function initShowcase() {
             try {
+                // 0. If short share token 's=' is present, load curated selection from showcase_shares
+                if (shareToken) {
+                    try {
+                        const { data: shareData, error: shareErr } = await client.from('showcase_shares')
+                            .select('property_ids, broker_code, owner_uid')
+                            .eq('id', shareToken)
+                            .maybeSingle();
+
+                        if (shareData && shareData.property_ids && shareData.property_ids.length > 0) {
+                            selectedProps = shareData.property_ids.map(decodePropId).filter(Boolean);
+                            isShowingCurated = selectedProps.length > 0;
+                            if (!brokerCode && shareData.broker_code) brokerCode = shareData.broker_code;
+                            if (!ownerUID && shareData.owner_uid) ownerUID = shareData.owner_uid;
+                            if (selectedProps.length === 1 && !directPropId) {
+                                directPropId = selectedProps[0];
+                            }
+                        } else {
+                            // Fallback: Share token was deleted from showcase_shares or not found!
+                            console.warn('Share token was deleted or not found in showcase_shares. Falling back to all broker listings.');
+                            isShowingCurated = false;
+                            selectedProps = [];
+                            isDeletedShareFallback = true;
+                        }
+                    } catch (err) {
+                        console.warn('Could not query showcase_shares:', err);
+                        isShowingCurated = false;
+                        selectedProps = [];
+                        isDeletedShareFallback = true;
+                    }
+                }
                 // 1. Fetch Broker Profile Branding
                 if (brokerCode) {
                     const { data } = await client.from('public_brokers_showcase')
@@ -1536,6 +1705,21 @@
                         .eq('user_id', ownerUID)
                         .maybeSingle();
                     cachedBroker = data;
+                }
+
+                // If direct property given without broker/owner, resolve owner and broker from property
+                if (!cachedBroker && !ownerUID && directPropId) {
+                    const { data: singleP } = await client.from('public_properties_showcase')
+                        .select('owner_uid, owner_name')
+                        .eq('id', directPropId)
+                        .maybeSingle();
+                    if (singleP?.owner_uid) {
+                        const { data: bData } = await client.from('public_brokers_showcase')
+                            .select('id, user_id, referral_code, agency_name, agency_tagline, agency_logo_url, rera_number, brand_color')
+                            .eq('user_id', singleP.owner_uid)
+                            .maybeSingle();
+                        cachedBroker = bData;
+                    }
                 }
 
                 renderProfileHeader(cachedBroker);
@@ -1561,13 +1745,12 @@
                 renderProperties();
 
                 // Direct Property in Hash or Query
-                const hash = window.location.hash;
-                if (hash && hash.startsWith('#property-')) {
-                    const propId = hash.replace('#property-', '');
-                    openPropertyDetail(propId, false);
-                } else if (directPropId) {
+                if (directPropId) {
                     openPropertyDetail(directPropId, false);
                 }
+
+                // Immediately normalize browser URL to the short clean link
+                normalizeBrowserUrl(false);
 
             } catch (err) {
                 console.error('Error loading showcase:', err);
@@ -1628,16 +1811,51 @@
             const loading = document.getElementById('loadingBox');
             const curatedBanner = document.getElementById('curatedNoticeBox');
 
-            loading.style.display = 'none';
-            grid.style.display = 'grid';
+            if (loading) loading.style.display = 'none';
+            if (grid) grid.style.display = 'grid';
 
             let list = allProperties;
+            let showFallbackNotice = false;
+
             if (isShowingCurated && selectedProps.length > 0) {
-                list = list.filter(p => selectedProps.includes(p.id));
-                curatedBanner.style.display = 'flex';
-                document.getElementById('curatedTitle').textContent = `Handpicked for You (${list.length} Properties)`;
+                const curatedMatches = allProperties.filter(p => selectedProps.includes(p.id));
+                if (curatedMatches.length > 0) {
+                    list = curatedMatches;
+                    if (curatedBanner) {
+                        curatedBanner.style.display = 'flex';
+                        curatedBanner.style.background = 'rgba(74, 144, 164, 0.08)';
+                        curatedBanner.style.borderColor = 'rgba(74, 144, 164, 0.25)';
+                        document.getElementById('curatedTitle').innerHTML = `<i class="fas fa-sparkles" style="color: #4A90A4; margin-right: 8px;"></i>Handpicked for You (${list.length} ${list.length === 1 ? 'Property' : 'Properties'})`;
+                        const viewAllBtn = document.getElementById('curatedViewAllBtn');
+                        if (viewAllBtn) {
+                            viewAllBtn.style.display = 'inline-block';
+                            viewAllBtn.textContent = `View All (${allProperties.length})`;
+                        }
+                    }
+                } else {
+                    // Fallback: Selected curated properties were deleted or are no longer active!
+                    // Show ALL active properties of the broker instead of a blank screen!
+                    list = allProperties;
+                    isShowingCurated = false;
+                    showFallbackNotice = true;
+                }
+            } else if (isDeletedShareFallback || (shareToken && selectedProps.length === 0)) {
+                // The share URL record was deleted from showcase_shares table!
+                // Show ALL properties of this broker with a clear informative notice
+                list = allProperties;
+                showFallbackNotice = true;
             } else {
-                curatedBanner.style.display = 'none';
+                if (curatedBanner) curatedBanner.style.display = 'none';
+            }
+
+            if (showFallbackNotice && curatedBanner) {
+                curatedBanner.style.display = 'flex';
+                curatedBanner.style.background = 'rgba(27, 58, 87, 0.06)';
+                curatedBanner.style.borderColor = 'rgba(27, 58, 87, 0.2)';
+                const partnerName = cachedBroker?.agency_name || fallbackName;
+                document.getElementById('curatedTitle').innerHTML = `<i class="fas fa-layer-group" style="color: #1B3A57; margin-right: 8px;"></i>Showing all active verified listings by ${partnerName} (${allProperties.length} ${allProperties.length === 1 ? 'Property' : 'Properties'})`;
+                const viewAllBtn = document.getElementById('curatedViewAllBtn');
+                if (viewAllBtn) viewAllBtn.style.display = 'none';
             }
 
             if (currentFilter === 'rent') {
@@ -1651,6 +1869,7 @@
                     <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #6B7280;">
                         <i class="fas fa-building" style="font-size: 44px; margin-bottom: 12px; color: #CBD5E1;"></i>
                         <p style="font-size: 16px; font-weight: 700; color: #1B3A57;">No properties found in this filter.</p>
+                        ${allProperties.length > 0 ? `<button onclick="showAllBrokerProperties()" class="project-view-btn" style="margin-top: 14px; display: inline-flex; padding: 10px 20px;">View All (${allProperties.length}) Properties</button>` : ''}
                     </div>
                 `;
                 return;
@@ -1710,7 +1929,16 @@
             }
 
             if (!p) {
-                alert('Property details not found.');
+                console.warn('Property details not found or deleted:', propertyId);
+                closePropertyDetail(false);
+                const curatedBanner = document.getElementById('curatedNoticeBox');
+                if (curatedBanner) {
+                    curatedBanner.style.display = 'flex';
+                    curatedBanner.style.background = 'rgba(27, 58, 87, 0.06)';
+                    curatedBanner.style.borderColor = 'rgba(27, 58, 87, 0.2)';
+                    const partnerName = cachedBroker?.agency_name || fallbackName;
+                    document.getElementById('curatedTitle').innerHTML = `<i class="fas fa-info-circle" style="color: #4A90A4; margin-right: 8px;"></i>The selected listing is no longer active. Showing all available listings by ${partnerName} (${allProperties.length} Properties)`;
+                }
                 return;
             }
 
@@ -1790,10 +2018,11 @@
                 reraEl.style.display = 'none';
             }
 
-            // Deep Links
+            // Deep Links (Compact clean format)
+            const bParam = cachedBroker?.referral_code ? `b=${cachedBroker.referral_code}&` : (p.owner_uid ? `o=${p.owner_uid}&` : '');
             const propDeepLink = `zorario://property?id=${p.id}`;
-            const propPartnerLink = `zorariopartner://showcase?owner=${p.owner_uid || ''}&props=${p.id}`;
-            const propPlayStore = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=prop%3D${p.id}`;
+            const propPartnerLink = `zorariopartner://showcase?${bParam}p=${p.id}`;
+            const propPlayStore = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=p%3D${p.id}`;
 
             document.getElementById('detailHeaderOpenApp').href = propDeepLink;
             document.getElementById('detailBtnOpenApp').href = propDeepLink;
@@ -1808,12 +2037,13 @@
             window.scrollTo({ top: 350, behavior: 'smooth' });
 
             if (pushState) {
-                window.history.pushState({ view: 'property', id: propertyId }, '', `#property-${propertyId}`);
+                normalizeBrowserUrl(true);
             }
         }
 
         // Close Property Detail Screen
         function closePropertyDetail(pushState = true) {
+            currentProperty = null;
             document.getElementById('propertyDetailView').style.display = 'none';
             document.getElementById('showcaseGridView').style.display = 'block';
             document.getElementById('showcaseFilterBar').style.display = 'block';
@@ -1822,14 +2052,16 @@
             document.title = `${displayName} | Zorario Showcase`;
 
             if (pushState) {
-                window.history.pushState({ view: 'portfolio' }, '', window.location.pathname + window.location.search);
+                normalizeBrowserUrl(true);
             }
         }
 
         // Browser Back / Forward
         window.addEventListener('popstate', (e) => {
-            if (e.state && e.state.view === 'property' && e.state.id) {
-                openPropertyDetail(e.state.id, false);
+            const currentUrlParams = new URLSearchParams(window.location.search);
+            const pId = currentUrlParams.get('p') || (e.state && e.state.view === 'property' && e.state.id);
+            if (pId) {
+                openPropertyDetail(pId, false);
             } else {
                 closePropertyDetail(false);
             }

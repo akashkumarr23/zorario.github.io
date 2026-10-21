@@ -11,6 +11,17 @@
     <meta name="author" content="Zorario">
     <link rel="canonical" href="https://www.zorario.com/contact">
 
+    <!-- Clean URL Script: Automatically removes .html extension in browser address bar -->
+    <script>
+        (function() {
+            if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+                var clean = window.location.pathname.replace(/\.html$/, '');
+                if (clean.endsWith('/index')) clean = clean.slice(0, -6) || '/';
+                window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+            }
+        })();
+    </script>
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="Contact Us | Zorario - Bihar's No.1 Real Estate Company">
     <meta property="og:description" content="Get in touch with Zorario for all your property needs in Bihar. Available 24/7 via WhatsApp and phone.">
@@ -332,17 +343,17 @@
 
     <!-- NAV -->
     <nav id="main-nav" role="navigation" aria-label="Main navigation">
-        <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+        <a href="/" class="nav-logo" aria-label="Zorario Home">
             <img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40">
             <span class="nav-logo-text">ZORARIO</span>
         </a>
         <ul class="nav-links" role="list">
-            <li><a href="index.html#features">Features</a></li>
-            <li><a href="index.html#how-it-works">How It Works</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="plotter.html"><i class="fas fa-cube" style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="/#features">Features</a></li>
+            <li><a href="/#how-it-works">How It Works</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/plotter"><i class="fas fa-cube" style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/about">About</a></li>
             <li>
                 <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
                    class="nav-cta" id="nav-download-btn"
@@ -363,7 +374,7 @@
         <div class="page-hero-grid" aria-hidden="true"></div>
         <div class="page-hero-inner">
             <nav class="breadcrumb" aria-label="Breadcrumb">
-                <a href="index.html">Home</a>
+                <a href="/">Home</a>
                 <i class="fas fa-chevron-right"></i>
                 <span>Contact</span>
             </nav>
@@ -505,7 +516,7 @@
     <footer role="contentinfo">
         <div class="footer-grid">
             <div class="footer-brand">
-                <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+                <a href="/" class="nav-logo" aria-label="Zorario Home">
                     <img src="assets/images/logo.gif" alt="Zorario Logo" width="36" height="36" loading="lazy">
                     <span class="nav-logo-text">ZORARIO</span>
                 </a>
@@ -519,30 +530,30 @@
             <nav class="footer-col" aria-label="Company links">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="zorario-tech.html">Zorario Tech</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="associate-partner.html">Associate Partner</a></li>
-                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/zorario-tech">Zorario Tech</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/associate-partner">Associate Partner</a></li>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
                 </ul>
             </nav>
             <nav class="footer-col" aria-label="Property links">
                 <h4>Properties</h4>
                 <ul>
-                    <li><a href="projects.html">Projects</a></li>
-                    <li><a href="index.html#features">Features</a></li>
-                    <li><a href="index.html#how-it-works">How It Works</a></li>
-                    <li><a href="index.html#testimonials">Reviews</a></li>
-                    <li><a href="index.html#faq">FAQ</a></li>
+                    <li><a href="/projects">Projects</a></li>
+                    <li><a href="/#features">Features</a></li>
+                    <li><a href="/#how-it-works">How It Works</a></li>
+                    <li><a href="/#testimonials">Reviews</a></li>
+                    <li><a href="/#faq">FAQ</a></li>
                 </ul>
             </nav>
             <nav class="footer-col" aria-label="Contact links">
                 <h4>Contact</h4>
                 <ul>
-                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
                     <li><a href="tel:+919334298441">+91 93342 98441</a></li>
                     <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li>
-                    <li><a href="download-app.html">Download App</a></li>
+                    <li><a href="/download-app">Download App</a></li>
                 </ul>
             </nav>
         </div>

@@ -9,6 +9,17 @@
     <meta name="robots" content="index, follow">
     <meta name="author" content="Zorario">
     <link rel="canonical" href="https://www.zorario.com/privacy-policy">
+
+    <!-- Clean URL Script: Automatically removes .html extension in browser address bar -->
+    <script>
+        (function() {
+            if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+                var clean = window.location.pathname.replace(/\.html$/, '');
+                if (clean.endsWith('/index')) clean = clean.slice(0, -6) || '/';
+                window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+            }
+        })();
+    </script>
     <meta property="og:type" content="website">
     <meta property="og:title" content="Privacy Policy | Zorario">
     <meta property="og:description" content="Zorario's Privacy Policy — how we handle and protect your data.">
@@ -96,13 +107,13 @@
 </head>
 <body>
     <nav id="main-nav" role="navigation" aria-label="Main navigation">
-        <a href="index.html" class="nav-logo"><img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40"><span class="nav-logo-text">ZORARIO</span></a>
+        <a href="/" class="nav-logo"><img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40"><span class="nav-logo-text">ZORARIO</span></a>
         <ul class="nav-links" role="list">
-            <li><a href="index.html#features">Features</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/#features">Features</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
             <li><a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="nav-cta" id="nav-download-btn" rel="noopener" target="_blank"><i class="fab fa-google-play"></i> Download App</a></li>
         </ul>
         <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -111,7 +122,7 @@
     <section class="page-hero" aria-label="Privacy Policy">
         <div class="page-hero-grid" aria-hidden="true"></div>
         <div class="page-hero-inner">
-            <nav class="breadcrumb"><a href="index.html">Home</a><i class="fas fa-chevron-right"></i><span>Privacy Policy</span></nav>
+            <nav class="breadcrumb"><a href="/">Home</a><i class="fas fa-chevron-right"></i><span>Privacy Policy</span></nav>
             <div class="page-eyebrow"><i class="fas fa-lock"></i> Your Privacy Matters</div>
             <h1>Privacy Policy</h1>
             <p class="last-updated">Last updated: July 1, 2026 · Effective: July 1, 2026</p>
@@ -210,7 +221,7 @@
                         <li><strong>Portability:</strong> Request your data in a machine-readable format.</li>
                         <li><strong>Opt-out:</strong> Unsubscribe from notifications at any time through app settings.</li>
                     </ul>
-                    <p>To exercise any of these rights, contact us at <a href="https://wa.me/919334298441" rel="noopener" target="_blank">+91 93342 98441</a> via WhatsApp or through our <a href="contact.html">Contact page</a>.</p>
+                    <p>To exercise any of these rights, contact us at <a href="https://wa.me/919334298441" rel="noopener" target="_blank">+91 93342 98441</a> via WhatsApp or through our <a href="contact">Contact page</a>.</p>
                 </div>
 
                 <div class="policy-section-block" id="cookies">
@@ -247,7 +258,7 @@
                         <li><strong>WhatsApp:</strong> <a href="https://wa.me/919334298441" rel="noopener" target="_blank">+91 93342 98441</a></li>
                         <li><strong>Phone:</strong> <a href="tel:+919334298441">+91 93342 98441</a></li>
                         <li><strong>Address:</strong> Zorario, Gaya, Bihar, India — 823001</li>
-                        <li><strong>Contact Form:</strong> <a href="contact.html">zorario.com/contact</a></li>
+                        <li><strong>Contact Form:</strong> <a href="/contact">zorario.com/contact</a></li>
                     </ul>
                     <p>We aim to respond to all privacy-related inquiries within 48 hours.</p>
                 </div>
@@ -258,10 +269,10 @@
 
     <footer role="contentinfo">
         <div class="footer-grid">
-            <div class="footer-brand"><a href="index.html" class="nav-logo"><img src="assets/images/logo.gif" alt="Zorario" width="36" height="36" loading="lazy"><span class="nav-logo-text">ZORARIO</span></a><p>Bihar's No.1 real estate platform. All 38 districts.</p><div class="footer-socials"><a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="social-link" rel="noopener" target="_blank"><i class="fab fa-google-play"></i></a><a href="https://wa.me/919334298441" class="social-link" rel="noopener" target="_blank"><i class="fab fa-whatsapp"></i></a><a href="https://medium.com/@akashkumarr1406" class="social-link" rel="noopener" target="_blank"><i class="fab fa-medium"></i></a></div></div>
-            <nav class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="zorario-tech.html">Zorario Tech</a></li><li><a href="blog.html">Blog</a></li><li><a href="associate-partner.html">Associate Partner</a></li><li><a href="privacy-policy.html">Privacy Policy</a></li></ul></nav>
-            <nav class="footer-col"><h4>Properties</h4><ul><li><a href="projects.html">Projects</a></li><li><a href="index.html#features">Features</a></li><li><a href="index.html#how-it-works">How It Works</a></li><li><a href="index.html#testimonials">Reviews</a></li><li><a href="index.html#faq">FAQ</a></li></ul></nav>
-            <nav class="footer-col"><h4>Contact</h4><ul><li><a href="contact.html">Contact Us</a></li><li><a href="tel:+919334298441">+91 93342 98441</a></li><li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li><li><a href="download-app.html">Download App</a></li></ul></nav>
+            <div class="footer-brand"><a href="/" class="nav-logo"><img src="assets/images/logo.gif" alt="Zorario" width="36" height="36" loading="lazy"><span class="nav-logo-text">ZORARIO</span></a><p>Bihar's No.1 real estate platform. All 38 districts.</p><div class="footer-socials"><a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="social-link" rel="noopener" target="_blank"><i class="fab fa-google-play"></i></a><a href="https://wa.me/919334298441" class="social-link" rel="noopener" target="_blank"><i class="fab fa-whatsapp"></i></a><a href="https://medium.com/@akashkumarr1406" class="social-link" rel="noopener" target="_blank"><i class="fab fa-medium"></i></a></div></div>
+            <nav class="footer-col"><h4>Company</h4><ul><li><a href="/about">About Us</a></li><li><a href="/zorario-tech">Zorario Tech</a></li><li><a href="/blog">Blog</a></li><li><a href="/associate-partner">Associate Partner</a></li><li><a href="/privacy-policy">Privacy Policy</a></li></ul></nav>
+            <nav class="footer-col"><h4>Properties</h4><ul><li><a href="/projects">Projects</a></li><li><a href="/#features">Features</a></li><li><a href="/#how-it-works">How It Works</a></li><li><a href="/#testimonials">Reviews</a></li><li><a href="/#faq">FAQ</a></li></ul></nav>
+            <nav class="footer-col"><h4>Contact</h4><ul><li><a href="/contact">Contact Us</a></li><li><a href="tel:+919334298441">+91 93342 98441</a></li><li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li><li><a href="/download-app">Download App</a></li></ul></nav>
         </div>
         <div class="footer-bottom"><p class="footer-copy">&copy; 2025 Zorario. All rights reserved.</p><p class="footer-tagline">Built with <span>♥</span> for Bihar</p></div>
     </footer>

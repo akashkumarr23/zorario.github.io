@@ -26,6 +26,17 @@
 
     <link rel="canonical" href="https://www.zorario.com/">
 
+    <!-- Clean URL Script: Automatically removes .html extension in browser address bar -->
+    <script>
+        (function() {
+            if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+                var clean = window.location.pathname.replace(/\.html$/, '');
+                if (clean.endsWith('/index')) clean = clean.slice(0, -6) || '/';
+                window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+            }
+        })();
+    </script>
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="Zorario - No.1 Real Estate Company in Bihar | All Districts">
     <meta property="og:description"
@@ -538,12 +549,12 @@
         <ul class="nav-links" role="list">
             <li><a href="#features" id="nav-link-features">Features</a></li>
             <li><a href="#how-it-works" id="nav-link-how">How It Works</a></li>
-            <li><a href="projects.html" id="nav-link-projects">Projects</a></li>
-            <li><a href="plotter.html" id="nav-link-plotter"><i class="fas fa-cube"
+            <li><a href="/projects" id="nav-link-projects">Projects</a></li>
+            <li><a href="/plotter" id="nav-link-plotter"><i class="fas fa-cube"
                         style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a></li>
-            <li><a href="blog.html" id="nav-link-blog">Blog</a></li>
-            <li><a href="about.html" id="nav-link-about">About</a></li>
-            <li><a href="contact.html" id="nav-link-contact">Contact</a></li>
+            <li><a href="/blog" id="nav-link-blog">Blog</a></li>
+            <li><a href="/about" id="nav-link-about">About</a></li>
+            <li><a href="/contact" id="nav-link-contact">Contact</a></li>
             <li>
                 <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle dark/light mode">
                     <i class="fas fa-moon" aria-hidden="true"></i>
@@ -576,18 +587,29 @@
         <div class="hero-inner">
             <!-- Left: Content -->
             <div class="hero-content">
-                <div class="hero-badge" role="status" aria-live="polite">
-                    <span class="dot" aria-hidden="true"></span>
-                    Bihar's No.1 Real Estate Platform
-                </div>
+                <div class="hero-badges-wrapper">
+                    <!-- Desktop badges (hidden on mobile) -->
+                    <div class="hero-badge" role="status" aria-live="polite">
+                        <span class="dot" aria-hidden="true"></span>
+                        Bihar's No.1 Real Estate Platform
+                    </div>
 
-                <!-- Rating trust badge -->
-                <div class="hero-rating-badge" aria-label="4.9 out of 5 stars rating on Google Play">
-                    <span class="stars" aria-hidden="true"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                            class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                    <span class="rating-num">4.9</span>
-                    <span class="divider" aria-hidden="true"></span>
-                    <span>500+ Reviews on Google Play</span>
+                    <!-- Rating trust badge -->
+                    <div class="hero-rating-badge" aria-label="4.9 out of 5 stars rating on Google Play">
+                        <span class="stars" aria-hidden="true"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                        <span class="rating-num">4.9</span>
+                        <span class="divider" aria-hidden="true"></span>
+                        <span>500+ Reviews on Google Play</span>
+                    </div>
+
+                    <!-- Single unified mobile trust badge (shown only on mobile) -->
+                    <div class="hero-mobile-trust-badge" aria-label="4.9 Rating - Bihar's No.1 Real Estate App">
+                        <span class="mob-stars"><i class="fas fa-star" aria-hidden="true"></i> 4.9</span>
+                        <span class="mob-dot" aria-hidden="true">•</span>
+                        <span class="mob-text">Bihar's #1 Real Estate App</span>
+                        <span class="mob-pill">500+ Reviews</span>
+                    </div>
                 </div>
 
                 <h1>
@@ -607,9 +629,9 @@
                         <button class="search-tab active" role="tab" aria-selected="true" data-type="buy">Buy</button>
                         <button class="search-tab" role="tab" aria-selected="false" data-type="rent">Rent</button>
                         <button class="search-tab" role="tab" aria-selected="false" data-type="sell">Sell</button>
-                        <a href="plotter.html" class="search-tab search-tab-plotter"
+                        <a href="/plotter" class="search-tab search-tab-plotter"
                             title="Launch Interactive 3D Plotter">
-                            <i class="fas fa-cube"></i> 3D Plotter
+                            <i class="fas fa-cube" aria-hidden="true"></i> <span>3D Plotter</span>
                         </a>
                     </div>
                     <div class="search-bar-inner">
@@ -656,10 +678,25 @@
                 <div class="hero-app-badges reveal reveal-delay-3">
                     <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" target="_blank"
                         rel="noopener" class="app-badge-google-play" aria-label="Get Zorario app on Google Play">
+                        <div class="google-play-card-inner">
+                            <svg class="gp-icon" viewBox="0 0 512 512" width="28" height="28" aria-hidden="true">
+                                <path fill="#4285F4" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1z"/>
+                                <path fill="#34A853" d="M47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l255.6-256L47 0z"/>
+                                <path fill="#EA4335" d="M325.3 277.7l60.1 60.1L104.6 499l220.7-221.3z"/>
+                                <path fill="#FBBC04" d="M486.7 232.8L385.4 174.2l-60.1 60.1 60.1 60.1 101.3-58.6c17.5-10.1 17.5-26.6 0-36.7z"/>
+                            </svg>
+                            <div class="gp-text">
+                                <span class="gp-sub">GET IT ON</span>
+                                <span class="gp-title">Google Play</span>
+                            </div>
+                            <div class="gp-chip" aria-hidden="true">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                            alt="Google Play store link" height="42">
+                            alt="Google Play store link" class="desktop-gp-img" height="42">
                     </a>
-                    <a href="plotter.html" class="hero-plotter-cta-btn" id="hero-plotter-btn"
+                    <a href="/plotter" class="hero-plotter-cta-btn" id="hero-plotter-btn"
                         aria-label="Explore Interactive 3D Plotter">
                         <span class="plotter-btn-icon"><i class="fas fa-cube" aria-hidden="true"></i></span>
                         <span class="plotter-btn-text">
@@ -808,7 +845,7 @@
                     </div>
 
                     <div class="journey-hud-actions">
-                        <a href="plotter.html" class="journey-plotter-link" title="Open Full 3D Master Plotter">
+                        <a href="/plotter" class="journey-plotter-link" title="Open Full 3D Master Plotter">
                             <i class="fas fa-cube"></i>
                             <span>Full 3D Plotter</span>
                         </a>
@@ -1705,7 +1742,7 @@
                             listings from owners &amp; agents are exclusively on the app.
                         </p>
                     </div>
-                    <a href="projects.html" class="fp-header-cta" id="fp-see-all-btn">
+                    <a href="/projects" class="fp-header-cta" id="fp-see-all-btn">
                         <i class="fas fa-th-large"></i> All Projects
                     </a>
                 </div>
@@ -1887,7 +1924,7 @@
                             class="fp-cta-btn-primary" rel="noopener" target="_blank" id="fp-bottom-app-btn">
                             <i class="fab fa-google-play" style="font-size:20px;"></i> Download Free App
                         </a>
-                        <a href="associate-partner.html" class="fp-cta-btn-secondary" id="fp-partner-btn">
+                        <a href="/associate-partner" class="fp-cta-btn-secondary" id="fp-partner-btn">
                             <i class="fas fa-handshake"></i> Become a Partner
                         </a>
                     </div>
@@ -2326,11 +2363,11 @@
                 <nav class="footer-col" aria-label="Company links">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="zorario-tech.html">Zorario Tech</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="associate-partner.html">Associate Partner</a></li>
-                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/zorario-tech">Zorario Tech</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/associate-partner">Associate Partner</a></li>
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
                     </ul>
                 </nav>
 
@@ -2338,8 +2375,8 @@
                 <nav class="footer-col" aria-label="Property links">
                     <h4>Properties</h4>
                     <ul>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="plotter.html">3D Master Plotter</a></li>
+                        <li><a href="/projects">Projects</a></li>
+                        <li><a href="/plotter">3D Master Plotter</a></li>
                         <li><a href="#features">Features</a></li>
                         <li><a href="#how-it-works">How It Works</a></li>
                         <li><a href="#testimonials">Reviews</a></li>
@@ -2351,10 +2388,10 @@
                 <nav class="footer-col" aria-label="Contact links">
                     <h4>Contact</h4>
                     <ul>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
                         <li><a href="tel:+919334298441">+91 93342 98441</a></li>
                         <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li>
-                        <li><a href="download-app.html">Download App</a></li>
+                        <li><a href="/download-app">Download App</a></li>
                         <li>
                             <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
                                 class="store-btn store-btn-android" id="footer-download-btn"

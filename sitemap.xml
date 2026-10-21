@@ -60,6 +60,18 @@
     <priority>0.80</priority>
   </url>
   <url>
+    <loc>https://www.zorario.com/plotter</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.zorario.com/aurangabad-layout</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
     <loc>https://www.zorario.com/privacy-policy</loc>
     <lastmod>2026-07-23</lastmod>
     <changefreq>yearly</changefreq>

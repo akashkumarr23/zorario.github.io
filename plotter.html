@@ -19,6 +19,17 @@
 
   <link rel="canonical" href="https://www.zorario.com/plotter">
 
+  <!-- Clean URL Script: Automatically removes .html extension in browser address bar -->
+  <script>
+    (function() {
+      if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+        var clean = window.location.pathname.replace(/\.html$/, '');
+        if (clean.endsWith('/index')) clean = clean.slice(0, -6) || '/';
+        window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+      }
+    })();
+  </script>
+
   <meta property="og:type" content="website">
   <meta property="og:title" content="Zorario 3D Master Plotter — Digital Twins for Real Estate">
   <meta property="og:description"
@@ -1108,20 +1119,20 @@
 
   <!-- ── FIXED TOP NAVIGATION ──────────────────────────────────── -->
   <nav id="main-nav" role="navigation" aria-label="Main navigation">
-    <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+    <a href="/" class="nav-logo" aria-label="Zorario Home">
       <img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40">
       <span class="nav-logo-text">ZORARIO</span>
     </a>
 
     <ul class="nav-links" role="list">
-      <li><a href="index.html#features" id="nav-link-features">Features</a></li>
-      <li><a href="index.html#how-it-works" id="nav-link-how">How It Works</a></li>
-      <li><a href="projects.html" id="nav-link-projects">Projects</a></li>
-      <li><a href="plotter.html" id="nav-link-plotter" style="color:var(--teal-light);font-weight:700;"><i
+      <li><a href="/#features" id="nav-link-features">Features</a></li>
+      <li><a href="/#how-it-works" id="nav-link-how">How It Works</a></li>
+      <li><a href="/projects" id="nav-link-projects">Projects</a></li>
+      <li><a href="/plotter" id="nav-link-plotter" style="color:var(--teal-light);font-weight:700;"><i
             class="fas fa-cube"></i> 3D Plotter</a></li>
-      <li><a href="blog.html" id="nav-link-blog">Blog</a></li>
-      <li><a href="about.html" id="nav-link-about">About</a></li>
-      <li><a href="contact.html" id="nav-link-contact">Contact</a></li>
+      <li><a href="/blog" id="nav-link-blog">Blog</a></li>
+      <li><a href="/about" id="nav-link-about">About</a></li>
+      <li><a href="/contact" id="nav-link-contact">Contact</a></li>
       <li>
         <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="nav-cta" id="nav-download-btn"
           rel="noopener" target="_blank" aria-label="Download Zorario app">
@@ -1267,7 +1278,7 @@
             <span>Your own branded link</span>
           </div>
           <div class="btns">
-            <a class="btn-primary" href="contact.html"><i class="fas fa-paper-plane"></i> Get a Fixed Quote</a>
+            <a class="btn-primary" href="contact"><i class="fas fa-paper-plane"></i> Get a Fixed Quote</a>
             <a class="btn-secondary" href="tel:+919334298441"><i class="fas fa-phone"></i> Talk to Us First</a>
           </div>
           <p class="fine">Your quote is calibrated directly to acreage, plot count, and development phases. Send us your
@@ -1331,7 +1342,7 @@
       <div class="footer-grid">
         <!-- Brand -->
         <div class="footer-brand">
-          <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+          <a href="/" class="nav-logo" aria-label="Zorario Home">
             <img src="assets/images/logo.png" alt="Zorario Logo" width="36" height="36" loading="lazy">
             <span class="nav-logo-text">ZORARIO</span>
           </a>
@@ -1352,11 +1363,11 @@
         <nav class="footer-col" aria-label="Company links">
           <h4>Company</h4>
           <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="zorario-tech.html">Zorario Tech</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="associate-partner.html">Associate Partner</a></li>
-            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/zorario-tech">Zorario Tech</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/associate-partner">Associate Partner</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
           </ul>
         </nav>
 
@@ -1364,11 +1375,11 @@
         <nav class="footer-col" aria-label="Property links">
           <h4>Properties</h4>
           <ul>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="plotter.html" style="color:#6BB5CB;font-weight:700;">3D Master Plotter</a></li>
-            <li><a href="index.html#features">Features</a></li>
-            <li><a href="index.html#how-it-works">How It Works</a></li>
-            <li><a href="index.html#testimonials">Reviews</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/plotter" style="color:#6BB5CB;font-weight:700;">3D Master Plotter</a></li>
+            <li><a href="/#features">Features</a></li>
+            <li><a href="/#how-it-works">How It Works</a></li>
+            <li><a href="/#testimonials">Reviews</a></li>
           </ul>
         </nav>
 
@@ -1376,10 +1387,10 @@
         <nav class="footer-col" aria-label="Contact links">
           <h4>Contact</h4>
           <ul>
-            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="/contact">Contact Us</a></li>
             <li><a href="tel:+919334298441">+91 93342 98441</a></li>
             <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Support</a></li>
-            <li><a href="download-app.html">Download App</a></li>
+            <li><a href="/download-app">Download App</a></li>
           </ul>
         </nav>
       </div>

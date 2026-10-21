@@ -10,6 +10,17 @@
     <meta name="author" content="Zorario">
     <link rel="canonical" href="https://www.zorario.com/zorario-tech">
 
+    <!-- Clean URL Script: Automatically removes .html extension in browser address bar -->
+    <script>
+        (function() {
+            if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+                var clean = window.location.pathname.replace(/\.html$/, '');
+                if (clean.endsWith('/index')) clean = clean.slice(0, -6) || '/';
+                window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+            }
+        })();
+    </script>
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="Zorario Tech | Real Estate CRM, Marketing & Interactive Property Solutions">
     <meta property="og:description" content="Power your real estate business with Zorario Tech — CRM, digital marketing, interactive layouts, and more. Built for Bihar's builders, developers and agents.">
@@ -1278,17 +1289,17 @@
 
     <!-- ── NAV ───────────────────────────────────────────────── -->
     <nav id="main-nav" role="navigation" aria-label="Main navigation">
-        <a href="index.html" class="nav-logo" aria-label="Zorario Home">
+        <a href="/" class="nav-logo" aria-label="Zorario Home">
             <img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40">
             <span class="nav-logo-text">ZORARIO</span>
         </a>
         <ul class="nav-links" role="list">
-            <li><a href="index.html#features">Features</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="plotter.html"><i class="fas fa-cube" style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/#features">Features</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/plotter"><i class="fas fa-cube" style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
             <li>
                 <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
                    class="nav-cta" id="nav-download-btn" rel="noopener" target="_blank">
@@ -1311,7 +1322,7 @@
             <!-- Left Content -->
             <div>
                 <nav class="breadcrumb" aria-label="Breadcrumb">
-                    <a href="index.html">Home</a>
+                    <a href="/">Home</a>
                     <i class="fas fa-chevron-right"></i>
                     <span>Zorario Tech</span>
                 </nav>
@@ -1835,7 +1846,7 @@
                     <p>From single luxury villas to 500-acre plotted townships in Bihar, we convert architectural blueprints into interactive digital twins.</p>
                 </div>
                 <div class="twin-cta-buttons">
-                    <a href="plotter.html" class="btn-twin-primary" id="twin-plotter-link">
+                    <a href="/plotter" class="btn-twin-primary" id="twin-plotter-link">
                         <i class="fas fa-map-marked-alt"></i> Explore 3D Master Plotter
                     </a>
                     <a href="https://wa.me/919334298441?text=Hi%20Zorario%21%20I%20want%20an%20interactive%203D%20digital%20twin%20for%20my%20real%20estate%20project." class="btn-twin-outline" target="_blank" rel="noopener">
@@ -1899,10 +1910,10 @@
                         <li><i class="fas fa-check"></i> Zorario listing badge</li>
                         <li><i class="fas fa-check"></i> WhatsApp lead notifications</li>
                     </ul>
-                    <a href="contact.html" class="plan-btn plan-btn-outline" id="starter-plan-btn">Get Started</a>
+                    <a href="/contact" class="plan-btn plan-btn-outline" id="starter-plan-btn">Get Started</a>
                 </div>
                 <div class="pricing-card featured">
-                    <div class="popular-badge">â­ Most Popular</div>
+                    <div class="popular-badge">★ Most Popular</div>
                     <div class="plan-name">Professional</div>
                     <div class="plan-price">₹12,999<span>/mo</span></div>
                     <div class="plan-desc">Ideal for builders and developers with multiple projects who need full-stack marketing and CRM.</div>
@@ -1915,7 +1926,7 @@
                         <li><i class="fas fa-check"></i> Dedicated account manager</li>
                         <li><i class="fas fa-check"></i> Video content creation (2/mo)</li>
                     </ul>
-                    <a href="contact.html" class="plan-btn plan-btn-filled" id="pro-plan-btn">Get Started</a>
+                    <a href="/contact" class="plan-btn plan-btn-filled" id="pro-plan-btn">Get Started</a>
                 </div>
                 <div class="pricing-card">
                     <div class="plan-name">Enterprise</div>
@@ -1923,13 +1934,13 @@
                     <div class="plan-desc">For large developers and housing societies with complex multi-project requirements.</div>
                     <ul class="plan-features">
                         <li><i class="fas fa-check"></i> Unlimited CRM + team accounts</li>
-                        <li><i class="fas fa-check"></i> Virtual 360Â° tours</li>
+                        <li><i class="fas fa-check"></i> Virtual 360° tours</li>
                         <li><i class="fas fa-check"></i> Custom website development</li>
                         <li><i class="fas fa-check"></i> Multi-channel ad campaigns</li>
                         <li><i class="fas fa-check"></i> Priority support & SLA</li>
                         <li><i class="fas fa-check"></i> API & software integration</li>
                     </ul>
-                    <a href="contact.html" class="plan-btn plan-btn-outline" id="enterprise-plan-btn">Contact Sales</a>
+                    <a href="/contact" class="plan-btn plan-btn-outline" id="enterprise-plan-btn">Contact Sales</a>
                 </div>
             </div>
 
@@ -1941,7 +1952,7 @@
                     <a href="https://wa.me/919334298441?text=Hi%20Zorario%21%20I%27m%20interested%20in%20Zorario%20Tech%20services%20for%20my%20real%20estate%20business." class="btn-final-white" id="tech-whatsapp-cta" rel="noopener" target="_blank">
                         <i class="fab fa-whatsapp" style="font-size:20px;color:#25D366;"></i> Book Free Demo on WhatsApp
                     </a>
-                    <a href="contact.html" class="btn-final-outline" id="tech-contact-cta">
+                    <a href="/contact" class="btn-final-outline" id="tech-contact-cta">
                         <i class="fas fa-envelope"></i> Send an Enquiry
                     </a>
                 </div>
@@ -1953,7 +1964,7 @@
     <footer role="contentinfo">
         <div class="footer-grid">
             <div class="footer-brand">
-                <a href="index.html" class="nav-logo">
+                <a href="/" class="nav-logo">
                     <img src="assets/images/logo.gif" alt="Zorario" width="36" height="36" loading="lazy">
                     <span class="nav-logo-text">ZORARIO</span>
                 </a>
@@ -1967,11 +1978,11 @@
             <nav class="footer-col" aria-label="Company links">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="zorario-tech.html">Zorario Tech</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="associate-partner.html">Associate Partner</a></li>
-                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/zorario-tech">Zorario Tech</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/associate-partner">Associate Partner</a></li>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
                 </ul>
             </nav>
             <nav class="footer-col" aria-label="Tech services links">
@@ -1987,11 +1998,11 @@
             <nav class="footer-col" aria-label="Contact links">
                 <h4>Contact</h4>
                 <ul>
-                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
                     <li><a href="tel:+919334298441">+91 93342 98441</a></li>
                     <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li>
-                    <li><a href="download-app.html">Download App</a></li>
-                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="/download-app">Download App</a></li>
+                    <li><a href="/projects">Projects</a></li>
                 </ul>
             </nav>
         </div>

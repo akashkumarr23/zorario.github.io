@@ -309,6 +309,19 @@ section {
     width: 100%;
 }
 
+/* Badges Wrapper */
+.hero-badges-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Mobile elements hidden on desktop */
+.hero-mobile-trust-badge,
+.google-play-card-inner {
+    display: none;
+}
+
 /* Badge */
 .hero-badge {
     display: inline-flex;

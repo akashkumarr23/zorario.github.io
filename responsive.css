@@ -1,0 +1,476 @@
+/* ==========================================================================
+   ZORARIO RESPONSIVE STYLESHEET
+   Mobile & Tablet UI Enhancements for Bihar's No.1 Real Estate Platform
+   Targeted for all modern mobile devices (iPhone, Android, Foldables, Tablets)
+   ========================================================================== */
+
+/* ── PREVENT HORIZONTAL SCROLL ON MOBILE WITHOUT BREAKING STICKY ───────── */
+html {
+    max-width: 100%;
+}
+
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+/* ==========================================================================
+   MOBILE & SMALL TABLET VIEW (<= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+
+    /* ── NAVIGATION ───────────────────────────────────────────────────────── */
+    #main-nav {
+        padding: 0 16px !important;
+        height: 60px !important;
+        background: rgba(13, 27, 42, 0.88) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(74, 144, 164, 0.18) !important;
+    }
+
+    .nav-logo img {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .nav-logo-text {
+        font-size: 18px !important;
+        letter-spacing: 2px !important;
+    }
+
+    .nav-hamburger {
+        width: 40px !important;
+        height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 10px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* ── HERO SECTION ─────────────────────────────────────────────────────── */
+    #hero {
+        padding: 76px 16px 36px !important;
+        min-height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        background:
+            radial-gradient(ellipse at 50% 12%, rgba(74, 144, 164, 0.32) 0%, rgba(13, 27, 42, 0.98) 64%),
+            #0D1B2A !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .hero-inner {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        width: 100% !important;
+        max-width: 440px !important;
+        margin: 0 auto !important;
+    }
+
+    .hero-content {
+        flex: none !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    /* ── TRUST BADGES WRAPPER (SINGLE SLEEK UNIFIED CHIP ON MOBILE) ────────── */
+    .hero-badges-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin-bottom: 16px !important;
+        width: 100% !important;
+    }
+
+    /* Hide individual desktop badges */
+    .hero-badge,
+    .hero-rating-badge {
+        display: none !important;
+    }
+
+    /* Show single unified modern trust chip */
+    .hero-mobile-trust-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        background: rgba(15, 34, 55, 0.8) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(107, 181, 203, 0.35) !important;
+        border-radius: 100px !important;
+        padding: 6px 14px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 14px rgba(74, 144, 164, 0.18) !important;
+    }
+
+    .hero-mobile-trust-badge .mob-stars {
+        color: #FFB800 !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 3px !important;
+    }
+
+    .hero-mobile-trust-badge .mob-dot {
+        color: rgba(255, 255, 255, 0.3) !important;
+        font-size: 10px !important;
+    }
+
+    .hero-mobile-trust-badge .mob-text {
+        color: rgba(255, 255, 255, 0.92) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.2px !important;
+    }
+
+    .hero-mobile-trust-badge .mob-pill {
+        background: rgba(74, 144, 164, 0.22) !important;
+        color: #7ee3f2 !important;
+        font-size: 9.5px !important;
+        font-weight: 700 !important;
+        padding: 2.5px 8px !important;
+        border-radius: 100px !important;
+        border: 1px solid rgba(107, 181, 203, 0.35) !important;
+    }
+
+    /* ── HERO H1 TITLE (ITC BAUHAUS ORIGINAL BRAND TYPOGRAPHY) ─────────────── */
+    .hero-content h1 {
+        font-family: 'ITCBauhaus', sans-serif !important;
+        font-size: clamp(28px, 7.8vw, 38px) !important;
+        font-weight: 700 !important;
+        line-height: 1.05 !important;
+        letter-spacing: -1.2px !important;
+        margin: 0 0 12px 0 !important;
+        text-align: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1px !important;
+        width: 100% !important;
+    }
+
+    .hero-content h1 span {
+        display: block !important;
+    }
+
+    .hero-content h1 #hero-h1-line1 {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+    .hero-content h1 .highlight {
+        background: linear-gradient(135deg, #4A90A4 0%, #68d8d6 45%, #b2f5ea 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        white-space: nowrap !important;
+        filter: drop-shadow(0 3px 12px rgba(74, 144, 164, 0.45)) !important;
+        font-weight: 800 !important;
+    }
+
+    .hero-content h1 #hero-h1-line2 {
+        color: rgba(255, 255, 255, 0.95) !important;
+        font-weight: 700 !important;
+    }
+
+    /* ── SUBTITLE ─────────────────────────────────────────────────────────── */
+    .hero-content .subtitle {
+        font-family: 'Inter', -apple-system, sans-serif !important;
+        font-size: 13.5px !important;
+        line-height: 1.5 !important;
+        color: rgba(255, 255, 255, 0.72) !important;
+        margin: 0 auto 20px !important;
+        max-width: 320px !important;
+        text-align: center !important;
+        letter-spacing: -0.01em !important;
+    }
+
+    /* ── HIDE SEARCH CONSOLE & 3D PLOTTER ON MOBILE ────────────────────────── */
+    .hero-search-console,
+    .hero-plotter-cta-btn,
+    .badge-separator,
+    .btn-text-link {
+        display: none !important;
+    }
+
+    /* ── GOOGLE PLAY HERO CTA (HIGH-END DOWNLOAD CARD) ────────────────────── */
+    .hero-app-badges {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0 !important;
+        margin: 0 0 20px 0 !important;
+        width: 100% !important;
+    }
+
+    .app-badge-google-play {
+        text-decoration: none !important;
+        display: inline-block !important;
+        width: auto !important;
+    }
+
+    .desktop-gp-img {
+        display: none !important;
+    }
+
+    .google-play-card-inner {
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
+        background: linear-gradient(135deg, rgba(22, 45, 72, 0.92) 0%, rgba(13, 27, 42, 0.96) 100%) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1.5px solid rgba(107, 181, 203, 0.45) !important;
+        border-radius: 18px !important;
+        padding: 10px 18px 10px 14px !important;
+        box-shadow:
+            0 14px 36px rgba(0, 0, 0, 0.55),
+            0 0 26px rgba(74, 144, 164, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .google-play-card-inner:active {
+        transform: scale(0.97) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 14px rgba(74, 144, 164, 0.2) !important;
+    }
+
+    .gp-icon {
+        flex-shrink: 0 !important;
+        width: 28px !important;
+        height: 28px !important;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3)) !important;
+    }
+
+    .gp-text {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        line-height: 1.15 !important;
+    }
+
+    .gp-sub {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 9.5px !important;
+        font-weight: 600 !important;
+        letter-spacing: 1px !important;
+        color: rgba(255, 255, 255, 0.65) !important;
+    }
+
+    .gp-title {
+        font-family: 'Outfit', 'Inter', sans-serif !important;
+        font-size: 16.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.2px !important;
+        color: #ffffff !important;
+        margin-top: 2px !important;
+    }
+
+    .gp-chip {
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #4A90A4, #6BB5CB) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #ffffff !important;
+        font-size: 11px !important;
+        margin-left: 6px !important;
+        box-shadow: 0 2px 8px rgba(74, 144, 164, 0.5) !important;
+    }
+
+    /* ── STATS COUNTER ────────────────────────────────────────────────────── */
+    .hero-stats {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 6px !important;
+        margin: 0 auto !important;
+        padding: 10px 6px !important;
+        background: rgba(15, 34, 55, 0.65) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(107, 181, 203, 0.22) !important;
+        border-radius: 16px !important;
+        width: 100% !important;
+        max-width: 360px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    .hero-stat-item {
+        text-align: center !important;
+    }
+
+    .hero-stat-number {
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 17.5px !important;
+        font-weight: 800 !important;
+        color: #7ee3f2 !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    .hero-stat-label {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 8.5px !important;
+        color: rgba(255, 255, 255, 0.68) !important;
+        margin-top: 2px !important;
+        line-height: 1.2 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+    }
+
+    /* ── HERO VISUAL (EXACT SAME DESKTOP MOCKUP DESIGN SCALED FOR MOBILE) ─── */
+    .hero-visual {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin: 28px auto 20px auto !important;
+        height: 480px !important;
+        position: relative !important;
+        overflow: visible !important;
+    }
+
+    .phone-frame-wrapper {
+        position: relative !important;
+        width: 300px !important;
+        height: 580px !important;
+        transform: scale(0.74) !important;
+        transform-origin: center center !important;
+        margin: 0 auto !important;
+    }
+
+    /* All 3 desktop floating cards intact with exact desktop glassmorphism */
+    .float-card-1 {
+        top: 80px !important;
+        left: -85px !important;
+        right: auto !important;
+        bottom: auto !important;
+    }
+
+    .float-card-2 {
+        bottom: 120px !important;
+        right: -80px !important;
+        left: auto !important;
+        top: auto !important;
+    }
+
+    .float-card-3 {
+        bottom: 60px !important;
+        left: -75px !important;
+        right: auto !important;
+        top: auto !important;
+        display: block !important;
+    }
+
+    /* ── FLOATING SUPPORT BUTTONS ─────────────────────────────────────────── */
+    .support-container {
+        bottom: 24px !important;
+        right: 14px !important;
+        gap: 8px !important;
+        z-index: 99 !important;
+    }
+
+    .support-btn {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 18px !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    /* ── BACK TO TOP ──────────────────────────────────────────────────────── */
+    #back-to-top {
+        bottom: 120px !important;
+        right: 14px !important;
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 13px !important;
+    }
+
+    /* ── 3D JOURNEY SECTION (PIN STICKY VIEWPORT & PREVENT BLACK GAP) ─────── */
+    #journey-3d-section {
+        position: relative !important;
+        height: 280vh !important;
+        background: #081119 !important;
+        overflow: visible !important;
+        z-index: 20 !important;
+    }
+
+    .journey-sticky-viewport {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        overflow: hidden !important;
+        z-index: 25 !important;
+    }
+}
+
+/* ==========================================================================
+   EXTRA SMALL MOBILE SCREENS (<= 380px, e.g. iPhone SE, older Galaxy)
+   ========================================================================== */
+@media (max-width: 380px) {
+    #hero {
+        padding: 70px 10px 36px !important;
+    }
+
+    .hero-content h1 {
+        font-family: 'ITCBauhaus', sans-serif !important;
+        font-size: 28px !important;
+        letter-spacing: -1px !important;
+    }
+
+    .hero-content .subtitle {
+        font-size: 12.5px !important;
+    }
+
+    .app-badge-google-play img {
+        height: 46px !important;
+    }
+
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        padding: 10px !important;
+    }
+
+    .google-play-card-inner {
+        padding: 8px 14px 8px 12px !important;
+        gap: 10px !important;
+    }
+
+    .gp-icon {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .gp-title {
+        font-size: 15px !important;
+    }
+
+    .hero-visual {
+        height: 420px !important;
+        margin: 18px auto 16px auto !important;
+    }
+
+    .phone-frame-wrapper {
+        transform: scale(0.66) !important;
+    }
+}

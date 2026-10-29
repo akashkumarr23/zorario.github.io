@@ -8,7 +8,7 @@
     <meta name="keywords" content="Zorario showcase, verified properties Bihar, broker portfolio, Zorario real estate">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Zorario">
-    <link rel="canonical" href="https://www.zorario.com/showcase">
+    <link rel="canonical" href="https://zorario.com/showcase">
     <meta name="theme-color" content="#1B3A57">
     <link rel="icon" type="image/png" href="assets/images/logo.png">
 
@@ -505,6 +505,100 @@
         .project-view-btn:hover {
             transform: scale(1.04);
             box-shadow: 0 6px 18px rgba(74, 144, 164, 0.4);
+        }
+
+        /* ─── Luxury Developer Project Card Styles ───────────────────── */
+        .project-card.luxury-project-card {
+            border: 1.8px solid #D4AF37;
+            background: #FFFFFF;
+            position: relative;
+            box-shadow: 0 4px 24px rgba(212, 175, 55, 0.12);
+        }
+
+        .project-card.luxury-project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3.5px;
+            background: linear-gradient(90deg, #D4AF37, #F9DE81, #D4AF37);
+            z-index: 5;
+        }
+
+        .project-badge-luxury {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: linear-gradient(135deg, #0F172A, #1E293B);
+            color: #F9DE81;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 100px;
+            border: 1px solid rgba(212, 175, 55, 0.6);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .project-developer-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #1E3A8A;
+            background: rgba(30, 58, 138, 0.06);
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .project-view-btn.luxury-btn {
+            background: linear-gradient(135deg, #1B3A57, #0F2237);
+            border: 1px solid #D4AF37;
+            color: #F9DE81;
+        }
+
+        .project-view-btn.luxury-btn:hover {
+            background: #D4AF37;
+            color: #0F172A;
+        }
+
+        .layout-pill {
+            background: rgba(74, 144, 164, 0.15) !important;
+            color: #1B3A57 !important;
+            font-weight: 700 !important;
+        }
+
+        .btn-master-layout {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #0F172A, #1B3A57);
+            color: #F9DE81;
+            border: 1.5px solid #D4AF37;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 16px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.2);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-master-layout:hover {
+            transform: translateY(-2px);
+            background: #D4AF37;
+            color: #0F172A;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
         }
 
         /* ═══════════════════════════════════════════════════════════════ */
@@ -1201,6 +1295,10 @@
                         <h3 id="statTotal">--</h3>
                         <span>Total Listings</span>
                     </div>
+                    <div class="showcase-stat" id="statProjectWrapper" style="display: none;">
+                        <h3 id="statProjects">--</h3>
+                        <span>Projects</span>
+                    </div>
                     <div class="showcase-stat">
                         <h3 id="statRent">--</h3>
                         <span>For Rent</span>
@@ -1233,7 +1331,8 @@
     <div class="filter-bar" role="navigation" aria-label="Property type filters" id="showcaseFilterBar">
         <div class="filter-inner">
             <span class="filter-label">Filter by:</span>
-            <button class="filter-btn active" data-filter="all">All Properties</button>
+            <button class="filter-btn active" data-filter="all">All Listings</button>
+            <button class="filter-btn" data-filter="project" id="filterBtnProject" style="display: none;">Projects (<span id="filterCountProject">0</span>)</button>
             <button class="filter-btn" data-filter="rent">For Rent</button>
             <button class="filter-btn" data-filter="sell">For Sale</button>
         </div>
@@ -1326,6 +1425,13 @@
                             <i class="fas fa-map-marker-alt"></i>
                             <span id="detailFullAddress">Address, City</span>
                             <span class="detail-pluscode-chip" id="detailPlusCode" style="display:none;"></span>
+                        </div>
+
+                        <!-- Interactive 3D Master Layout Callout (for developer projects) -->
+                        <div id="detailMasterLayoutBox" style="display: none; margin: 18px 0;">
+                            <a id="detailMasterLayoutBtn" href="#" target="_blank" class="btn-master-layout">
+                                <i class="fas fa-compass"></i> Explore Interactive 3D Master Layout & Plots
+                            </a>
                         </div>
 
                         <!-- 6 Key Highlights -->
@@ -1583,32 +1689,45 @@
             }
         }
 
-        // URL Parameters (Supports clean short params 'b', 'o', 'p', 's', 'n' as well as legacy long keys)
+        // URL Parameters (Supports clean short params 'b', 'o', 'p', 'proj', 's', 'n' as well as legacy long keys)
         const urlParams = new URLSearchParams(window.location.search);
         let brokerCode = urlParams.get('b') || urlParams.get('broker');
         let ownerUID = urlParams.get('o') || urlParams.get('owner') || urlParams.get('id') || urlParams.get('u');
         const fallbackName = urlParams.get('n') || urlParams.get('name') || 'Zorario Partner';
         const shareToken = urlParams.get('s');
         const propsParam = urlParams.get('p') || urlParams.get('props') || urlParams.get('property');
+        const projParam = urlParams.get('proj') || urlParams.get('project');
 
         let selectedProps = [];
         if (propsParam) {
             selectedProps = propsParam.split(',').map(decodePropId).filter(Boolean);
         }
 
-        // Direct property ID from hash (#property-123, #p-123, #123) or p=
+        let selectedProjects = [];
+        if (projParam) {
+            selectedProjects = projParam.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        // Direct property/project ID from hash (#property-123, #project-123, #p-123, #123)
         const hash = window.location.hash;
         let directPropId = null;
+        let directProjectId = null;
         if (hash) {
-            const raw = hash.replace(/^#property-|^#p-|^#/, '').trim();
-            directPropId = decodePropId(raw);
-        } else if (selectedProps.length === 1) {
+            if (hash.startsWith('#project-') || hash.startsWith('#proj-')) {
+                directProjectId = hash.replace(/^#project-|^#proj-/, '').trim();
+            } else {
+                const raw = hash.replace(/^#property-|^#p-|^#/, '').trim();
+                directPropId = decodePropId(raw);
+            }
+        } else if (selectedProjects.length === 1 && selectedProps.length === 0) {
+            directProjectId = selectedProjects[0];
+        } else if (selectedProps.length === 1 && selectedProjects.length === 0) {
             directPropId = selectedProps[0];
         }
 
         let allProperties = [];
         let currentFilter = 'all';
-        let isShowingCurated = selectedProps.length > 0 || !!shareToken;
+        let isShowingCurated = selectedProps.length > 0 || selectedProjects.length > 0 || !!shareToken;
         let isDeletedShareFallback = false;
         let currentProperty = null;
         let currentGalleryImages = [];
@@ -1621,11 +1740,18 @@
             if (brokerCode) params.set('b', brokerCode);
             else if (ownerUID) params.set('o', ownerUID);
             if (currentProperty) {
-                params.set('p', currentProperty.id);
+                if (currentProperty.is_project) {
+                    params.set('proj', currentProperty.id);
+                } else {
+                    params.set('p', currentProperty.id);
+                }
             } else if (shareToken && !isDeletedShareFallback) {
                 params.set('s', shareToken);
-            } else if (isShowingCurated && selectedProps.length > 0) {
-                params.set('p', selectedProps.join(','));
+            } else {
+                if (isShowingCurated) {
+                    if (selectedProps.length > 0) params.set('p', selectedProps.join(','));
+                    if (selectedProjects.length > 0) params.set('proj', selectedProjects.join(','));
+                }
             }
             return params.toString();
         }
@@ -1664,6 +1790,7 @@
         function showAllBrokerProperties() {
             isShowingCurated = false;
             selectedProps = [];
+            selectedProjects = [];
             isDeletedShareFallback = false;
             currentFilter = 'all';
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -1680,16 +1807,22 @@
                 if (shareToken) {
                     try {
                         const { data: shareData, error: shareErr } = await client.from('showcase_shares')
-                            .select('property_ids, broker_code, owner_uid')
+                            .select('property_ids, project_ids, broker_code, owner_uid')
                             .eq('id', shareToken)
                             .maybeSingle();
 
-                        if (shareData && shareData.property_ids && shareData.property_ids.length > 0) {
-                            selectedProps = shareData.property_ids.map(decodePropId).filter(Boolean);
-                            isShowingCurated = selectedProps.length > 0;
+                        const shareProps = shareData?.property_ids || [];
+                        const shareProjects = shareData?.project_ids || [];
+
+                        if (shareData && (shareProps.length > 0 || shareProjects.length > 0)) {
+                            selectedProps = shareProps.map(decodePropId).filter(Boolean);
+                            selectedProjects = shareProjects.map(s => s.trim()).filter(Boolean);
+                            isShowingCurated = selectedProps.length > 0 || selectedProjects.length > 0;
                             if (!brokerCode && shareData.broker_code) brokerCode = shareData.broker_code;
                             if (!ownerUID && shareData.owner_uid) ownerUID = shareData.owner_uid;
-                            if (selectedProps.length === 1 && !directPropId) {
+                            if (selectedProjects.length === 1 && selectedProps.length === 0 && !directProjectId) {
+                                directProjectId = selectedProjects[0];
+                            } else if (selectedProps.length === 1 && selectedProjects.length === 0 && !directPropId) {
                                 directPropId = selectedProps[0];
                             }
                         } else {
@@ -1697,12 +1830,14 @@
                             console.warn('Share token was deleted or not found in showcase_shares. Falling back to all broker listings.');
                             isShowingCurated = false;
                             selectedProps = [];
+                            selectedProjects = [];
                             isDeletedShareFallback = true;
                         }
                     } catch (err) {
                         console.warn('Could not query showcase_shares:', err);
                         isShowingCurated = false;
                         selectedProps = [];
+                        selectedProjects = [];
                         isDeletedShareFallback = true;
                     }
                 }
@@ -1752,14 +1887,61 @@
                 }
 
                 const { data: properties, error } = await query;
-                if (error) throw error;
+                if (error) console.warn('Properties query error:', error);
 
-                allProperties = properties || [];
+                // 3. Fetch Developer Projects from public_projects_showcase
+                let developerProjects = [];
+                try {
+                    let projQuery = client.from('public_projects_showcase').select('*');
+                    if (selectedProjects.length > 0) {
+                        projQuery = projQuery.in('id', selectedProjects);
+                    }
+                    const { data: projData, error: projErr } = await projQuery;
+                    if (!projErr && projData) {
+                        developerProjects = projData.map(p => ({
+                            id: p.id,
+                            title: p.title,
+                            description: p.description || '',
+                            address: p.location || '',
+                            city: p.city || '',
+                            state: p.state || '',
+                            property_type: p.project_type || 'Developer Project',
+                            listing_type: 'project',
+                            rent: 0,
+                            price: p.price_min || p.price_max || 0,
+                            price_min: p.price_min,
+                            price_max: p.price_max,
+                            bedrooms: 0,
+                            bathrooms: 0,
+                            area: 0,
+                            amenities: [],
+                            image_urls: Array.isArray(p.images) ? p.images : (p.images ? [p.images] : []),
+                            owner_name: p.developer_name || 'Prime Developer',
+                            developer_name: p.developer_name || 'Prime Developer',
+                            listed_date: p.created_at,
+                            is_available: p.status !== 'sold_out',
+                            plus_code: '',
+                            is_project: true,
+                            is_developer_project: true,
+                            total_units: p.total_units,
+                            available_units: p.available_units,
+                            layout_url: p.layout_url,
+                            badge_tag: p.badge_tag || 'FEATURED PROJECT',
+                            verification_status: 'verified'
+                        }));
+                    }
+                } catch (e) {
+                    console.warn('Could not fetch developer projects:', e);
+                }
+
+                allProperties = [...developerProjects, ...(properties || [])];
                 renderStats();
                 renderProperties();
 
-                // Direct Property in Hash or Query
-                if (directPropId) {
+                // Direct Property or Project in Hash or Query
+                if (directProjectId) {
+                    openPropertyDetail(directProjectId, false);
+                } else if (directPropId) {
                     openPropertyDetail(directPropId, false);
                 }
 
@@ -1802,9 +1984,34 @@
 
         // Render Stats
         function renderStats() {
-            document.getElementById('statTotal').textContent = allProperties.length;
-            document.getElementById('statRent').textContent = allProperties.filter(p => p.listing_type === 'rent').length;
-            document.getElementById('statSale').textContent = allProperties.filter(p => p.listing_type === 'sell').length;
+            const totalCount = allProperties.length;
+            const projectCount = allProperties.filter(p => p.is_project).length;
+            const rentCount = allProperties.filter(p => p.listing_type === 'rent' && !p.is_project).length;
+            const saleCount = allProperties.filter(p => (p.listing_type === 'sell' || !p.listing_type) && !p.is_project).length;
+
+            document.getElementById('statTotal').textContent = totalCount;
+            document.getElementById('statRent').textContent = rentCount;
+            document.getElementById('statSale').textContent = saleCount;
+
+            const projBox = document.getElementById('statProjectWrapper');
+            if (projBox) {
+                if (projectCount > 0) {
+                    projBox.style.display = 'block';
+                    document.getElementById('statProjects').textContent = projectCount;
+                } else {
+                    projBox.style.display = 'none';
+                }
+            }
+
+            const filterBtnProj = document.getElementById('filterBtnProject');
+            if (filterBtnProj) {
+                if (projectCount > 0) {
+                    filterBtnProj.style.display = 'inline-block';
+                    document.getElementById('filterCountProject').textContent = projectCount;
+                } else {
+                    filterBtnProj.style.display = 'none';
+                }
+            }
         }
 
         // Format Currency
@@ -1831,15 +2038,15 @@
             let list = allProperties;
             let showFallbackNotice = false;
 
-            if (isShowingCurated && selectedProps.length > 0) {
-                const curatedMatches = allProperties.filter(p => selectedProps.includes(p.id));
+            if (isShowingCurated && (selectedProps.length > 0 || selectedProjects.length > 0)) {
+                const curatedMatches = allProperties.filter(p => selectedProps.includes(p.id) || selectedProjects.includes(p.id));
                 if (curatedMatches.length > 0) {
                     list = curatedMatches;
                     if (curatedBanner) {
                         curatedBanner.style.display = 'flex';
                         curatedBanner.style.background = 'rgba(74, 144, 164, 0.08)';
                         curatedBanner.style.borderColor = 'rgba(74, 144, 164, 0.25)';
-                        document.getElementById('curatedTitle').innerHTML = `<i class="fas fa-sparkles" style="color: #4A90A4; margin-right: 8px;"></i>Handpicked for You (${list.length} ${list.length === 1 ? 'Property' : 'Properties'})`;
+                        document.getElementById('curatedTitle').innerHTML = `<i class="fas fa-sparkles" style="color: #4A90A4; margin-right: 8px;"></i>Handpicked for You (${list.length} ${list.length === 1 ? 'Item' : 'Items'})`;
                         const viewAllBtn = document.getElementById('curatedViewAllBtn');
                         if (viewAllBtn) {
                             viewAllBtn.style.display = 'inline-block';
@@ -1853,7 +2060,7 @@
                     isShowingCurated = false;
                     showFallbackNotice = true;
                 }
-            } else if (isDeletedShareFallback || (shareToken && selectedProps.length === 0)) {
+            } else if (isDeletedShareFallback || (shareToken && selectedProps.length === 0 && selectedProjects.length === 0)) {
                 // The share URL record was deleted from showcase_shares table!
                 // Show ALL properties of this broker with a clear informative notice
                 list = allProperties;
@@ -1873,17 +2080,19 @@
             }
 
             if (currentFilter === 'rent') {
-                list = list.filter(p => p.listing_type === 'rent');
+                list = list.filter(p => p.listing_type === 'rent' && !p.is_project);
             } else if (currentFilter === 'sell') {
-                list = list.filter(p => p.listing_type === 'sell');
+                list = list.filter(p => (p.listing_type === 'sell' || !p.listing_type) && !p.is_project);
+            } else if (currentFilter === 'project') {
+                list = list.filter(p => p.is_project);
             }
 
             if (list.length === 0) {
                 grid.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #6B7280;">
                         <i class="fas fa-building" style="font-size: 44px; margin-bottom: 12px; color: #CBD5E1;"></i>
-                        <p style="font-size: 16px; font-weight: 700; color: #1B3A57;">No properties found in this filter.</p>
-                        ${allProperties.length > 0 ? `<button onclick="showAllBrokerProperties()" class="project-view-btn" style="margin-top: 14px; display: inline-flex; padding: 10px 20px;">View All (${allProperties.length}) Properties</button>` : ''}
+                        <p style="font-size: 16px; font-weight: 700; color: #1B3A57;">No items found in this filter.</p>
+                        ${allProperties.length > 0 ? `<button onclick="showAllBrokerProperties()" class="project-view-btn" style="margin-top: 14px; display: inline-flex; padding: 10px 20px;">View All (${allProperties.length}) Listings</button>` : ''}
                     </div>
                 `;
                 return;
@@ -1891,10 +2100,53 @@
 
             grid.innerHTML = list.map(p => {
                 const img = (p.image_urls && p.image_urls.length > 0) ? p.image_urls[0] : 'assets/images/placeholder.jpg';
+                const isProject = p.is_project === true;
                 const isRent = p.listing_type === 'rent';
-                const priceFormatted = isRent
-                    ? `${formatPrice(p.rent)} <span class="project-price-sub">/ month</span>`
-                    : `${formatPrice(p.price)} <span class="project-price-sub">Total</span>`;
+
+                let priceFormatted;
+                if (isProject && p.price_min && p.price_max && p.price_min !== p.price_max) {
+                    priceFormatted = `${formatPrice(p.price_min)} - ${formatPrice(p.price_max)}`;
+                } else if (isProject && (p.price_min || p.price)) {
+                    priceFormatted = `${formatPrice(p.price_min || p.price)} <span class="project-price-sub">Starting</span>`;
+                } else if (isRent) {
+                    priceFormatted = `${formatPrice(p.rent)} <span class="project-price-sub">/ month</span>`;
+                } else {
+                    priceFormatted = `${formatPrice(p.price || 0)} <span class="project-price-sub">Total</span>`;
+                }
+
+                if (isProject) {
+                    return `
+                        <article class="project-card luxury-project-card" onclick="openPropertyDetail('${p.id}')">
+                            <div class="project-card-img-wrap">
+                                <img src="${img}" alt="${p.title}" loading="lazy" onerror="this.src='assets/images/placeholder.jpg'">
+                                <span class="project-badge-luxury"><i class="fas fa-crown"></i> ${p.badge_tag || 'FEATURED PROJECT'}</span>
+                                <span class="project-badge-verified"><i class="fas fa-check-circle"></i> Verified</span>
+                            </div>
+                            <div class="project-card-body">
+                                <div class="project-developer-tag">
+                                    <i class="fas fa-city" style="color: #D4AF37;"></i>
+                                    <span>${p.developer_name || p.owner_name || 'Prime Developer'}</span>
+                                </div>
+                                <h3 class="project-title-text">${p.title}</h3>
+                                <div class="project-location-text">
+                                    <i class="fas fa-map-marker-alt" style="color: #4A90A4;"></i>
+                                    <span>${p.address || ''}, ${p.city || ''}</span>
+                                </div>
+                                <div class="project-price-amount" style="color: #1B3A57; font-size: 19px;">${priceFormatted}</div>
+                                <div class="project-card-footer">
+                                    <div class="project-features-list">
+                                        ${p.available_units ? `<span class="project-feat-item"><i class="fas fa-layer-group"></i> ${p.available_units} Units</span>` : ''}
+                                        ${p.property_type ? `<span class="project-feat-item"><i class="fas fa-building"></i> ${p.property_type}</span>` : ''}
+                                        ${p.layout_url ? `<span class="project-feat-item layout-pill"><i class="fas fa-compass"></i> 3D Layout</span>` : ''}
+                                    </div>
+                                    <button class="project-view-btn luxury-btn" onclick="event.stopPropagation(); openPropertyDetail('${p.id}')">
+                                        Explore <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    `;
+                }
 
                 return `
                     <article class="project-card" onclick="openPropertyDetail('${p.id}')">
@@ -1927,23 +2179,69 @@
             }).join('');
         }
 
-        // Open Property Detail Screen
-        async function openPropertyDetail(propertyId, pushState = true) {
-            let p = allProperties.find(item => item.id === propertyId);
+        // Open Property / Project Detail Screen
+        async function openPropertyDetail(itemId, pushState = true) {
+            let p = allProperties.find(item => item.id === itemId);
             if (!p) {
                 try {
-                    const { data } = await client.from('public_properties_showcase')
+                    // Try property first
+                    const { data: propData } = await client.from('public_properties_showcase')
                         .select('*')
-                        .eq('id', propertyId)
+                        .eq('id', itemId)
                         .maybeSingle();
-                    p = data;
+                    p = propData;
                 } catch (e) {
                     console.error('Error fetching property:', e);
+                }
+
+                if (!p) {
+                    try {
+                        // Try developer project
+                        const { data: projData } = await client.from('public_projects_showcase')
+                            .select('*')
+                            .eq('id', itemId)
+                            .maybeSingle();
+                        if (projData) {
+                            p = {
+                                id: projData.id,
+                                title: projData.title,
+                                description: projData.description || '',
+                                address: projData.location || '',
+                                city: projData.city || '',
+                                state: projData.state || '',
+                                property_type: projData.project_type || 'Developer Project',
+                                listing_type: 'project',
+                                rent: 0,
+                                price: projData.price_min || projData.price_max || 0,
+                                price_min: projData.price_min,
+                                price_max: projData.price_max,
+                                bedrooms: 0,
+                                bathrooms: 0,
+                                area: 0,
+                                amenities: [],
+                                image_urls: Array.isArray(projData.images) ? projData.images : (projData.images ? [projData.images] : []),
+                                owner_name: projData.developer_name || 'Prime Developer',
+                                developer_name: projData.developer_name || 'Prime Developer',
+                                listed_date: projData.created_at,
+                                is_available: projData.status !== 'sold_out',
+                                plus_code: '',
+                                is_project: true,
+                                is_developer_project: true,
+                                total_units: projData.total_units,
+                                available_units: projData.available_units,
+                                layout_url: projData.layout_url,
+                                badge_tag: projData.badge_tag || 'FEATURED PROJECT',
+                                verification_status: 'verified'
+                            };
+                        }
+                    } catch (e) {
+                        console.error('Error fetching project:', e);
+                    }
                 }
             }
 
             if (!p) {
-                console.warn('Property details not found or deleted:', propertyId);
+                console.warn('Listing details not found or deleted:', itemId);
                 closePropertyDetail(false);
                 const curatedBanner = document.getElementById('curatedNoticeBox');
                 if (curatedBanner) {
@@ -1951,7 +2249,7 @@
                     curatedBanner.style.background = 'rgba(27, 58, 87, 0.06)';
                     curatedBanner.style.borderColor = 'rgba(27, 58, 87, 0.2)';
                     const partnerName = cachedBroker?.agency_name || fallbackName;
-                    document.getElementById('curatedTitle').innerHTML = `<i class="fas fa-info-circle" style="color: #4A90A4; margin-right: 8px;"></i>The selected listing is no longer active. Showing all available listings by ${partnerName} (${allProperties.length} Properties)`;
+                    document.getElementById('curatedTitle').innerHTML = `<i class="fas fa-info-circle" style="color: #4A90A4; margin-right: 8px;"></i>The selected listing is no longer active. Showing all available listings by ${partnerName} (${allProperties.length} Listings)`;
                 }
                 return;
             }
@@ -1964,18 +2262,46 @@
             updateGalleryDisplay();
 
             // Badges
+            const isProject = p.is_project === true;
             const isRent = p.listing_type === 'rent';
             const badgeType = document.getElementById('detailBadgeType');
-            badgeType.textContent = isRent ? 'For Rent' : 'For Sale';
-            badgeType.className = `gallery-badge ${isRent ? 'rent' : 'sell'}`;
+            if (isProject) {
+                badgeType.innerHTML = `<i class="fas fa-crown"></i> ${p.badge_tag || 'Luxury Developer Project'}`;
+                badgeType.className = 'gallery-badge luxury';
+                badgeType.style.background = 'linear-gradient(135deg, #0F172A, #1B3A57)';
+                badgeType.style.color = '#F9DE81';
+                badgeType.style.border = '1px solid #D4AF37';
+            } else {
+                badgeType.textContent = isRent ? 'For Rent' : 'For Sale';
+                badgeType.className = `gallery-badge ${isRent ? 'rent' : 'sell'}`;
+                badgeType.style.background = '';
+                badgeType.style.color = '';
+                badgeType.style.border = '';
+            }
 
             // Price
-            if (isRent) {
+            if (isProject && p.price_min && p.price_max && p.price_min !== p.price_max) {
+                document.getElementById('detailPrice').textContent = `${formatPrice(p.price_min)} - ${formatPrice(p.price_max)}`;
+                document.getElementById('detailPricePeriod').textContent = '';
+            } else if (isProject && (p.price_min || p.price)) {
+                document.getElementById('detailPrice').textContent = formatPrice(p.price_min || p.price);
+                document.getElementById('detailPricePeriod').textContent = 'Starting';
+            } else if (isRent) {
                 document.getElementById('detailPrice').textContent = formatPrice(p.rent);
                 document.getElementById('detailPricePeriod').textContent = '/ month';
             } else {
-                document.getElementById('detailPrice').textContent = formatPrice(p.price);
+                document.getElementById('detailPrice').textContent = formatPrice(p.price || 0);
                 document.getElementById('detailPricePeriod').textContent = '';
+            }
+
+            // Interactive 3D Master Layout Callout (if available)
+            const layoutBox = document.getElementById('detailMasterLayoutBox');
+            const layoutBtn = document.getElementById('detailMasterLayoutBtn');
+            if (p.layout_url) {
+                layoutBtn.href = p.layout_url;
+                layoutBox.style.display = 'block';
+            } else {
+                layoutBox.style.display = 'none';
             }
 
             // Title & Address
@@ -1993,11 +2319,19 @@
             }
 
             // Specs
-            document.getElementById('specBedrooms').textContent = p.bedrooms ? `${p.bedrooms} BHK` : '--';
-            document.getElementById('specBathrooms').textContent = p.bathrooms ? `${p.bathrooms} Baths` : '--';
-            document.getElementById('specArea').textContent = p.area ? `${p.area} sq ft` : '--';
-            document.getElementById('specType').textContent = p.property_type || p.category || 'Apartment';
-            document.getElementById('specListingType').textContent = isRent ? 'Rental Agreement' : 'Outright Sale';
+            if (isProject) {
+                document.getElementById('specBedrooms').textContent = p.developer_name || p.owner_name || 'Verified';
+                document.getElementById('specBathrooms').textContent = p.available_units ? `${p.available_units} Units Avail.` : (p.status || 'Active');
+                document.getElementById('specArea').textContent = p.total_units ? `${p.total_units} Total Units` : (p.area ? `${p.area} sq ft` : '--');
+                document.getElementById('specType').textContent = p.property_type || 'Developer Project';
+                document.getElementById('specListingType').textContent = 'Project Booking';
+            } else {
+                document.getElementById('specBedrooms').textContent = p.bedrooms ? `${p.bedrooms} BHK` : '--';
+                document.getElementById('specBathrooms').textContent = p.bathrooms ? `${p.bathrooms} Baths` : '--';
+                document.getElementById('specArea').textContent = p.area ? `${p.area} sq ft` : '--';
+                document.getElementById('specType').textContent = p.property_type || p.category || 'Apartment';
+                document.getElementById('specListingType').textContent = isRent ? 'Rental Agreement' : 'Outright Sale';
+            }
             
             if (p.listed_date) {
                 const date = new Date(p.listed_date);
@@ -2034,9 +2368,9 @@
 
             // Deep Links (Compact clean format)
             const bParam = cachedBroker?.referral_code ? `b=${cachedBroker.referral_code}&` : (p.owner_uid ? `o=${p.owner_uid}&` : '');
-            const propDeepLink = `zorario://property?id=${p.id}`;
-            const propPartnerLink = `zorariopartner://showcase?${bParam}p=${p.id}`;
-            const propPlayStore = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=p%3D${p.id}`;
+            const propDeepLink = isProject ? `zorario://project?id=${p.id}` : `zorario://property?id=${p.id}`;
+            const propPartnerLink = isProject ? `zorariopartner://showcase?${bParam}proj=${p.id}` : `zorariopartner://showcase?${bParam}p=${p.id}`;
+            const propPlayStore = `https://play.google.com/store/apps/details?id=${PLAY_STORE_PACKAGE}&referrer=${isProject ? 'proj' : 'p'}%3D${p.id}`;
 
             document.getElementById('detailHeaderOpenApp').href = propDeepLink;
             document.getElementById('detailBtnOpenApp').href = propDeepLink;

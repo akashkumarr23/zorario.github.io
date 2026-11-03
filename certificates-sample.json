@@ -1,0 +1,73 @@
+{
+  "ZOR-2025-DEV-001": {
+    "id": "ZOR-2025-DEV-001",
+    "name": "Rahul Sharma",
+    "track": "Flutter & Mobile App Engineering",
+    "college": "National Institute of Technology (NIT) Patna",
+    "duration": "3 Months (Feb 2025 – Apr 2025)",
+    "issueDate": "30 April 2025",
+    "status": "Verified",
+    "performance": "Outstanding (Distinction)",
+    "skills": ["Flutter", "Dart", "Supabase Realtime", "REST APIs", "Play Store CI/CD"],
+    "projects": "Contributed to Zorario Partner App broker pitch decks & offline caching module",
+    "signatory": "Akash Kumar, Founder & CEO",
+    "ppoStatus": "Pre-Placement Offer (PPO) Recommended"
+  },
+  "ZOR-2025-WEB-002": {
+    "id": "ZOR-2025-WEB-002",
+    "name": "Priya Kumari",
+    "track": "Full-Stack Web & 3D Interactive Dev",
+    "college": "Patna Science College",
+    "duration": "3 Months (Jan 2025 – Mar 2025)",
+    "issueDate": "31 March 2025",
+    "status": "Verified",
+    "performance": "Outstanding (Distinction)",
+    "skills": ["JavaScript", "Three.js", "WebGL", "HTML5 Canvas", "Tailwind CSS"],
+    "projects": "Built interactive 3D camera transitions for Master Township Plotter",
+    "signatory": "Akash Kumar, Founder & CEO",
+    "ppoStatus": "Pre-Placement Offer (PPO) Awarded"
+  },
+  "ZOR-2025-OPS-003": {
+    "id": "ZOR-2025-OPS-003",
+    "name": "Aman Verma",
+    "track": "Real Estate Digital Operations & Research",
+    "college": "Magadh University, Gaya",
+    "duration": "2 Months (Feb 2025 – Mar 2025)",
+    "issueDate": "31 March 2025",
+    "status": "Verified",
+    "performance": "Excellent",
+    "skills": ["GPS Geotagging", "Listing Audit", "Landowner Verification", "Data Analysis"],
+    "projects": "Audited 350+ verified properties across Gaya and Patna districts",
+    "signatory": "Akash Kumar, Founder & CEO",
+    "ppoStatus": "Candidate in Review"
+  },
+  "ZOR-2025-MKT-004": {
+    "id": "ZOR-2025-MKT-004",
+    "name": "Ananya Singh",
+    "track": "Growth, Content & Social Media Marketing",
+    "college": "Chandragupt Institute of Management Patna (CIMP)",
+    "duration": "2 Months (Jan 2025 – Feb 2025)",
+    "issueDate": "28 February 2025",
+    "status": "Verified",
+    "performance": "Outstanding (Distinction)",
+    "skills": ["Short-form Video", "Instagram Reels", "Localized SEO", "Storytelling"],
+    "projects": "Produced 18 viral property video tours generating 150K+ organic impressions in Bihar",
+    "signatory": "Akash Kumar, Founder & CEO",
+    "ppoStatus": "Pre-Placement Offer (PPO) Recommended"
+  },
+  "ZOR-2025-DES-005": {
+    "id": "ZOR-2025-DES-005",
+    "name": "Vikramaditya Roy",
+    "track": "UI/UX & Architectural 3D Design",
+    "college": "National Institute of Fashion Technology (NIFT) Patna",
+    "duration": "3 Months (Feb 2025 – Apr 2025)",
+    "issueDate": "30 April 2025",
+    "status": "Verified",
+    "performance": "Outstanding (Distinction)",
+    "skills": ["Figma", "UI Prototyping", "3D Architectural Render", "Blender"],
+    "projects": "Redesigned mobile broker portfolio screens and interactive property filter modal",
+    "signatory": "Akash Kumar, Founder & CEO",
+    "ppoStatus": "Pre-Placement Offer (PPO) Awarded"
+  }
+}
+

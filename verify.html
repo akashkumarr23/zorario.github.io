@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Certificate & Credentials | Zorario PropTech</title>
+    <meta name="description"
+        content="Verify Zorario internship certificates, young leader credentials, and Letters of Recommendation. Authentic real-time verification powered by Zorario.">
+    <meta name="keywords"
+        content="Zorario certificate verification, verify internship certificate, real estate startup credential, Zorario young leaders">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Zorario">
+    <link rel="canonical" href="https://zorario.com/verify">
+
+    <!-- Clean URL Script: Automatically removes .html extension in production browser address bar -->
+    <script>
+        (function () {
+            var isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            if (!isLocalDev && window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
+                var clean = window.location.pathname.replace(/\.html$/, '');
+                if (clean.endsWith('/index')) clean = clean.slice(0, -6) || '/';
+                window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+            }
+            // Auto-resolve root-relative links when running on local static servers in /web_landing/
+            if (window.location.pathname.includes('/web_landing')) {
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+                        var href = a.getAttribute('href');
+                        if (!href.startsWith('/web_landing')) {
+                            var target = '/web_landing' + href;
+                            if (!target.endsWith('.html') && !target.includes('#')) {
+                                target += '.html';
+                            } else if (target.includes('#')) {
+                                var parts = target.split('#');
+                                var base = parts[0] === '/web_landing/' ? '/web_landing/index.html' : (parts[0].endsWith('.html') ? parts[0] : parts[0] + '.html');
+                                target = base + '#' + parts[1];
+                            }
+                            a.setAttribute('href', target);
+                        }
+                    });
+                });
+            }
+        })();
+    </script>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Verify Zorario Certificate & Official Credentials">
+    <meta property="og:description"
+        content="Verify official Zorario PropTech internship certificates and letters of recommendation in real-time.">
+    <meta property="og:url" content="https://zorario.com/verify">
+    <meta property="og:site_name" content="Zorario">
+    <meta property="og:image" content="https://zorario.com/assets/images/og-image.jpg">
+    <meta name="theme-color" content="#1B3A57">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+    <!-- Fonts: Inter & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════ */
+        /* ZORARIO CERTIFICATE VERIFICATION PORTAL STYLES                  */
+        /* ═══════════════════════════════════════════════════════════════ */
+
+        #main-nav {
+            background: rgba(15, 34, 55, 0.96) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-links a.active {
+            color: #6BB5CB !important;
+            font-weight: 700 !important;
+        }
+
+        /* Hero & Search Header */
+        .verify-hero {
+            background: radial-gradient(circle at 85% 15%, rgba(74, 144, 164, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at 15% 85%, rgba(43, 82, 120, 0.35) 0%, transparent 50%),
+                linear-gradient(135deg, #0F2237 0%, #1B3A57 55%, #2B5278 100%);
+            padding: 140px 5% 75px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .verify-hero-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 20px;
+            background: rgba(15, 34, 55, 0.45);
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #6BB5CB;
+        }
+
+        .breadcrumb i {
+            font-size: 9px;
+            opacity: 0.5;
+        }
+
+        .breadcrumb span {
+            color: #A2DBEA;
+            font-weight: 600;
+        }
+
+        .verify-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34D399;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 100px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .verify-hero h1 {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: clamp(32px, 4.5vw, 52px);
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .verify-hero p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.65;
+            max-width: 620px;
+            margin: 0 auto 36px;
+        }
+
+        /* Search Form Card */
+        .search-box-card {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            max-width: 620px;
+            margin: 0 auto;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .search-box-card:focus-within {
+            border-color: #6BB5CB;
+            box-shadow: 0 16px 48px rgba(74, 144, 164, 0.35);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .search-box-card i.search-icon {
+            color: #6BB5CB;
+            font-size: 18px;
+            margin-left: 20px;
+            margin-right: 12px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #FFFFFF;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .btn-verify-submit {
+            background: linear-gradient(135deg, #4A90A4, #6BB5CB);
+            color: #FFFFFF;
+            border: none;
+            outline: none;
+            padding: 13px 28px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(74, 144, 164, 0.3);
+            white-space: nowrap;
+        }
+
+        .btn-verify-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 144, 164, 0.45);
+        }
+
+        /* Quick Samples Strip */
+        .sample-pills-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .sample-pills-row span {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .sample-chip {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #A2DBEA;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sample-chip:hover {
+            background: rgba(74, 144, 164, 0.3);
+            color: #FFFFFF;
+            border-color: #6BB5CB;
+            transform: translateY(-1px);
+        }
+
+        /* ── Results Container ───────────────────────────────────────── */
+        .results-section {
+            padding: 70px 5% 90px;
+            background: #F8FAFC;
+            min-height: 520px;
+        }
+
+        .results-inner {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Loading State */
+        .loading-state {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(74, 144, 164, 0.2);
+            border-top-color: #4A90A4;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 18px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Error / Not Found State */
+        .error-state {
+            display: none;
+            background: #FFFFFF;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 20px;
+            padding: 48px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .error-icon-box {
+            width: 64px;
+            height: 64px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 18px;
+        }
+
+        /* ── THE OFFICIAL LUXURY CERTIFICATE CARD ────────────────────── */
+        .cert-card-wrap {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Verified Banner Strip above Certificate */
+        .verified-banner {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: #FFFFFF;
+            border-radius: 16px 16px 0 0;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13.5px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+        }
+
+        .verified-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verified-banner-left i {
+            font-size: 18px;
+        }
+
+        /* The Certificate Paper Document */
+        .certificate-sheet {
+            background: #FFFFFF;
+            border: 12px double #D4AF37;
+            border-radius: 0 0 20px 20px;
+            padding: 56px 64px;
+            box-shadow: 0 20px 60px rgba(15, 34, 55, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Luxury Watermark */
+        .certificate-sheet::before {
+            content: 'ZORARIO';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(27, 58, 87, 0.025);
+            letter-spacing: 12px;
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+        }
+
+        .cert-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.35);
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cert-brand img {
+            width: 48px;
+            height: 48px;
+        }
+
+        .cert-brand-text h3 {
+            font-family: 'ITCBauhaus', sans-serif;
+            font-size: 24px;
+            color: #0F2237;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .cert-brand-text span {
+            font-size: 11.5px;
+            color: #4A90A4;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        .cert-seal-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 184, 0, 0.1);
+            border: 1.5px solid #D4AF37;
+            padding: 8px 18px;
+            border-radius: 100px;
+            color: #B45309;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .cert-title-block {
+            text-align: center;
+            margin-bottom: 36px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            color: #4A90A4;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .cert-main-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(26px, 4vw, 36px);
+            font-weight: 800;
+            color: #0F2237;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .cert-present-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 16px;
+            color: #6B7280;
+        }
+
+        .cert-recipient-name {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(30px, 4.5vw, 42px);
+            font-weight: 800;
+            color: #1B3A57;
+            margin: 18px 0 6px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px dashed rgba(27, 58, 87, 0.25);
+            display: inline-block;
+            padding: 0 30px 8px;
+        }
+
+        .cert-recipient-college {
+            font-size: 14.5px;
+            color: #4B5563;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .cert-body-narrative {
+            font-size: 15.5px;
+            color: #374151;
+            line-height: 1.8;
+            max-width: 740px;
+            margin: 0 auto 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            background: #F8FAFC;
+            border: 1px solid rgba(27, 58, 87, 0.08);
+            border-radius: 14px;
+            padding: 18px 24px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-meta-item span {
+            display: block;
+            font-size: 11px;
+            color: #9CA3AF;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 3px;
+        }
+
+        .cert-meta-item strong {
+            font-size: 14px;
+            color: #1B3A57;
+            font-weight: 700;
+        }
+
+        /* Skills chips */
+        .cert-skills-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-skill-chip {
+            background: rgba(74, 144, 164, 0.1);
+            color: #2B5278;
+            border: 1px solid rgba(74, 144, 164, 0.25);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 100px;
+        }
+
+        /* Footer / Signatures */
+        .cert-footer-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-top: 24px;
+            border-top: 1px solid rgba(27, 58, 87, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-qr-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .cert-qr-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 8px;
+            border: 1px solid rgba(27, 58, 87, 0.15);
+            padding: 4px;
+            background: #fff;
+        }
+
+        .cert-qr-text {
+            font-size: 11px;
+            color: #6B7280;
+            line-height: 1.4;
+        }
+
+        .cert-qr-text strong {
+            color: #1B3A57;
+            display: block;
+            font-size: 11.5px;
+        }
+
+        .cert-sign-block {
+            text-align: right;
+        }
+
+        .signature-line {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 20px;
+            color: #1B3A57;
+            border-bottom: 1.5px solid #1B3A57;
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+            display: inline-block;
+            min-width: 180px;
+        }
+
+        .cert-sign-block p {
+            font-size: 12px;
+            color: #4B5563;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* ── Action Toolbar below Certificate ────────────────────────── */
+        .cert-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tool {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+        }
+
+        .btn-tool-print {
+            background: #1B3A57;
+            color: #FFFFFF;
+            box-shadow: 0 4px 14px rgba(27, 58, 87, 0.25);
+        }
+
+        .btn-tool-print:hover {
+            background: #0F2237;
+            transform: translateY(-2px);
+        }
+
+        .btn-tool-linkedin {
+            background: #0A66C2;
+            color: #FFFFFF;
+            box-shadow: 0 4px 14px rgba(10, 102, 194, 0.25);
+        }
+
+        .btn-tool-linkedin:hover {
+            background: #084E96;
+            transform: translateY(-2px);
+        }
+
+        .btn-tool-copy {
+            background: #FFFFFF;
+            color: #1B3A57;
+            border: 1.5px solid rgba(27, 58, 87, 0.15);
+        }
+
+        .btn-tool-copy:hover {
+            border-color: #4A90A4;
+            color: #4A90A4;
+            transform: translateY(-2px);
+        }
+
+        /* Toast Feedback */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 34, 55, 0.95);
+            color: #FFFFFF;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .verify-hero {
+                padding: 90px 16px 48px !important;
+            }
+
+            .search-box-card {
+                border-radius: 16px;
+                flex-direction: column;
+                padding: 14px;
+                gap: 12px;
+            }
+
+            .search-box-card i.search-icon {
+                display: none;
+            }
+
+            .search-input {
+                width: 100%;
+                text-align: center;
+            }
+
+            .btn-verify-submit {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .certificate-sheet {
+                padding: 32px 20px;
+            }
+
+            .cert-meta-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .cert-footer-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+                text-align: center;
+            }
+
+            .cert-sign-block {
+                text-align: center;
+            }
+
+            .cert-header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .nav-links {
+                top: 60px !important;
+            }
+        }
+
+        /* ── Print Stylesheet: Isolates Certificate on paper ────────── */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .certificate-sheet,
+            .certificate-sheet * {
+                visibility: visible;
+            }
+
+            .certificate-sheet {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 40px;
+                border: 8px double #D4AF37 !important;
+                box-shadow: none !important;
+            }
+
+            .verified-banner,
+            .cert-toolbar,
+            #main-nav,
+            footer,
+            .support-container {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. OFFICIAL NAVIGATION BAR -->
+    <nav id="main-nav" role="navigation" aria-label="Main navigation">
+        <a href="/" class="nav-logo" aria-label="Zorario Home">
+            <img src="assets/images/logo.png" alt="Zorario Logo" width="40" height="40">
+            <span class="nav-logo-text">ZORARIO</span>
+        </a>
+        <ul class="nav-links" role="list">
+            <li><a href="/#features">Features</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/plotter"><i class="fas fa-cube" style="color:#4A90A4;margin-right:4px;"></i> 3D Plotter</a>
+            </li>
+            <li><a href="/internship">Internship</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/verify" class="active">Verify</a></li>
+            <li>
+                <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="nav-cta"
+                    id="nav-download-btn" rel="noopener" target="_blank" aria-label="Download Zorario app">
+                    <i class="fab fa-google-play"></i> Download App
+                </a>
+            </li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- 2. VERIFY HERO & SEARCH BAR -->
+    <section class="verify-hero" aria-label="Certificate Verification">
+        <div class="verify-hero-inner">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/internship">Internship</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Credential Verification</span>
+            </nav>
+
+            <div class="verify-badge">
+                <i class="fas fa-shield-alt"></i> Official Credential Registry
+            </div>
+
+            <h1>Verify Authenticity of<br><span
+                    style="background: linear-gradient(90deg, #6BB5CB, #FFB800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Zorario
+                    Certificates</span></h1>
+            <p>
+                Confirm credentials, domain tracks, and Letters of Recommendation issued by Zorario. Enter the unique ID
+                printed on the certificate or scan the QR code.
+            </p>
+
+            <!-- Search Form -->
+            <form id="verify-form" class="search-box-card" onsubmit="handleSearchSubmit(event)">
+                <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                <input type="text" id="cert-search-input" class="search-input"
+                    placeholder="Enter Certificate ID (e.g. ZOR-2025-DEV-001)" autocomplete="off" required>
+                <button type="submit" class="btn-verify-submit">
+                    <i class="fas fa-check-circle"></i> Verify Now
+                </button>
+            </form>
+
+            <!-- Quick Samples for Testing -->
+            <div class="sample-pills-row">
+                <span>Try Sample IDs:</span>
+                <span class="sample-chip" onclick="quickVerify('ZRP-2025-DEV-001')">ZRP-2025-DEV-001 (Akash)</span>
+                <span class="sample-chip" onclick="quickVerify('ZOR-2025-DEV-001')">ZOR-2025-DEV-001 (Flutter)</span>
+                <span class="sample-chip" onclick="quickVerify('ZOR-2025-WEB-002')">ZOR-2025-WEB-002 (Web & 3D)</span>
+                <span class="sample-chip" onclick="quickVerify('ZOR-2025-OPS-003')">ZOR-2025-OPS-003 (Operations)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. VERIFICATION RESULT SECTION -->
+    <section class="results-section" id="results">
+        <div class="results-inner">
+
+            <!-- Loading Spinner -->
+            <div id="loading-state" class="loading-state">
+                <div class="spinner"></div>
+                <p style="font-size: 15px; color: #1B3A57; font-weight: 600;">Verifying certificate with Zorario
+                    registry...</p>
+            </div>
+
+            <!-- Error State: Not Found -->
+            <div id="error-state" class="error-state">
+                <div class="error-icon-box">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <h3 style="font-size: 22px; color: #1B3A57; margin-bottom: 8px;">Certificate Not Found</h3>
+                <p style="font-size: 14.5px; color: #6B7280; max-width: 480px; margin: 0 auto 24px;">
+                    We could not find any active credential matching <strong id="error-id-display"
+                        style="color:#EF4444;"></strong>. Please verify the ID for typos or contact Zorario Talent
+                    Operations.
+                </p>
+                <div id="sheet-diagnostic-warn"
+                    style="display: none; max-width: 520px; margin: 0 auto 20px; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 14px 18px; text-align: left; font-size: 13px; color: #92400E; line-height: 1.5;">
+                    <strong style="display:flex; align-items:center; gap:6px; color:#B45309; margin-bottom:4px;">
+                        <i class="fas fa-exclamation-triangle"></i> Google Sheet Access Warning
+                    </strong>
+                    Your Google Sheet is currently <strong>Restricted (🔒)</strong>. For newly created certificates to
+                    be verified live automatically, click the blue <strong>"Share"</strong> button in your Google Sheet
+                    and change General Access from <em>Restricted</em> to <strong>"Anyone with the link"
+                        (Viewer)</strong>.
+                </div>
+                <a href="https://wa.me/919334298441" class="btn-tool btn-tool-copy" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp" style="color:#25D366;"></i> Contact Support on WhatsApp
+                </a>
+            </div>
+
+            <!-- Success State: Verified Certificate Card -->
+            <div id="cert-card-wrap" class="cert-card-wrap">
+
+                <!-- Green Verification Banner -->
+                <div class="verified-banner">
+                    <div class="verified-banner-left">
+                        <i class="fas fa-badge-check"></i>
+                        <span>Officially Verified Zorario PropTech Credential</span>
+                    </div>
+                    <div style="font-size: 12px; opacity: 0.9;">
+                        ID: <strong id="banner-cert-id">ZOR-2025-DEV-001</strong>
+                    </div>
+                </div>
+
+                <!-- Printable Certificate Paper -->
+                <div class="certificate-sheet" id="printable-certificate">
+
+                    <!-- Header -->
+                    <div class="cert-header">
+                        <div class="cert-brand">
+                            <img src="assets/images/logo.png" alt="Zorario Logo">
+                            <div class="cert-brand-text">
+                                <h3>ZORARIO</h3>
+                                <span>Bihar's No.1 PropTech Platform</span>
+                            </div>
+                        </div>
+                        <div class="cert-seal-badge">
+                            <i class="fas fa-award"></i>
+                            <span>OFFICIAL RECORD • MSME REGISTERED</span>
+                        </div>
+                    </div>
+
+                    <!-- Title Block -->
+                    <div class="cert-title-block">
+                        <div class="cert-subtitle">Certificate of Completion & Excellence</div>
+                        <h2 class="cert-main-title">PropTech Young Leaders Program</h2>
+                        <div class="cert-present-text">This is proudly presented to</div>
+                        <div class="cert-recipient-name" id="c-name">Rahul Sharma</div>
+                        <div class="cert-recipient-college" id="c-college">National Institute of Technology (NIT) Patna
+                        </div>
+                    </div>
+
+                    <!-- Narrative -->
+                    <p class="cert-body-narrative">
+                        For successfully completing the rigorous <strong>100% Remote Experiential Internship</strong> in
+                        <strong id="c-track" style="color: #1B3A57;">Flutter & Mobile App Engineering</strong>.
+                        During this tenure, the candidate demonstrated exceptional engineering rigor, high
+                        problem-solving capability, and shipped production features touching real users across Bihar.
+                    </p>
+
+                    <!-- Meta Grid -->
+                    <div class="cert-meta-grid">
+                        <div class="cert-meta-item">
+                            <span>Tenure / Duration</span>
+                            <strong id="c-duration">3 Months (Feb 2025 – Apr 2025)</strong>
+                        </div>
+                        <div class="cert-meta-item">
+                            <span>Issue Date</span>
+                            <strong id="c-date">30 April 2025</strong>
+                        </div>
+                        <div class="cert-meta-item">
+                            <span>Performance Rating</span>
+                            <strong id="c-performance" style="color:#10B981;">Outstanding (Distinction)</strong>
+                        </div>
+                    </div>
+
+                    <!-- Project & Skills -->
+                    <div class="cert-skills-wrap" id="c-skills-container">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Footer / Signatures -->
+                    <div class="cert-footer-row">
+                        <div class="cert-qr-block">
+                            <img id="c-qr-img" class="cert-qr-img" src="" alt="Scan to Verify Certificate">
+                            <div class="cert-qr-text">
+                                <strong>Scan to Verify</strong>
+                                <span>Direct tamper-proof URL</span><br>
+                                <span style="font-family: monospace; color: #4A90A4;"
+                                    id="c-id-code">ZOR-2025-DEV-001</span>
+                            </div>
+                        </div>
+
+                        <div class="cert-sign-block">
+                            <div class="signature-line" id="c-signatory">Akash Kumar</div>
+                            <p id="c-signatory-title">Founder &amp; Chief Executive Officer</p>
+                            <span style="font-size: 11px; color: #9CA3AF;">Zorario Real Estate Tech Private
+                                Limited</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Action Toolbar -->
+                <div class="cert-toolbar">
+                    <button class="btn-tool btn-tool-print" onclick="window.print()">
+                        <i class="fas fa-print"></i> Print / Save as PDF
+                    </button>
+                    <a id="btn-linkedin" href="#" target="_blank" rel="noopener" class="btn-tool btn-tool-linkedin">
+                        <i class="fab fa-linkedin"></i> Add to LinkedIn Profile
+                    </a>
+                    <button class="btn-tool btn-tool-copy" onclick="copyVerificationLink()">
+                        <i class="fas fa-copy"></i> Copy Shareable Link
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 4. FOOTER -->
+    <footer role="contentinfo">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="/" class="nav-logo" aria-label="Zorario Home">
+                    <img src="assets/images/logo.gif" alt="Zorario Logo" width="36" height="36" loading="lazy">
+                    <span class="nav-logo-text">ZORARIO</span>
+                </a>
+                <p>Bihar's No.1 real estate platform. Connecting verified owners with reliable tenants and buyers across
+                    all 38 districts.</p>
+                <div class="footer-socials">
+                    <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="social-link"
+                        aria-label="Google Play" rel="noopener" target="_blank"><i class="fab fa-google-play"></i></a>
+                    <a href="https://wa.me/919334298441" class="social-link" aria-label="WhatsApp" rel="noopener"
+                        target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://medium.com/@akashkumarr1406/zorario-new-real-estate-platform-in-india-336c77c7d2fd"
+                        class="social-link" aria-label="Medium" rel="noopener" target="_blank"><i
+                            class="fab fa-medium"></i></a>
+                </div>
+            </div>
+            <nav class="footer-col" aria-label="Company links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/zorario-tech">Zorario Tech</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/associate-partner">Associate Partner</a></li>
+                    <li><a href="/internship">Internship Program</a></li>
+                    <li><a href="/verify" style="color: #6BB5CB; font-weight: 700;">Verify Certificate</a></li>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                </ul>
+            </nav>
+            <nav class="footer-col" aria-label="Property links">
+                <h4>Properties</h4>
+                <ul>
+                    <li><a href="/projects">Projects</a></li>
+                    <li><a href="/plotter">3D Master Plotter</a></li>
+                    <li><a href="/#features">Features</a></li>
+                    <li><a href="/#how-it-works">How It Works</a></li>
+                    <li><a href="/#testimonials">Reviews</a></li>
+                    <li><a href="/#faq">FAQ</a></li>
+                </ul>
+            </nav>
+            <nav class="footer-col" aria-label="Contact links">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="tel:+919334298441">+91 93342 98441</a></li>
+                    <li><a href="https://wa.me/919334298441" rel="noopener" target="_blank">WhatsApp Us</a></li>
+                    <li><a href="/download-app">Download App</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copy">&copy; 2025 Zorario. All rights reserved. Bihar's No.1 Real Estate Platform.</p>
+            <p class="footer-tagline">Built with <span>♥</span> for Bihar</p>
+        </div>
+    </footer>
+
+    <!-- Floating Support -->
+    <div class="support-container" role="complementary" aria-label="Contact Support">
+        <a href="https://wa.me/919334298441" class="support-btn whatsapp" data-tooltip="Chat on WhatsApp"
+            title="Chat with Zorario on WhatsApp" aria-label="Chat on WhatsApp" target="_blank"
+            rel="noopener noreferrer">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        </a>
+        <a href="tel:+919334298441" class="support-btn call" data-tooltip="Call Us" title="Call Zorario Support"
+            aria-label="Call Zorario support">
+            <i class="fas fa-phone" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <!-- Toast message -->
+    <div id="toast"><i class="fas fa-check-circle" style="color:#10B981;"></i> <span>Verification link copied to
+            clipboard!</span></div>
+
+    <!-- Scripts -->
+    <script src="certificate-verifier.js"></script>
+    <script>
+        // Navbar Scrolled State & Mobile Hamburger
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
+        }, { passive: true });
+
+        const hamburgerBtn = document.getElementById('nav-hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        if (hamburgerBtn && navLinks) {
+            hamburgerBtn.addEventListener('click', () => {
+                const expanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+                hamburgerBtn.setAttribute('aria-expanded', !expanded);
+                navLinks.classList.toggle('open');
+            });
+        }
+
+        // Active certificate reference
+        let currentCert = null;
+
+        // Perform verification
+        async function runVerification(certId) {
+            if (!certId) return;
+
+            const loadingEl = document.getElementById('loading-state');
+            const errorEl = document.getElementById('error-state');
+            const certCardEl = document.getElementById('cert-card-wrap');
+            const searchInput = document.getElementById('cert-search-input');
+
+            if (searchInput) searchInput.value = certId;
+
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            certCardEl.style.display = 'none';
+
+            // Scroll down smoothly to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            const cert = await verifyCertificate(certId);
+            loadingEl.style.display = 'none';
+
+            if (!cert) {
+                document.getElementById('error-id-display').textContent = certId.toUpperCase();
+                const diag = (typeof getVerificationDiagnostics === 'function') ? getVerificationDiagnostics() : null;
+                const sheetWarn = document.getElementById('sheet-diagnostic-warn');
+                if (sheetWarn) {
+                    sheetWarn.style.display = (diag && !diag.success) ? 'block' : 'none';
+                }
+                errorEl.style.display = 'block';
+                currentCert = null;
+                return;
+            }
+
+            // Populate Certificate
+            currentCert = cert;
+            document.getElementById('banner-cert-id').textContent = cert.id;
+            document.getElementById('c-name').textContent = cert.name;
+            document.getElementById('c-college').textContent = cert.college;
+            document.getElementById('c-track').textContent = cert.track;
+            document.getElementById('c-duration').textContent = cert.duration;
+            document.getElementById('c-date').textContent = cert.issueDate;
+            document.getElementById('c-performance').textContent = cert.performance;
+            document.getElementById('c-id-code').textContent = cert.id;
+            const sigParts = (cert.signatory || 'Akash Kumar, Founder & CEO').split(',');
+            document.getElementById('c-signatory').textContent = sigParts[0].trim();
+            const sigTitleEl = document.getElementById('c-signatory-title');
+            if (sigTitleEl) {
+                sigTitleEl.textContent = sigParts.length > 1 ? sigParts.slice(1).join(',').trim() : 'Co-Founder & Authorized Signatory';
+            }
+
+            // Render Skills
+            const skillsContainer = document.getElementById('c-skills-container');
+            skillsContainer.innerHTML = '';
+            if (cert.skills && Array.isArray(cert.skills)) {
+                cert.skills.forEach(skill => {
+                    const chip = document.createElement('span');
+                    chip.className = 'cert-skill-chip';
+                    chip.textContent = skill;
+                    skillsContainer.appendChild(chip);
+                });
+            }
+
+            // QR Code
+            const qrImg = document.getElementById('c-qr-img');
+            qrImg.src = getCertificateQrUrl(cert.id);
+
+            // LinkedIn Link
+            const linkedInBtn = document.getElementById('btn-linkedin');
+            linkedInBtn.href = getLinkedInCertificationUrl(cert);
+
+            certCardEl.style.display = 'block';
+
+            // Update URL without reloading
+            if (window.history && window.history.replaceState) {
+                const newUrl = `${window.location.pathname}?id=${encodeURIComponent(cert.id)}`;
+                window.history.replaceState(null, '', newUrl);
+            }
+        }
+
+        // Form search submit
+        function handleSearchSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('cert-search-input');
+            if (input && input.value.trim()) {
+                runVerification(input.value.trim());
+            }
+        }
+
+        // Quick verify pill click
+        function quickVerify(id) {
+            runVerification(id);
+        }
+
+        // Copy Verification Link
+        function copyVerificationLink() {
+            if (!currentCert) return;
+            const link = `https://zorario.com/verify?id=${encodeURIComponent(currentCert.id)}`;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('Verification link copied to clipboard!');
+            }).catch(() => {
+                prompt('Copy this verification URL:', link);
+            });
+        }
+
+        // Toast feedback
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.querySelector('span').textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+        }
+
+        // Auto-verify if ?id= is in URL query parameters
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const certId = params.get('id');
+            if (certId) {
+                runVerification(certId);
+            }
+        });
+    </script>
+</body>
+
+</html>

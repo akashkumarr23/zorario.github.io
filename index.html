@@ -24,11 +24,11 @@
     <meta name="geo.region" content="IN-BR">
     <meta name="geo.placename" content="Bihar, India">
 
-    <link rel="canonical" href="https://www.zorario.com/">
+    <link rel="canonical" href="https://zorario.com/">
 
     <!-- Clean URL Script: Automatically removes .html extension in browser address bar -->
     <script>
-        (function() {
+        (function () {
             if (window.location.protocol !== 'file:' && window.location.pathname.endsWith('.html')) {
                 var clean = window.location.pathname.replace(/\.html$/, '');
                 if (clean.endsWith('/index')) clean = clean.slice(0, -6) || '/';
@@ -41,9 +41,9 @@
     <meta property="og:title" content="Zorario - No.1 Real Estate Company in Bihar | All Districts">
     <meta property="og:description"
         content="Bihar's No.1 real estate platform. Buy, sell &amp; rent verified properties across all 38 districts — Gaya, Patna, Begusarai, Munger &amp; more.">
-    <meta property="og:url" content="https://www.zorario.com/">
+    <meta property="og:url" content="https://zorario.com/">
     <meta property="og:site_name" content="Zorario">
-    <meta property="og:image" content="https://www.zorario.com/assets/images/og-image.jpg">
+    <meta property="og:image" content="https://zorario.com/assets/images/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="en_IN">
@@ -52,7 +52,7 @@
     <meta name="twitter:title" content="Zorario - No.1 Real Estate Company in Bihar">
     <meta name="twitter:description"
         content="Bihar's No.1 real estate platform. Verified listings, instant booking across all 38 Bihar districts.">
-    <meta name="twitter:image" content="https://www.zorario.com/assets/images/og-image.jpg">
+    <meta name="twitter:image" content="https://zorario.com/assets/images/og-image.jpg">
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -66,12 +66,12 @@
         "@graph": [
             {
                 "@type": ["Organization", "RealEstateAgent"],
-                "@id": "https://www.zorario.com/#organization",
+                "@id": "https://zorario.com/#organization",
                 "name": "Zorario",
                 "alternateName": "Zorario Real Estate",
                 "description": "Bihar's No.1 real estate company offering property buying, selling, and renting services across all 38 districts of Bihar including Gaya, Patna, Begusarai, Munger, Bhagalpur, Muzaffarpur and more.",
-                "url": "https://www.zorario.com",
-                "logo": { "@type": "ImageObject", "url": "https://www.zorario.com/assets/images/logo.png" },
+                "url": "https://zorario.com",
+                "logo": { "@type": "ImageObject", "url": "https://zorario.com/assets/images/logo.png" },
                 "telephone": "+91-9334298441",
                 "address": {
                     "@type": "PostalAddress",
@@ -158,23 +158,23 @@
         {
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "@id": "https://www.zorario.com/#website",
-            "url": "https://www.zorario.com",
+            "@id": "https://zorario.com/#website",
+            "url": "https://zorario.com",
             "name": "Zorario",
             "description": "Bihar's No.1 real estate platform",
             "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://www.zorario.com/?q={search_term_string}",
+                "target": "https://zorario.com/?q={search_term_string}",
                 "query-input": "required name=search_term_string"
             }
         },
         {
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            "@id": "https://www.zorario.com/#localbusiness",
+            "@id": "https://zorario.com/#localbusiness",
             "name": "Zorario Real Estate",
             "description": "Bihar's No.1 real estate company",
-            "url": "https://www.zorario.com",
+            "url": "https://zorario.com",
             "telephone": "+91-9334298441",
             "priceRange": "Free",
             "address": {
@@ -629,8 +629,7 @@
                         <button class="search-tab active" role="tab" aria-selected="true" data-type="buy">Buy</button>
                         <button class="search-tab" role="tab" aria-selected="false" data-type="rent">Rent</button>
                         <button class="search-tab" role="tab" aria-selected="false" data-type="sell">Sell</button>
-                        <a href="/plotter" class="search-tab search-tab-plotter"
-                            title="Launch Interactive 3D Plotter">
+                        <a href="/plotter" class="search-tab search-tab-plotter" title="Launch Interactive 3D Plotter">
                             <i class="fas fa-cube" aria-hidden="true"></i> <span>3D Plotter</span>
                         </a>
                     </div>
@@ -680,10 +679,12 @@
                         rel="noopener" class="app-badge-google-play" aria-label="Get Zorario app on Google Play">
                         <div class="google-play-card-inner">
                             <svg class="gp-icon" viewBox="0 0 512 512" width="28" height="28" aria-hidden="true">
-                                <path fill="#4285F4" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1z"/>
-                                <path fill="#34A853" d="M47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l255.6-256L47 0z"/>
-                                <path fill="#EA4335" d="M325.3 277.7l60.1 60.1L104.6 499l220.7-221.3z"/>
-                                <path fill="#FBBC04" d="M486.7 232.8L385.4 174.2l-60.1 60.1 60.1 60.1 101.3-58.6c17.5-10.1 17.5-26.6 0-36.7z"/>
+                                <path fill="#4285F4" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1z" />
+                                <path fill="#34A853"
+                                    d="M47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l255.6-256L47 0z" />
+                                <path fill="#EA4335" d="M325.3 277.7l60.1 60.1L104.6 499l220.7-221.3z" />
+                                <path fill="#FBBC04"
+                                    d="M486.7 232.8L385.4 174.2l-60.1 60.1 60.1 60.1 101.3-58.6c17.5-10.1 17.5-26.6 0-36.7z" />
                             </svg>
                             <div class="gp-text">
                                 <span class="gp-sub">GET IT ON</span>
@@ -863,14 +864,14 @@
 
                         <!-- District Selection Pills -->
                         <div class="land-district-selector">
-                            <button type="button" class="land-pill-btn active" data-area="2,400 Sq. Ft" data-dim="60 Ft" data-depth="40 Ft"
-                                data-kattha="3.3 Kattha">Patna</button>
-                            <button type="button" class="land-pill-btn" data-area="1,800 Sq. Ft" data-dim="45 Ft" data-depth="40 Ft"
-                                data-kattha="2.5 Kattha">Muzaffarpur</button>
-                            <button type="button" class="land-pill-btn" data-area="2,160 Sq. Ft" data-dim="50 Ft" data-depth="43 Ft"
-                                data-kattha="3.0 Kattha">Gaya</button>
-                            <button type="button" class="land-pill-btn" data-area="3,200 Sq. Ft" data-dim="70 Ft" data-depth="46 Ft"
-                                data-kattha="4.4 Kattha">Bhagalpur</button>
+                            <button type="button" class="land-pill-btn active" data-area="2,400 Sq. Ft" data-dim="60 Ft"
+                                data-depth="40 Ft" data-kattha="3.3 Kattha">Patna</button>
+                            <button type="button" class="land-pill-btn" data-area="1,800 Sq. Ft" data-dim="45 Ft"
+                                data-depth="40 Ft" data-kattha="2.5 Kattha">Muzaffarpur</button>
+                            <button type="button" class="land-pill-btn" data-area="2,160 Sq. Ft" data-dim="50 Ft"
+                                data-depth="43 Ft" data-kattha="3.0 Kattha">Gaya</button>
+                            <button type="button" class="land-pill-btn" data-area="3,200 Sq. Ft" data-dim="70 Ft"
+                                data-depth="46 Ft" data-kattha="4.4 Kattha">Bhagalpur</button>
                         </div>
 
                         <div class="jcard-specs">
@@ -931,7 +932,8 @@
                     <div class="journey-card" id="jcard-3">
                         <div class="jcard-badge"><i class="fas fa-couch"></i> Stage 04 · Ready-to-Move Living</div>
                         <h3 class="jcard-title">Smart Spatial Interior Living</h3>
-                        <p class="jcard-desc">Designer lighting ambiance, modular Italian kitchen, and smart home climate automation.</p>
+                        <p class="jcard-desc">Designer lighting ambiance, modular Italian kitchen, and smart home
+                            climate automation.</p>
 
                         <!-- Interactive Interior Perspective Switcher -->
                         <div class="int-view-selector" title="Switch 3D Room Camera View">
@@ -956,11 +958,12 @@
                         </div>
 
                         <div class="jcard-action-row">
-                            <a href="https://play.google.com/store/apps/details?id=com.akash.prop8" class="jcard-cta-btn"
-                                target="_blank" rel="noopener">
+                            <a href="https://play.google.com/store/apps/details?id=com.akash.prop8"
+                                class="jcard-cta-btn" target="_blank" rel="noopener">
                                 <i class="fab fa-google-play"></i> Book on App
                             </a>
-                            <button type="button" class="jcard-orbit-shortcut" id="btn-interior-orbit" title="Freely rotate and inspect the room in 3D">
+                            <button type="button" class="jcard-orbit-shortcut" id="btn-interior-orbit"
+                                title="Freely rotate and inspect the room in 3D">
                                 <i class="fas fa-arrows-rotate"></i> 360° Room
                             </button>
                         </div>
@@ -2367,6 +2370,8 @@
                         <li><a href="/zorario-tech">Zorario Tech</a></li>
                         <li><a href="/blog">Blog</a></li>
                         <li><a href="/associate-partner">Associate Partner</a></li>
+                        <li><a href="/internship">Internship Program</a></li>
+                        <li><a href="/verify">Verify Certificate</a></li>
                         <li><a href="/privacy-policy">Privacy Policy</a></li>
                     </ul>
                 </nav>
